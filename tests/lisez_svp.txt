@@ -1,0 +1,8 @@
+Explication vite fait :
+    je fais les tests en bash avec les fonctions de bramas, et je vais essayer de faire un dossier pour chaque catégorie de test(genre lex puis yacc...)
+    et donc lancer le test.sh lancera les tests pour tous les dossiers en même temps
+    vous avez normalement juste à écrire ./test.sh dans le terminal pour lancer les tests (ou ajouter un chmod +x test.sh si ça plante)
+    Mais avant, comme je sais pas encore ce que retourne les fichiers (vu qu'ils sont pas sur git):
+    - pour le .l, il faut aller modifier le fichier outattendu.txt pour préciser ce que le .l renverrait avec le main.c que j'ai écrit sur le texte in0.txt (il affiche juste les tokens pour l'instant)
+    - pour le .l, il faut aller vérifier le nom des fichiers à tester dans analyse_lex/Makefile et analyse_lex/main.c (il y a des commentaires aux endroits à vérifier)
+    - et j'ai pas encore préparé pour le yacc pour l'instant
