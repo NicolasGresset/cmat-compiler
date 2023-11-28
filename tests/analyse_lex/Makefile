@@ -1,15 +1,16 @@
-FONCTION = ../../flex/analyseur # à modifier si besoin
-PRINCIPAL = main
+prefixe=lexer
+CFLAGS=-Wall -Wextra -g
 
-$(PRINCIPAL): obj
-	gcc -o $(PRINCIPAL) $(FONCTION).o $(PRINCIPAL).o
+all: lex.yy.o main.o
+	gcc lex.yy.o main.o -lfl -o $(prefixe) $(CFLAGS)
 
-obj: $(FONCTION).c $(PRINCIPAL).c
-	gcc -c $(FONCTION).c -o $(FONCTION).o
-	gcc -c $(PRINCIPAL).c -o $(PRINCIPAL).o
 
-$(FONCTION).c: $(FONCTION).l
-	flex -o $(FONCTION).c $(FONCTION).l
+main.o : main.c
+	gcc -c main.c $(CFLAGS)
+
+lex.yy.o: $(prefixe).lex
+	flex $(prefixe).lex
+	gcc -c lex.yy.c $(CFLAGS)
 
 clean:
-	rm -f $(PRINCIPAL) $(FONCTION).c $(FONCTION).o $(PRINCIPAL).o
+	rm -f *.o lex.yy.c a.out $(prefixe)
