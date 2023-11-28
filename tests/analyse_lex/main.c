@@ -45,13 +45,13 @@ int main(int argc, char ** argv) {
     printf("Ceci est un test de l'analyseur lexical\n");
     printf("---------------------------------------\n");
     printf("Le fichier à analyser est %s\n", argv[1]);
-    printf("le fichier attendu est attendu.txt\n");
+    printf("le fichier attendu pour test.txt est attendu.txt\n");
     printf("---------------------------------------\n\n");
     int token = 1;
 
     while (token) {
         token = yylex();
-        printf("%d ", token);
+        printf("%d\n", token);
     }
     printf("\n");
     return 0;
