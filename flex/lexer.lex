@@ -4,6 +4,11 @@
 
 char token_valeur[LONGUEUR_TOKEN_MAX];
 
+/**
+ * Ecrit de manière sécurisée la valeur du token dans la variable token_valeur
+ * et renvoie un entier correpondant au code du token si il n'y a pas eu troncature,
+ * LEX_ERROR sinon
+ */
 int ecrireToken(int token_code){
     int n;
     if ((n = snprintf(token_valeur, LONGUEUR_TOKEN_MAX, "%s", yytext)) >= LONGUEUR_TOKEN_MAX){
@@ -30,17 +35,43 @@ COMMENTAIRE_SIMPLE \/\/(.)*
 COMMENTAIRE_PLUSIEURS_LIGNES \/\*([^\*]|\**[^\/])*\*\/
 _COMMENTAIRE {COMMENTAIRE_SIMPLE}|{COMMENTAIRE_PLUSIEURS_LIGNES}
 
-_CONTROLE for|else|if|while
 _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\)|\[|\]|\{|\}|\&|\||<<|>>|'|"]
 
 %%
 
+"int" return INT;
+"float" return FLOAT;
+"matrix" return MATRIX;
+
+"else" return ELSE;
+"if" return IF;
+"while" return WHILE;
+"for" return FOR;
+
 {_CONSTANTE_ENTIERE} return ecrireToken(CONSTANTE_ENTIERE);
 {_CONSTANTE_FLOTTANTE} return ecrireToken(CONSTANTE_FLOTTANTE);
 {_CONSTANTE_CARACTERE} return ecrireToken(CONSTANTE_CARACTERE);
-{_CONTROLE} return ecrireToken(CONTROLE);
 {_IDENTIFICATEUR} return ecrireToken(IDENTIFICATEUR);
-{_SYMBOLE_NON_ALPHANUMERIQUE} return ecrireToken(SYMBOLE_NON_ALPHANUMERIQUE);
+"+" return PLUS;
+"-" return MOINS;
+"*" return FOIS;
+"/" return DIVISE;
+"++" return PLUS_PLUS;
+"--" return MOINS_MOINS;
+"=" return EGAL;
+"~" return TRANSPOSITION;
+"(" return PARENTHESE_OUVRANTE;
+")" return PARENTHESE_FERMANTE;
+"[" return CROCHET_OUVRANT;
+"]" return CROCHET_FERMANT;
+"{" return ACCOLADE_OUVRANTE;
+"}" return ACCOLADE_FERMANTE;
+"," return VIRGULE;
+";" return POINT_VIRGULE;
+"'" return APOSTROPHE;
+"\"" return GUILLEMET;
+
+
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;

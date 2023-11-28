@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TAILLE_INITIALE 4
+#define TAILLE_INITIALE 16
 typedef unsigned int uint;
 
 typedef struct table {
@@ -80,7 +80,7 @@ void table_append(table *table, char *token) {
     }
 }
 
-int ajouter_symbole(table *table, char *token) {
+int get_symbole(table *table, char *token) {
     uint index = 0;
     for (; index < table->size; index++) {
         if (strcmp(get_nth_token(table, index), token) == 0) {

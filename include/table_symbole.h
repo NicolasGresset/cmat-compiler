@@ -11,14 +11,14 @@ typedef struct table table;
 table *allouer_table(void);
 
 /**
- * @brief Ajoute l'identifieur repéré par la chaîne token dans la table table et
- * renvoie l'indice de ce token dans la table
+ * @brief Renvoie l'indice du symbole token dans la table des symboles table
+ * et l'ajoute si il n'existe pas
  *
  * @param table
  * @param token
  * @return int
  */
-int ajouter_symbole(table *table, char *token);
+int get_symbole(table *table, char *token);
 
 
 /**
