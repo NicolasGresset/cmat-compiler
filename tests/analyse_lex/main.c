@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "tokens.h"
 
 extern int yylex();
 
@@ -51,6 +52,11 @@ int main(int argc, char ** argv) {
 
     while (token) {
         token = yylex();
+        if (token == LEX_ERROR){
+            // afficher le token en rouge
+            printf("\033[1;31merreur \033[0m\n");
+            continue;
+        }
         printf("%d\n", token);
     }
     printf("\n");

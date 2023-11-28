@@ -75,4 +75,5 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;
+. return LEX_ERROR;
 %%
