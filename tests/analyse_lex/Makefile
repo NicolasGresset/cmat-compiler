@@ -1,7 +1,7 @@
 prefixe=lexer
 CFLAGS=-Wall -Wextra -g
 
-all: lex.yy.o main.o
+test: lex.yy.o main.o
 	gcc lex.yy.o main.o -lfl -o $(prefixe) $(CFLAGS)
 
 
