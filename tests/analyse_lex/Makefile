@@ -13,4 +13,4 @@ lex.yy.o: $(prefixe).lex
 	gcc -c lex.yy.c $(CFLAGS)
 
 clean:
-	rm -f *.o lex.yy.c a.out $(prefixe)
+	rm -f *.o lex.yy.c a.out monresultat.txt $(prefixe)

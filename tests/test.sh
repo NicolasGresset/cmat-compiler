@@ -27,9 +27,10 @@ touch "$LOG"
 annoncer "Test analyseur lexical"
 cd analyse_lex
 make clean
-make main >> $LOG 2>&1 || fail
-./main < input.txt > output.txt 2>&1 || fail
-test_diff output.txt outattendu.txt || fail
+make >> $LOG 2>&1 || fail
+./lexer test.txt > monresultat.txt 2>&1 || fail
+diff attendu.txt monresultat.txt || fail
+make clean
 cd ..
 coloredEcho "OK" green
 
