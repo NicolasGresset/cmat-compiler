@@ -48,6 +48,8 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 "while" return WHILE;
 "for" return FOR;
 
+"main" return MAIN;
+
 {_CONSTANTE_ENTIERE} return ecrireToken(CONSTANTE_ENTIERE);
 {_CONSTANTE_FLOTTANTE} return ecrireToken(CONSTANTE_FLOTTANTE);
 {_CONSTANTE_CARACTERE} return ecrireToken(CONSTANTE_CARACTERE);
@@ -70,9 +72,15 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 ";" return POINT_VIRGULE;
 "'" return APOSTROPHE;
 "\"" return GUILLEMET;
-
+">" return SUPERIEUR;
+"<" return INFERIEUR;
+"<=" return INFERIEUR_EGAL;
+">=" return SUPERIEUR_EGAL;
+"!" return POINT_EXCLAMATION;
+"==" return EGAL_EGAL;
 
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;
+. return LEX_ERROR;
 %%
