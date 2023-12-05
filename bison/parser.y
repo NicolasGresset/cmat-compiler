@@ -63,7 +63,9 @@ operateur : PLUS
             | FOIS
             | DIVISE
 
-operateur2 : 
+operateur2 : PLUS
+            | MOINS
+            | TRANSPOSITION
 
 type : INT
     | FLOAT
@@ -87,9 +89,9 @@ test : PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
     | op_test2 test
     | test op_test test
 
-op_test : 
+op_test : %empty
 
-op_test2 :
+op_test2 : %empty
 
 for_init : IDENTIFICATEUR
             | IDENTIFICATEUR EGAL operande
