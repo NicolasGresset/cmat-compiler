@@ -2,7 +2,7 @@
 
 #define LONGUEUR_TOKEN_MAX 32 // longueur max d'un token
 
-#define LEX_ERROR 400
+#define LEX_ERROR 500
 
 // Symboles non-alphanumériques
 
@@ -15,6 +15,13 @@
 #define MOINS_MOINS 6
 #define EGAL 7
 #define TRANSPOSITION 8
+#define SUPERIEUR 9
+#define INFERIEUR 10
+#define SUPERIEUR_EGAL 11
+#define INFERIEUR_EGAL 12
+#define EGAL_EGAL 13
+#define DIFFERENT 14
+#define POINT_EXCLAMATION 15
 
 
 #define PARENTHESE_OUVRANTE 21
@@ -46,3 +53,7 @@
 #define INT 300
 #define FLOAT 301
 #define MATRIX 302
+
+// Identificateur
+
+#define MAIN 400
