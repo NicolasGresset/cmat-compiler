@@ -1,4 +1,3 @@
-
 %{
 #include <stdio.h>
 extern int yylex();
@@ -30,9 +29,9 @@ liste_instructions : %empty
 instruction : %empty
             | declaration
             | condition
-            | boucle_while 
-            | boucle_for 
-            
+            | boucle_while
+            | boucle_for
+
 declaration : type IDENTIFICATEUR fin_aff
             | type IDENTIFICATEUR EGAL expression fin_aff
 
@@ -70,7 +69,7 @@ operateur2 : PLUS
 type : INT
     | FLOAT
 
-condition : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE 
+condition : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
             ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
             condition_suite
 
@@ -81,7 +80,7 @@ boucle_while : WHILE PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
                 ACCOLADE_FERMANTE liste_instructions ACCOLADE_FERMANTE
 
 boucle_for : FOR ACCOLADE_OUVRANTE for_init POINT_VIRGULE test POINT_VIRGULE
-            expression PARENTHESE_FERMANTE 
+            expression PARENTHESE_FERMANTE
             ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
 
 test : PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
@@ -97,12 +96,12 @@ for_init : IDENTIFICATEUR
             | IDENTIFICATEUR EGAL operande
             | type IDENTIFICATEUR EGAL operande
 
-            
+
 
 
 
 %%
 
 void yyerror(const char * msg) {
-	fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
+    fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
 }
