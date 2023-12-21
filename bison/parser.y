@@ -1,42 +1,44 @@
 %{
 #include <stdio.h>
-extern int yylex();
+#include "lexer.h"
+
 void yyerror (const char * msg);
 
 %}
 
-%token INT FLOAT MATRIX ELSE IF WHILE FOR \
-    CONSTANTE_ENTIERE CONSTANTE_FLOTTANTE \
-    CONSTANTE_CARACTERE IDENTIFICATEUR \
-    PLUS MOINS FOIS DIVISE PLUS_PLUS \
-    MOINS_MOINS EGAL TRANSPOSITION \
-    PARENTHESE_OUVRANTE PARENTHESE_FERMANTE \
-    CROCHET_OUVRANT CROCHET_FERMANT \
-    ACCOLADE_OUVRANTE ACCOLADE_FERMANTE \
-    VIRGULE POINT_VIRGULE APOSTROPHE \
-    GUILLEMET
+%token INT FLOAT MATRIX ELSE IF WHILE FOR
+    CONSTANTE_ENTIERE CONSTANTE_FLOTTANTE
+    CONSTANTE_CARACTERE IDENTIFICATEUR
+    PLUS MOINS FOIS DIVISE PLUS_PLUS
+    MOINS_MOINS EGAL TRANSPOSITION
+    PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
+    CROCHET_OUVRANT CROCHET_FERMANT
+    ACCOLADE_OUVRANTE ACCOLADE_FERMANTE
+    VIRGULE POINT_VIRGULE APOSTROPHE
+    GUILLEMET MAIN POINT_EXCLAMATION
+    INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
 
 %start S
 
 
 %%
-
-S : INT MAIN OPAR FPAR OACC liste_instructions FACC
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE {printf("S\n");}
 
 liste_instructions : %empty
                     | liste_instructions instruction
 
-instruction : %empty
-            | declaration
+instruction : declaration
             | condition
             | boucle_while
             | boucle_for
+            | affectation
 
 declaration : type IDENTIFICATEUR fin_aff
             | type IDENTIFICATEUR EGAL expression fin_aff
 
 affectation : IDENTIFICATEUR fin_aff
             | IDENTIFICATEUR EGAL expression fin_aff
+            | expression fin_aff
 
 fin_aff : POINT_VIRGULE
         | VIRGULE affectation
@@ -46,15 +48,14 @@ expression : op_fin IDENTIFICATEUR
             | operateur2 expression
             | expression operateur expression
             | PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE
-            | operande
+//| operande
 
 operande : IDENTIFICATEUR
         | CONSTANTE_ENTIERE
         | CONSTANTE_FLOTTANTE
         | MATRIX
 
-op_fin : %empty
-        |PLUS_PLUS
+op_fin : PLUS_PLUS
         | MOINS_MOINS
 
 operateur : PLUS
@@ -88,17 +89,19 @@ test : PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
     | op_test2 test
     | test op_test test
 
-op_test : %empty
+op_test : INFERIEUR
+         | INFERIEUR_EGAL
+         | SUPERIEUR
+         | SUPERIEUR_EGAL
+         | EGAL_EGAL
 
-op_test2 : %empty
+op_test2 : POINT_EXCLAMATION
+          | PLUS_PLUS
+          | MOINS_MOINS
 
 for_init : IDENTIFICATEUR
             | IDENTIFICATEUR EGAL operande
             | type IDENTIFICATEUR EGAL operande
-
-
-
-
 
 %%
 

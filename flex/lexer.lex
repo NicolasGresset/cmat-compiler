@@ -1,6 +1,9 @@
 %{
-#include "../include/tokens.h"
 #include <stdio.h>
+#include "parser.h"
+
+#define LEX_ERROR 300
+#define LONGUEUR_TOKEN_MAX 32 // longueur max d'un token
 
 char token_valeur[LONGUEUR_TOKEN_MAX];
 
@@ -18,7 +21,10 @@ int ecrireToken(int token_code){
 }
 %}
 
-LETTRE [a-zA-Z_]
+%option nounput
+%option noinput
+
+LETTRE [a-zA-Z]
 CHIFFRE [0-9]
 
 SIGNIFICANT [0-9]+|[0-9]+\.[0-9]*|[0-9]*\.[0-9]+
@@ -38,7 +44,6 @@ _COMMENTAIRE {COMMENTAIRE_SIMPLE}|{COMMENTAIRE_PLUSIEURS_LIGNES}
 _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\)|\[|\]|\{|\}|\&|\||<<|>>|'|"]
 
 %%
-
 "int" return INT;
 "float" return FLOAT;
 "matrix" return MATRIX;
@@ -82,5 +87,5 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;
-. return LEX_ERROR;
+. { fprintf (stderr, "caractère illégal (%c) ignoré\n", yytext[0]); return LEX_ERROR;}
 %%

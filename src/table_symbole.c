@@ -8,8 +8,8 @@
 typedef unsigned int uint;
 
 typedef struct table {
-    uint allocated;
-    uint size;
+    unsigned int allocated;
+    unsigned int size;
     char *tokens;
 } table;
 
@@ -33,13 +33,14 @@ char *get_nth_token(table *table, uint n) {
  * @param table
  */
 void ajouter_id_predifini(table *table) {
-    ajouter_symbole(table, "int");
-    ajouter_symbole(table, "float");
-    ajouter_symbole(table, "void");
-    ajouter_symbole(table, "main");
+    //ajouter_symbole(table, "int");
+    //ajouter_symbole(table, "float");
+    //ajouter_symbole(table, "void");
+    //ajouter_symbole(table, "main");
+    (void)table;
 }
 
-table *allouer_table(void) {
+table * allouer_table(void) {
     table *table_des_symboles = malloc(sizeof(*table_des_symboles));
     if (table_des_symboles == NULL) {
         fprintf(stderr, "Erreur d'allocation mémoire\n");
