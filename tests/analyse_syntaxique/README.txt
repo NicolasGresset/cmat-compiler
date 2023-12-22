@@ -5,7 +5,7 @@ reduce/reduce conflits. Qui doivent être réglés au plus vite ! Pour
 cela rajouter l'option -Wcounterexamples dans la commande bison du
 Makefile.
 
-- J'ai apporté une modification importante du parser.  Il était
+- J'ai apporté une modification importante du parser. Il était
 impossible de réaliser l'opération suivante :
 a + b;
 

@@ -2,5 +2,8 @@ int main ()
 {
  int a = 1;
  int b;
- a + b;
+ c = a + b;
+ c = +a + -b;
+ c = a * +b;
+ c = a - b;
 }

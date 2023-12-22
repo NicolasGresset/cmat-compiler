@@ -18,11 +18,16 @@ void yyerror (const char * msg);
     GUILLEMET MAIN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
 
+%left PLUS MOINS
+%left FOIS DIVISE
+
+%nonassoc UEXPR
+%nonassoc UMINUS
+
 %start S
 
-
 %%
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE {printf("S\n");}
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
 
 liste_instructions : %empty
                     | liste_instructions instruction
@@ -38,34 +43,47 @@ declaration : type IDENTIFICATEUR fin_aff
 
 affectation : IDENTIFICATEUR fin_aff
             | IDENTIFICATEUR EGAL expression fin_aff
-            | expression fin_aff
+ //| expression fin_aff
 
 fin_aff : POINT_VIRGULE
         | VIRGULE affectation
 
-expression : op_fin IDENTIFICATEUR
-            | IDENTIFICATEUR op_fin
-            | operateur2 expression
-            | expression operateur expression
-            | PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE
-//| operande
+expression
+: expression PLUS expression {;}
+| expression MOINS expression {;}
+| expression FOIS expression {;}
+| expression DIVISE expression {;}
+|  MOINS expression %prec UMINUS {;}
+|  PLUS expression %prec UMINUS {;}
+|  POINT_EXCLAMATION expression %prec UMINUS {;}
+|  TRANSPOSITION expression %prec UMINUS {;}
+| PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE {;}
+//| operateur2 IDENTIFICATEUR expression %prec UEXPR {;}
+| operande
+ //| op_fin IDENTIFICATEUR
+ //| IDENTIFICATEUR op_fin
 
 operande : IDENTIFICATEUR
         | CONSTANTE_ENTIERE
         | CONSTANTE_FLOTTANTE
         | MATRIX
 
-op_fin : PLUS_PLUS
-        | MOINS_MOINS
+ // POUR SIMPLIFIER
+/* op_fin : PLUS_PLUS */
+/*         | MOINS_MOINS */
 
-operateur : PLUS
-            | MOINS
-            | FOIS
-            | DIVISE
+ // On doit les mettre tous un par un sinon on se souvient pas de quel
+ // token a été utiliisé est ça crée des confits shift/reduce
+/* operateur : PLUS */
+/*             | MOINS */
+/*             | FOIS */
+/*             | DIVISE */
 
-operateur2 : PLUS
-            | MOINS
-            | TRANSPOSITION
+/* operateur2 : PLUS */
+/*             | MOINS */
+/*             | POINT_EXCLAMATION */
+/*             | TRANSPOSITION */
+
 
 type : INT
     | FLOAT
@@ -84,10 +102,11 @@ boucle_for : FOR ACCOLADE_OUVRANTE for_init POINT_VIRGULE test POINT_VIRGULE
             expression PARENTHESE_FERMANTE
             ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
 
-test : PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
-    | expression
-    | op_test2 test
-    | test op_test test
+test : //PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE -> dans les expressions
+     expression
+     | expression op_test expression
+ // | op_test2 IDENTIFICATEUR --> dans expression
+
 
 op_test : INFERIEUR
          | INFERIEUR_EGAL
@@ -95,9 +114,10 @@ op_test : INFERIEUR
          | SUPERIEUR_EGAL
          | EGAL_EGAL
 
-op_test2 : POINT_EXCLAMATION
-          | PLUS_PLUS
-          | MOINS_MOINS
+ // devenu inutile dans test
+/* op_test2 : POINT_EXCLAMATION */
+/*           | PLUS_PLUS */
+/*           | MOINS_MOINS */
 
 for_init : IDENTIFICATEUR
             | IDENTIFICATEUR EGAL operande

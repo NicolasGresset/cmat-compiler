@@ -89,7 +89,9 @@ extern int yydebug;
     INFERIEUR_EGAL = 290,          /* INFERIEUR_EGAL  */
     SUPERIEUR = 291,               /* SUPERIEUR  */
     SUPERIEUR_EGAL = 292,          /* SUPERIEUR_EGAL  */
-    EGAL_EGAL = 293                /* EGAL_EGAL  */
+    EGAL_EGAL = 293,               /* EGAL_EGAL  */
+    UEXPR = 294,                   /* UEXPR  */
+    UMINUS = 295                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
