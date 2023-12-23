@@ -54,17 +54,17 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    INT = 258,                     /* INT  */
-    FLOAT = 259,                   /* FLOAT  */
-    MATRIX = 260,                  /* MATRIX  */
-    ELSE = 261,                    /* ELSE  */
-    IF = 262,                      /* IF  */
-    WHILE = 263,                   /* WHILE  */
-    FOR = 264,                     /* FOR  */
-    CONSTANTE_ENTIERE = 265,       /* CONSTANTE_ENTIERE  */
-    CONSTANTE_FLOTTANTE = 266,     /* CONSTANTE_FLOTTANTE  */
-    CONSTANTE_CARACTERE = 267,     /* CONSTANTE_CARACTERE  */
-    IDENTIFICATEUR = 268,          /* IDENTIFICATEUR  */
+    IDENTIFICATEUR = 258,          /* IDENTIFICATEUR  */
+    CONSTANTE_ENTIERE = 259,       /* CONSTANTE_ENTIERE  */
+    CONSTANTE_FLOTTANTE = 260,     /* CONSTANTE_FLOTTANTE  */
+    INT = 261,                     /* INT  */
+    FLOAT = 262,                   /* FLOAT  */
+    MATRIX = 263,                  /* MATRIX  */
+    ELSE = 264,                    /* ELSE  */
+    IF = 265,                      /* IF  */
+    WHILE = 266,                   /* WHILE  */
+    FOR = 267,                     /* FOR  */
+    CONSTANTE_CARACTERE = 268,     /* CONSTANTE_CARACTERE  */
     PLUS = 269,                    /* PLUS  */
     MOINS = 270,                   /* MOINS  */
     FOIS = 271,                    /* FOIS  */
@@ -90,15 +90,31 @@ extern int yydebug;
     SUPERIEUR = 291,               /* SUPERIEUR  */
     SUPERIEUR_EGAL = 292,          /* SUPERIEUR_EGAL  */
     EGAL_EGAL = 293,               /* EGAL_EGAL  */
-    UEXPR = 294,                   /* UEXPR  */
-    UMINUS = 295                   /* UMINUS  */
+    UEXPR = 294                    /* UEXPR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 10 "bison/parser.y"
+
+     struct
+     {
+         struct symbol * ptr;
+     } exprval;
+
+     name_t strval;
+     type_t typeval;
+     int intval;
+     float floatval;
+
+#line 115 "./include/parser.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

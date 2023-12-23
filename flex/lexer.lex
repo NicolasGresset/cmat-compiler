@@ -1,11 +1,11 @@
 %{
-#include <stdio.h>
+#include "CMat.h"
 #include "parser.h"
 
 #define LEX_ERROR 300
-#define LONGUEUR_TOKEN_MAX 32 // longueur max d'un token
+//#define LONGUEUR_TOKEN_MAX 32 // longueur max d'un token
 
-char token_valeur[LONGUEUR_TOKEN_MAX];
+char token_valeur[TAILLE_MAX_TOKEN];
 
 /**
  * Ecrit de manière sécurisée la valeur du token dans la variable token_valeur
@@ -14,9 +14,10 @@ char token_valeur[LONGUEUR_TOKEN_MAX];
  */
 int ecrireToken(int token_code){
     int n;
-    if ((n = snprintf(token_valeur, LONGUEUR_TOKEN_MAX, "%s", yytext)) >= LONGUEUR_TOKEN_MAX){
+    if ((n = snprintf(token_valeur, TAILLE_MAX_TOKEN, "%s", yytext)) >= TAILLE_MAX_TOKEN){
         return LEX_ERROR; //error
     }
+
     return token_code; // cas normal
 }
 %}
@@ -53,12 +54,26 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 "while" return WHILE;
 "for" return FOR;
 
-"main" return MAIN;
+"main" {symtable_new();return MAIN;}
 
-{_CONSTANTE_ENTIERE} return ecrireToken(CONSTANTE_ENTIERE);
-{_CONSTANTE_FLOTTANTE} return ecrireToken(CONSTANTE_FLOTTANTE);
+{_CONSTANTE_ENTIERE} {
+    sscanf(yytext,"%d",&(yylval.intval));
+    return CONSTANTE_ENTIERE;
+}//return ecrireToken(CONSTANTE_ENTIERE);
+{_CONSTANTE_FLOTTANTE} {
+    sscanf(yytext,"%f",&(yylval.floatval));
+    return CONSTANTE_FLOTTANTE;
+}//return ecrireToken(CONSTANTE_FLOTTANTE);
 {_CONSTANTE_CARACTERE} return ecrireToken(CONSTANTE_CARACTERE);
-{_IDENTIFICATEUR} return ecrireToken(IDENTIFICATEUR);
+{_IDENTIFICATEUR} {
+    if ( yyleng > TAILLE_MAX_TOKEN )
+        fprintf(stderr,"Identifier '%s' too long, truncated\n",yytext);
+    strncpy(yylval.strval,yytext, TAILLE_MAX_TOKEN);
+    yylval.strval[TAILLE_MAX_TOKEN] = '\0';
+    //return ecrireToken(IDENTIFICATEUR);
+    return IDENTIFICATEUR;
+}
+
 "+" return PLUS;
 "-" return MOINS;
 "*" return FOIS;

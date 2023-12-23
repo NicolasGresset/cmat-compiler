@@ -1,9 +1,11 @@
 int main ()
 {
  int a = 1;
- int b;
- c = a + b;
- c = +a + -b;
- c = a * +b;
- c = a - b;
+ float b = 2.3;
+ int c = 3;
+ int d = a + b;
+// c = a + b;
+// c = +a + -b;
+// c = a * +b;
+// c = a - b;
 }

@@ -1,14 +1,30 @@
 %{
-#include <stdio.h>
-#include "lexer.h"
+#include "CMat.h"
 
 void yyerror (const char * msg);
+extern int yylex();
 
 %}
 
+%union
+ {
+     struct
+     {
+         struct symbol * ptr;
+     } exprval;
+
+     name_t strval;
+     type_t typeval;
+     int intval;
+     float floatval;
+}
+
+%token <strval> IDENTIFICATEUR
+%token <intval> CONSTANTE_ENTIERE
+%token <floatval> CONSTANTE_FLOTTANTE
+
 %token INT FLOAT MATRIX ELSE IF WHILE FOR
-    CONSTANTE_ENTIERE CONSTANTE_FLOTTANTE
-    CONSTANTE_CARACTERE IDENTIFICATEUR
+    CONSTANTE_CARACTERE
     PLUS MOINS FOIS DIVISE PLUS_PLUS
     MOINS_MOINS EGAL TRANSPOSITION
     PARENTHESE_OUVRANTE PARENTHESE_FERMANTE
@@ -18,11 +34,14 @@ void yyerror (const char * msg);
     GUILLEMET MAIN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
 
+%type <exprval> declaration operande expression
+%type <typeval> type
+
 %left PLUS MOINS
 %left FOIS DIVISE
 
 %nonassoc UEXPR
-%nonassoc UMINUS
+ //%nonassoc UMINUS
 
 %start S
 
@@ -37,36 +56,86 @@ instruction : declaration
             | boucle_while
             | boucle_for
             | affectation
+ // Manque l'affichage --> Simple grammaire comme le main : PRINTF ( un id ici ) ; ?
 
-declaration : type IDENTIFICATEUR fin_aff
-            | type IDENTIFICATEUR EGAL expression fin_aff
+declaration
+: type IDENTIFICATEUR fin_aff {
+    struct symbol * id = symtable_get(SYMTAB,$2);
+     if ( id != NULL )
+     {
+         fprintf(stderr, "error: redeclaration of ‘%s’ with no linkage\n", $2);
+         exit(1);
+     }
+     id = symtable_put(SYMTAB,$2, $1);
+     gencode(CODE,COPY,id,NULL,NULL);
+ }
+| type IDENTIFICATEUR EGAL expression fin_aff  {
+    struct symbol * id = symtable_get(SYMTAB,$2);
+    if ( id != NULL )
+    {
+        fprintf(stderr, "error: redefinition of ‘%s’\n", $2);
+        exit(1);
+    }
+    id = symtable_put(SYMTAB,$2, $1);
+    gencode(CODE,COPY,id,$4.ptr,NULL);
+ }
+;
 
-affectation : IDENTIFICATEUR fin_aff
-            | IDENTIFICATEUR EGAL expression fin_aff
+affectation
+//: IDENTIFICATEUR fin_aff --> affectation sans effet, à garder ?
+: IDENTIFICATEUR EGAL expression fin_aff {
+    struct symbol * id = symtable_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr, "error: ‘%s’ undeclared\n", $1);
+        exit(1);
+    }
+    if (id->type != $3.ptr->type)
+    {
+        fprintf(stderr, "error: incompatible types\n");
+        exit(1);
+    }
+    gencode(CODE,COPY,id,$3.ptr,NULL);
+
+ }
  //| expression fin_aff
+;
 
 fin_aff : POINT_VIRGULE
         | VIRGULE affectation
 
 expression
-: expression PLUS expression {;}
+: expression PLUS expression {
+    $$.ptr = newtemp(SYMTAB);
+    gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
+}
 | expression MOINS expression {;}
 | expression FOIS expression {;}
 | expression DIVISE expression {;}
-|  MOINS expression %prec UMINUS {;}
-|  PLUS expression %prec UMINUS {;}
-|  POINT_EXCLAMATION expression %prec UMINUS {;}
-|  TRANSPOSITION expression %prec UMINUS {;}
+|  MOINS expression %prec UEXPR {;}
+|  PLUS expression %prec UEXPR {;}
+|  POINT_EXCLAMATION expression %prec UEXPR {;}
+|  TRANSPOSITION expression %prec UEXPR {;}
 | PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE {;}
 //| operateur2 IDENTIFICATEUR expression %prec UEXPR {;}
 | operande
  //| op_fin IDENTIFICATEUR
  //| IDENTIFICATEUR op_fin
 
-operande : IDENTIFICATEUR
-        | CONSTANTE_ENTIERE
-        | CONSTANTE_FLOTTANTE
-        | MATRIX
+operande
+: IDENTIFICATEUR
+{
+    struct symbol * id = symtable_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr,"Name '%s' undeclared\n",$1);
+        exit(1);
+    }
+    $$.ptr = id;
+}
+| CONSTANTE_ENTIERE {$$.ptr = symtable_const(SYMTAB,$1, ENTIER);}
+| CONSTANTE_FLOTTANTE {$$.ptr = symtable_const(SYMTAB,$1, REEL);}
+| MATRIX
 
  // POUR SIMPLIFIER
 /* op_fin : PLUS_PLUS */
@@ -85,8 +154,9 @@ operande : IDENTIFICATEUR
 /*             | TRANSPOSITION */
 
 
-type : INT
-    | FLOAT
+type
+: INT {$$ = ENTIER;}
+| FLOAT {$$ = REEL;}
 
 condition : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
             ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE

@@ -24,24 +24,39 @@ static void symtable_grow(struct symtable * t)
     }
 }
 
-struct symbol * symtable_const(struct symtable * t, long int v)
+struct symbol * symtable_const(struct symtable * t, float v, type_t typeval)
 {
     unsigned int i;
-    for ( i=0 ; i<t->size && t->symbols[i].u.value != v; i++ );
+    switch (typeval)
+    {
+    case ENTIER:
+            for ( i=0 ; i<t->size && t->symbols[i].u.value.int_value != (int)v; i++ );
+            break;
+    case REEL:
+            for ( i=0 ; i<t->size && t->symbols[i].u.value.int_value != v; i++ );
+            break;
+    }
     if(i==t->size)
     {
         if(t->size==t->capacity)
-          symtable_grow(t);
+            symtable_grow(t);
         struct symbol *s = &(t->symbols[t->size]);
         s->kind = CONSTANT;
-        s->u.value = v;
+        s->type = typeval;
+        switch (typeval)
+        {
+        case ENTIER:
+            s->u.value.int_value = (int)v;
+            break;
+        case REEL:
+            s->u.value.float_value = v;
+            break;
+        }
         ++ (t->size);
         return s;
     }
     else
-    {
         return &(t->symbols[i]);
-    }
 }
 
 struct symbol * symtable_get(struct symtable * t, const char * id)
@@ -53,12 +68,15 @@ struct symbol * symtable_get(struct symtable * t, const char * id)
     return NULL;
 }
 
-struct symbol * symtable_put(struct symtable * t, const char * id)
+struct symbol * symtable_put(struct symtable * t,
+                             const char * id,
+                             const type_t typeval)
 {
     if(t->size==t->capacity)
       symtable_grow(t);
     struct symbol *s = &(t->symbols[t->size]);
     s->kind = NAME;
+    s->type = typeval;
     strcpy(s->u.name,id);
     ++ (t->size);
     return s;
@@ -70,9 +88,14 @@ void symtable_dump(struct symtable * t)
     for ( i=0 ; i<t->size; i++ )
     {
       if(t->symbols[i].kind==CONSTANT)
-        printf("       %p = %ld\n",&(t->symbols[i]),t->symbols[i].u.value);
+      {
+          if ( t->symbols[i].type == ENTIER)
+              printf("       %p = %d\n",&(t->symbols[i]),t->symbols[i].u.value.int_value);
+          else
+              printf("       %p = %f\n",&(t->symbols[i]),t->symbols[i].u.value.float_value);
+      }
       if(t->symbols[i].kind==NAME)
-        printf("       %p = %s\n",&(t->symbols[i]),t->symbols[i].u.name);
+          printf("       %p = %s  %d\n",&(t->symbols[i]),t->symbols[i].u.name, t->symbols[i].type);
     }
     printf("       --------\n");
 }
@@ -125,7 +148,8 @@ struct symbol *newtemp(struct symtable * t)
   struct symbol * s;
   name_t name;
   sprintf(name,"t%d",t->temporary);
-  s = symtable_put(t,name);
+  int typeval = ENTIER; //temporaire
+  s = symtable_put(t,name, typeval);
   ++ (t->temporary);
   return s;
 }
@@ -138,7 +162,10 @@ static void symbol_dump(struct symbol * s)
             printf("%s",s->u.name);
             break;
         case CONSTANT:
-            printf("%ld",s->u.value);
+            if (s->type == ENTIER)
+                printf("%d",s->u.value.int_value);
+            else
+                printf("%f", s->u.value.float_value);
             break;
         default:
             break;
