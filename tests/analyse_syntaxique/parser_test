@@ -1,11 +1,26 @@
 int main ()
 {
- int a = 1;
- float b = 2.3;
- int c = 3;
- int d = a + b;
-// c = a + b;
-// c = +a + -b;
-// c = a * +b;
-// c = a - b;
+    int a = 1;
+    float b = 2.3;
+    int c;
+    //int d = a + b;
+    /* c = a + b; */
+    /* c = +a + -b; */
+    /* c = a * 5; */
+    /* c = a - b; */
+    /* c = -a; */
+
+    if (a < 1)
+    {
+        int e = 4;
+        e = e + 1;
+    }
+    else
+    {
+        float d = a + b;
+    }
+// Ne sait pas où aller
+
+    float f = 5.2;
+    f = f + 1;
 }

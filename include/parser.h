@@ -65,32 +65,35 @@ extern int yydebug;
     WHILE = 266,                   /* WHILE  */
     FOR = 267,                     /* FOR  */
     CONSTANTE_CARACTERE = 268,     /* CONSTANTE_CARACTERE  */
-    PLUS = 269,                    /* PLUS  */
-    MOINS = 270,                   /* MOINS  */
-    FOIS = 271,                    /* FOIS  */
-    DIVISE = 272,                  /* DIVISE  */
-    PLUS_PLUS = 273,               /* PLUS_PLUS  */
-    MOINS_MOINS = 274,             /* MOINS_MOINS  */
-    EGAL = 275,                    /* EGAL  */
-    TRANSPOSITION = 276,           /* TRANSPOSITION  */
-    PARENTHESE_OUVRANTE = 277,     /* PARENTHESE_OUVRANTE  */
-    PARENTHESE_FERMANTE = 278,     /* PARENTHESE_FERMANTE  */
-    CROCHET_OUVRANT = 279,         /* CROCHET_OUVRANT  */
-    CROCHET_FERMANT = 280,         /* CROCHET_FERMANT  */
-    ACCOLADE_OUVRANTE = 281,       /* ACCOLADE_OUVRANTE  */
-    ACCOLADE_FERMANTE = 282,       /* ACCOLADE_FERMANTE  */
-    VIRGULE = 283,                 /* VIRGULE  */
-    POINT_VIRGULE = 284,           /* POINT_VIRGULE  */
-    APOSTROPHE = 285,              /* APOSTROPHE  */
-    GUILLEMET = 286,               /* GUILLEMET  */
-    MAIN = 287,                    /* MAIN  */
-    POINT_EXCLAMATION = 288,       /* POINT_EXCLAMATION  */
-    INFERIEUR = 289,               /* INFERIEUR  */
-    INFERIEUR_EGAL = 290,          /* INFERIEUR_EGAL  */
-    SUPERIEUR = 291,               /* SUPERIEUR  */
-    SUPERIEUR_EGAL = 292,          /* SUPERIEUR_EGAL  */
-    EGAL_EGAL = 293,               /* EGAL_EGAL  */
-    UEXPR = 294                    /* UEXPR  */
+    AND = 269,                     /* AND  */
+    OR = 270,                      /* OR  */
+    NOT = 271,                     /* NOT  */
+    PLUS = 272,                    /* PLUS  */
+    MOINS = 273,                   /* MOINS  */
+    FOIS = 274,                    /* FOIS  */
+    DIVISE = 275,                  /* DIVISE  */
+    PLUS_PLUS = 276,               /* PLUS_PLUS  */
+    MOINS_MOINS = 277,             /* MOINS_MOINS  */
+    EGAL = 278,                    /* EGAL  */
+    TRANSPOSITION = 279,           /* TRANSPOSITION  */
+    PARENTHESE_OUVRANTE = 280,     /* PARENTHESE_OUVRANTE  */
+    PARENTHESE_FERMANTE = 281,     /* PARENTHESE_FERMANTE  */
+    CROCHET_OUVRANT = 282,         /* CROCHET_OUVRANT  */
+    CROCHET_FERMANT = 283,         /* CROCHET_FERMANT  */
+    ACCOLADE_OUVRANTE = 284,       /* ACCOLADE_OUVRANTE  */
+    ACCOLADE_FERMANTE = 285,       /* ACCOLADE_FERMANTE  */
+    VIRGULE = 286,                 /* VIRGULE  */
+    POINT_VIRGULE = 287,           /* POINT_VIRGULE  */
+    APOSTROPHE = 288,              /* APOSTROPHE  */
+    GUILLEMET = 289,               /* GUILLEMET  */
+    MAIN = 290,                    /* MAIN  */
+    POINT_EXCLAMATION = 291,       /* POINT_EXCLAMATION  */
+    INFERIEUR = 292,               /* INFERIEUR  */
+    INFERIEUR_EGAL = 293,          /* INFERIEUR_EGAL  */
+    SUPERIEUR = 294,               /* SUPERIEUR  */
+    SUPERIEUR_EGAL = 295,          /* SUPERIEUR_EGAL  */
+    EGAL_EGAL = 296,               /* EGAL_EGAL  */
+    UEXPR = 297                    /* UEXPR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -99,11 +102,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "bison/parser.y"
+#line 38 "bison/parser.y"
 
      struct
      {
          struct symbol * ptr;
+         type_t type;
      } exprval;
 
      name_t strval;
@@ -111,7 +115,25 @@ union YYSTYPE
      int intval;
      float floatval;
 
-#line 115 "./include/parser.h"
+     struct {
+         struct ListLabel * next;
+     } instr_type;
+
+
+     struct  {
+         struct ListLabel * true;
+         struct ListLabel * false;
+     } boolexpr;
+
+     struct
+     {
+         struct ListLabel * next;
+         int quad;
+     } N_t; // Pour le non terminal N
+
+     enum {EQ, NEQ, LT, LE, GE, GT} typetest;
+
+#line 137 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

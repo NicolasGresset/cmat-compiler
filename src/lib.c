@@ -24,34 +24,45 @@ static void symtable_grow(struct symtable * t)
     }
 }
 
-struct symbol * symtable_const(struct symtable * t, float v, type_t typeval)
+struct symbol * symtable_const_int(struct symtable * t, int e)
 {
     unsigned int i;
-    switch (typeval)
+    for ( i=0 ; i<t->size; i++ )
     {
-    case ENTIER:
-            for ( i=0 ; i<t->size && t->symbols[i].u.value.int_value != (int)v; i++ );
-            break;
-    case REEL:
-            for ( i=0 ; i<t->size && t->symbols[i].u.value.int_value != v; i++ );
+        if  (t->symbols[i].kind == INT_CONSTANT && t->symbols[i].u.int_value == e)
             break;
     }
+
     if(i==t->size)
     {
         if(t->size==t->capacity)
             symtable_grow(t);
         struct symbol *s = &(t->symbols[t->size]);
-        s->kind = CONSTANT;
-        s->type = typeval;
-        switch (typeval)
-        {
-        case ENTIER:
-            s->u.value.int_value = (int)v;
+        s->kind = INT_CONSTANT;
+        s->u.int_value = e;
+        ++ (t->size);
+        return s;
+    }
+    else
+        return &(t->symbols[i]);
+}
+
+struct symbol * symtable_const_float(struct symtable * t, float v)
+{
+    unsigned int i;
+    for ( i=0 ; i<t->size; i++ )
+    {
+        if  (t->symbols[i].kind == FLOAT_CONSTANT && t->symbols[i].u.float_value == v)
             break;
-        case REEL:
-            s->u.value.float_value = v;
-            break;
-        }
+    }
+
+    if(i==t->size)
+    {
+        if(t->size==t->capacity)
+            symtable_grow(t);
+        struct symbol *s = &(t->symbols[t->size]);
+        s->kind = FLOAT_CONSTANT;
+        s->u.float_value = v;
         ++ (t->size);
         return s;
     }
@@ -62,22 +73,21 @@ struct symbol * symtable_const(struct symtable * t, float v, type_t typeval)
 struct symbol * symtable_get(struct symtable * t, const char * id)
 {
     unsigned int i;
-    for ( i=0 ; i<t->size && strcmp(t->symbols[i].u.name,id) != 0; i++ );
+    for ( i=0 ; i<t->size && strcmp(t->symbols[i].u.id.name,id) != 0; i++ );
     if(i<t->size)
       return &(t->symbols[i]);
     return NULL;
 }
 
 struct symbol * symtable_put(struct symtable * t,
-                             const char * id,
-                             const type_t typeval)
+                             const char * id, type_t type)
 {
     if(t->size==t->capacity)
       symtable_grow(t);
     struct symbol *s = &(t->symbols[t->size]);
     s->kind = NAME;
-    s->type = typeval;
-    strcpy(s->u.name,id);
+    strcpy(s->u.id.name,id);
+    s->u.id.type = type;
     ++ (t->size);
     return s;
 }
@@ -87,15 +97,23 @@ void symtable_dump(struct symtable * t)
     unsigned int i;
     for ( i=0 ; i<t->size; i++ )
     {
-      if(t->symbols[i].kind==CONSTANT)
+      switch(t->symbols[i].kind)
       {
-          if ( t->symbols[i].type == ENTIER)
-              printf("       %p = %d\n",&(t->symbols[i]),t->symbols[i].u.value.int_value);
-          else
-              printf("       %p = %f\n",&(t->symbols[i]),t->symbols[i].u.value.float_value);
+      case INT_CONSTANT:
+          printf("       %p = %d\n",&(t->symbols[i]),t->symbols[i].u.int_value);
+          break;
+      case FLOAT_CONSTANT:
+          printf("       %p = %f\n",&(t->symbols[i]),t->symbols[i].u.float_value);
+          break;
+      case NAME:
+          printf("       %p = %s  %d\n",&(t->symbols[i]),t->symbols[i].u.id.name, t->symbols[i].u.id.type);
+          break;
+      case LABEL:
+          printf("       %p = %d\n",&(t->symbols[i]),t->symbols[i].u.addr);
+          break;
+      default:
+          break;
       }
-      if(t->symbols[i].kind==NAME)
-          printf("       %p = %s  %d\n",&(t->symbols[i]),t->symbols[i].u.name, t->symbols[i].type);
     }
     printf("       --------\n");
 }
@@ -158,63 +176,142 @@ static void symbol_dump(struct symbol * s)
 {
     switch ( s->kind )
     {
-        case NAME:
-            printf("%s",s->u.name);
-            break;
-        case CONSTANT:
-            if (s->type == ENTIER)
-                printf("%d",s->u.value.int_value);
-            else
-                printf("%f", s->u.value.float_value);
-            break;
-        default:
-            break;
+    case NAME:
+        printf("%s",s->u.id.name);
+        break;
+    case INT_CONSTANT:
+        printf("%d",s->u.int_value);
+        break;
+    case FLOAT_CONSTANT:
+        printf("%f", s->u.float_value);
+        break;
+    case LABEL:
+        printf("%d ", s->u.addr);
+    default:
+        break;
     }
+}
+
+struct symbol * quad_label(void)
+{
+    struct symbol * q = malloc(sizeof(struct symbol));
+    if (q == NULL)
+        exit(1);
+    q->kind = LABEL;
+    return q;
 }
 
 static void quad_dump(struct quad * q)
 {
     switch ( q->kind )
     {
-        case BOP_PLUS:
-            symbol_dump(q->sym1);
-            printf(" := ");
-            symbol_dump(q->sym2);
-            printf(" + ");
-            symbol_dump(q->sym3);
-            break;
-        case BOP_MINUS:
-            symbol_dump(q->sym1);
-            printf(" := ");
-            symbol_dump(q->sym2);
-            printf(" - ");
-            symbol_dump(q->sym3);
-            break;
-        case BOP_MULT:
-            symbol_dump(q->sym1);
-            printf(" := ");
-            symbol_dump(q->sym2);
-            printf(" * ");
-            symbol_dump(q->sym3);
-            break;
-        case UOP_MINUS:
-            symbol_dump(q->sym1);
-            printf(" := ");
-            printf("- ");
-            symbol_dump(q->sym2);
-            break;
-        case CALL_PRINT:
-            printf("print ");
-            symbol_dump(q->sym1);
-            break;
-        case COPY:
-            symbol_dump(q->sym1);
-            printf(" := ");
-            symbol_dump(q->sym2);
-            break;
-        default:
-            printf("BUG\n");
-            break;
+    case BOP_PLUS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" + ");
+        symbol_dump(q->sym3);
+        break;
+    case BOP_MOINS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" - ");
+        symbol_dump(q->sym3);
+        break;
+    case BOP_MULT:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" * ");
+        symbol_dump(q->sym3);
+        break;
+    case BOP_DIVISE:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" / ");
+        symbol_dump(q->sym3);
+        break;
+    case UOP_PLUS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        printf("+ ");
+        symbol_dump(q->sym2);
+        break;
+    case UOP_MOINS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        printf("- ");
+        symbol_dump(q->sym2);
+        break;
+    case CALL_PRINT:
+        printf("print ");
+        symbol_dump(q->sym1);
+        break;
+    case COPY:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        break;
+    case Q_IF_EQ:
+        printf("if ");
+        symbol_dump(q->sym1);
+        printf(" == ");
+        symbol_dump(q->sym2);
+        printf(" goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_IF_NEQ:
+        printf("if ");
+        symbol_dump(q->sym1);
+        printf(" != ");
+        symbol_dump(q->sym2);
+        printf(" goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_IF_LT:
+        printf("if ");
+        symbol_dump(q->sym1);
+        printf(" < ");
+        symbol_dump(q->sym2);
+        printf(" goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_IF_LE:
+        printf("if ");
+        symbol_dump(q->sym1);
+        printf(" <= ");
+        symbol_dump(q->sym2);
+        printf(" goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_IF_GE:
+        printf("if ");
+        symbol_dump(q->sym1);
+        printf(" >= ");
+        symbol_dump(q->sym2);
+        printf(" goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_IF_GT:
+        printf("if ");
+        symbol_dump(q->sym1);
+        printf(" > ");
+        symbol_dump(q->sym2);
+        printf(" goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_GOTO:
+        printf("goto ");
+        symbol_dump(q->sym3);
+        break;
+    case Q_GOTO_UNKNOWN:
+        printf("goto ?");
+        break;
+    default:
+        printf("BUG\n");
+        break;
     }
 }
 
