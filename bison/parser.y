@@ -29,18 +29,74 @@ liste_instructions : %empty
 
 instruction : %empty
             | declaration
+            | affectation
             | condition
             | boucle_while 
             | boucle_for 
             
-declaration : type IDENTIFICATEUR fin_aff
-            | type IDENTIFICATEUR EGAL expression fin_aff
 
-affectation : IDENTIFICATEUR fin_aff
-            | IDENTIFICATEUR EGAL expression fin_aff
 
-fin_aff : POINT_VIRGULE
-        | VIRGULE affectation
+
+
+
+declaration : type IDENTIFICATEUR fin_crea
+            | type IDENTIFICATEUR EGAL expression fin_crea
+            | declaration_matrix
+
+
+
+creation : IDENTIFICATEUR fin_crea
+            | IDENTIFICATEUR EGAL expression fin_crea
+
+fin_crea : POINT_VIRGULE
+        | VIRGULE creation
+
+
+
+
+declaration_matrix : type id_matrix fin_crea_mat
+        | type id_vector fin_crea_mat
+        | type id_matrix EGAL creation_matrix fin_crea_mat
+        | type id_vector EGAL creation_vector fin_crea_mat
+
+id_matrix : IDENTIFICATEUR CROCHET_OUVRANT expression CROCHET_FERMANT CROCHET_OUVRANT expression CROCHET_FERMANT
+
+id_vector : IDENTIFICATEUR CROCHET_OUVRANT expression CROCHET_FERMANT
+
+creation_mat : id_matrix fin_crea_mat
+            | id_vector fin_crea_mat
+            | id_matrix EGAL creation_matrix fin_crea_mat
+            | id_vector EGAL creation_vector fin_crea_mat
+
+fin_crea_mat : POINT_VIRGULE
+        | VIRGULE creation_mat
+
+
+
+creation_matrix : ACCOLADE_OUVRANTE creation_vector creation_matrix_prime ACCOLADE_FERMANTE
+
+creation_matrix_prime : VIRGULE creation_vector creation_matrix_prime
+                    | %empty
+
+creation_vector : ACCOLADE_OUVRANTE CONSTANTE_ENTIERE creation_vector_prime ACCOLADE_FERMANTE
+
+creation_vector_prime : VIRGULE CONSTANTE_CARACTERE creation_vector_prime
+                    | %empty
+
+
+
+
+
+
+
+
+
+
+
+affectation : IDENTIFICATEUR EGAL expression POINT_VIRGULE
+            | id_matrix EGAL expression POINT_VIRGULE
+            | id_vector EGAL expression POINT_VIRGULE
+
 
 expression : op_fin IDENTIFICATEUR
             | IDENTIFICATEUR op_fin
@@ -69,6 +125,7 @@ operateur2 : PLUS
 
 type : INT
     | FLOAT
+    | MATRIX
 
 condition : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE 
             ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
