@@ -2,27 +2,29 @@
 %{
 #include <stdio.h>
 extern int yylex();
+extern int yyval;
 void yyerror (const char * msg);
+
 
 %}
 
-%token INT FLOAT MATRIX ELSE IF WHILE FOR \
-    CONSTANTE_ENTIERE CONSTANTE_FLOTTANTE \
-    CONSTANTE_CARACTERE IDENTIFICATEUR \
-    PLUS MOINS FOIS DIVISE PLUS_PLUS \
-    MOINS_MOINS EGAL TRANSPOSITION \
-    PARENTHESE_OUVRANTE PARENTHESE_FERMANTE \
-    CROCHET_OUVRANT CROCHET_FERMANT \
-    ACCOLADE_OUVRANTE ACCOLADE_FERMANTE \
-    VIRGULE POINT_VIRGULE APOSTROPHE \
-    GUILLEMET
+%token INT FLOAT MATRIX ELSE IF WHILE FOR 
+    CONSTANTE_ENTIERE CONSTANTE_FLOTTANTE 
+    CONSTANTE_CARACTERE IDENTIFICATEUR 
+    PLUS MOINS FOIS DIVISE PLUS_PLUS 
+    MOINS_MOINS EGAL TRANSPOSITION 
+    PARENTHESE_OUVRANTE PARENTHESE_FERMANTE 
+    CROCHET_OUVRANT CROCHET_FERMANT 
+    ACCOLADE_OUVRANTE ACCOLADE_FERMANTE 
+    VIRGULE POINT_VIRGULE APOSTROPHE 
+    GUILLEMET MAIN
 
 %start S
 
 
 %%
 
-S : INT MAIN OPAR FPAR OACC liste_instructions FACC
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE {printf("test\n");}
 
 liste_instructions : %empty
                     | liste_instructions instruction
@@ -159,6 +161,15 @@ for_init : IDENTIFICATEUR
 
 
 %%
+
+
+
+
+int main() {
+
+    printf("Bonjour\n");
+    return 0;
+}
 
 void yyerror(const char * msg) {
 	fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
