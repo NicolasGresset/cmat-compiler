@@ -108,9 +108,12 @@ void complete(struct ListLabel * l, unsigned int addr)
 
 %%
 S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
+{
+    ListLabel_free($6.next);
+}
 
 liste_instructions
-: liste_instructions M instruction {complete($1.next, $2); $$.next = $3.next;}
+: liste_instructions M instruction {complete($1.next, $2);  ListLabel_free($1.next); $$.next = $3.next;}
 | instruction {$$.next = $1.next;}
 
 instruction
@@ -284,6 +287,7 @@ ACCOLADE_FERMANTE N condition_suite
     if ($12.next != NULL)
     {
         complete($3.false, $11.quad);
+        ListLabel_free($3.false);
         $$.next = concat($$.next, $12.next);
     }
     else
@@ -313,7 +317,9 @@ ACCOLADE_OUVRANTE M {stack_id_push(SYMTAB);} liste_instructions
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);} ACCOLADE_FERMANTE
 {
     complete($4.true, $7);
+    ListLabel_free($4.true);
     complete($9.next, $3);
+    ListLabel_free($9.next);
     $$.next = $4.false;
 
     struct symbol * q = quad_label();
@@ -331,7 +337,9 @@ ACCOLADE_OUVRANTE M liste_instructions
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);} ACCOLADE_FERMANTE
 {
     complete($7.true, $12 - $9.num);
+    ListLabel_free($7.true);
     complete($13.next, $6);
+    ListLabel_free($13.next);
     $$.next = $7.false;
 
     if ($9.ptr != NULL)
@@ -405,6 +413,7 @@ test
 : test OR M test2
 {
     complete($1.false, $3);
+    ListLabel_free($1.false);
     $$.true = concat($1.true, $4.true);
     $$.false = $4.false;
 }
@@ -414,6 +423,7 @@ test2
 : test2 AND M test3
 {
     complete($1.true, $3);
+    ListLabel_free($1.true);
     $$.false = concat($1.false, $4.false);
     $$.true = $4.true;
 }

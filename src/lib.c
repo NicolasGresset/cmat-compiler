@@ -8,7 +8,8 @@ struct symbol * symbol_id(const struct id_t id)
 {
     struct symbol * sym = malloc(sizeof(struct symbol));
     sym->kind = NAME;
-    snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
+    //snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
+    strncpy(sym->u.id.name, id.name, TAILLE_MAX_TOKEN);
     sym->u.id.type = id.type;
     return sym;
 }
@@ -354,6 +355,9 @@ void code_dump(struct code * c)
 
 void code_free(struct code * c)
 {
+    free(c->quads->sym1);
+    free(c->quads->sym2);
+    free(c->quads->sym3);
     free(c->quads);
     free(c);
 }

@@ -14,6 +14,7 @@ struct table_hachage_t * table_hachage_init(void)
     }
     hash_tab -> alveoles = NULL;
     stack_id_push(hash_tab);
+    hash_tab->temporary = 0;
     return hash_tab;
 
 }
@@ -96,7 +97,7 @@ struct symbol * newtemp(struct table_hachage_t * hash_tab, type_t type)
     struct id_t * id;
     name_t name;
 
-    sprintf(name, ".tmp%d", hash_tab->temporary);
+    snprintf(name, TAILLE_MAX_TOKEN, ".tmp%d", hash_tab->temporary);
     id = id_init(name, type);
 
     table_hachage_put(hash_tab, id);
