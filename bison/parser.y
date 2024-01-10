@@ -355,6 +355,7 @@ operande
 type
 : INT {$$ = ENTIER;}
 | FLOAT {$$ = REEL;}
+| MATRIX  // A voir si utile car type imposé lors de la declaration de matrice, et pas d'autre appel
 
 condition
 : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE
@@ -474,65 +475,3 @@ void yyerror(const char * msg) {
 }
 
 
-op_fin : %empty
-        |PLUS_PLUS
-        | MOINS_MOINS
-
-operateur : PLUS
-            | MOINS
-            | FOIS
-            | DIVISE
-
-operateur2 : PLUS
-            | MOINS
-            | TRANSPOSITION
-
-type : INT
-    | FLOAT
-    | MATRIX --> Pas sur que nécessaire à garder ---
-
-condition : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE 
-            ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
-            condition_suite
-
-condition_suite : %empty
-                | ELSE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
-
-boucle_while : WHILE PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
-                ACCOLADE_FERMANTE liste_instructions ACCOLADE_FERMANTE
-
-boucle_for : FOR ACCOLADE_OUVRANTE for_init POINT_VIRGULE test POINT_VIRGULE
-            expression PARENTHESE_FERMANTE 
-            ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
-
-test : PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
-    | expression
-    | op_test2 test
-    | test op_test test
-
-op_test : %empty
-
-op_test2 : %empty
-
-for_init : IDENTIFICATEUR
-            | IDENTIFICATEUR EGAL operande
-            | type IDENTIFICATEUR EGAL operande
-
-            
-
-
-
-%%
-
-
-
-
-int main() {
-
-    printf("Bonjour\n");
-    return 0;
-}
-
-void yyerror(const char * msg) {
-	fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
-}
