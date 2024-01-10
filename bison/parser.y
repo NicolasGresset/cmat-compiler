@@ -81,6 +81,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     VIRGULE POINT_VIRGULE APOSTROPHE
     GUILLEMET MAIN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
+    RETURN
 
 %type <exprval> declaration operande expression
 %type <typeval> type
@@ -99,7 +100,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 %start S
 
 %%
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions RETURN CONSTANTE_ENTIERE ACCOLADE_FERMANTE
 
 liste_instructions
 : liste_instructions M instruction {complete($1.next, $2); $$.next = $3.next;}
@@ -113,7 +114,7 @@ instruction
 | affectation {$$.next = NULL;}
 
 
-// J'ai donc séparé déclaration et affectation (eux mêmes sous divisés pour bin et mat)
+
 
 // Ici declaration
 
@@ -124,7 +125,7 @@ declaration
 // Ici déclaration bin
 
 declaration_bin
-: type IDENTIFICATEUR fin_crea_bin {
+: type IDENTIFICATEUR POINT_VIRGULE {
     struct symbol * id = symtable_get(SYMTAB,$2);
      if ( id != NULL )
      {
@@ -134,7 +135,7 @@ declaration_bin
      id = symtable_put(SYMTAB,$2, $1);
      //gencode(CODE,COPY,id,NULL,NULL);
  }
-| type IDENTIFICATEUR EGAL expression_bin fin_crea_bin  {
+| type IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE  {
     struct symbol * id = symtable_get(SYMTAB,$2);
     if ( id != NULL )
     {
@@ -146,31 +147,10 @@ declaration_bin
  }
 ;
 
-creation_bin
-: IDENTIFICATEUR fin_crea_bin 
-| IDENTIFICATEUR EGAL expression_bin fin_crea_bin {
-    struct symbol * id = symtable_get(SYMTAB,$1);
-    if ( id == NULL )
-    {
-        fprintf(stderr, "error: ‘%s’ undeclared\n", $1);
-        exit(1);
-    }
-    if (id->u.id.type != $3.type)
-    {
-        fprintf(stderr, "error: incompatible types\n");
-        exit(1);
-    }
-    gencode(CODE,COPY,id,$3.ptr,NULL);
-
- }
-;
-
-fin_crea_bin
-: POINT_VIRGULE
-| VIRGULE creation_bin
 
 
-// Ici déclaration matrix. Comme dit sur le groupe, là vector et matrix sont separes, mais matrix utilise vector. Dis moi si bon pour toi
+
+// Ici déclaration matrix.
 
 declaration_mat
  // Si tu veux on peut separer encore plus matrice et vecteurs
@@ -180,18 +160,18 @@ declaration_mat
 | MATRIX id_vector EGAL creation_vector fin_crea_mat
 | MATRIX id_matrix EGAL expression_mat fin_crea_mat
 // Si on separe matrix et vector, on peut aussi faire expression_mat et expression_vec
-| MATRIX id_vector EGAL expression_mat fin_crea_mat --> J'y pense là à l'instant, faut que je vois encore
+| MATRIX id_vector EGAL expression_mat fin_crea_mat 
 
 id_matrix
-: IDENTIFICATEUR CROCHET_OUVRANT expression_bin CROCHET_FERMANT CROCHET_OUVRANT expression_bin CROCHET_FERMANT
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT CROCHET_OUVRANT operande CROCHET_FERMANT
 
 id_vector
-: IDENTIFICATEUR CROCHET_OUVRANT expression_bin CROCHET_FERMANT
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT
 
 creation_mat
 : id_matrix fin_crea_mat
 | id_vector fin_crea_mat
-| id_matrix EGAL creation_matrix fin_crea_mat --> correspond a une affectation pour mat, faut-il separer de la declaration ?
+| id_matrix EGAL creation_matrix fin_crea_mat 
 | id_vector EGAL creation_vector fin_crea_mat
 
 fin_crea_mat
@@ -212,7 +192,7 @@ creation_vector
 | ACCOLADE_OUVRANTE expression_bin creation_vector_prime ACCOLADE_FERMANTE
 
 creation_vector_prime
-: VIRGULE expression_bin creation_vector_prime
+: VIRGULE CONSTANTE_FLOTTANTE creation_vector_prime
 | %empty
 
 
@@ -306,18 +286,44 @@ expression_bin
     // Type temporaire
     $$.type = $2.type;
 }
-|  POINT_EXCLAMATION expression %prec UEXPR {;}
+// |  POINT_EXCLAMATION expression %prec UEXPR {;}
 |  PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE {;}
 //| operateur2 IDENTIFICATEUR expression %prec UEXPR {;}
 | operande {$$.type = $1.type;}
- //| op_fin IDENTIFICATEUR
- //| IDENTIFICATEUR op_fin
+| PLUS_PLUS IDENTIFICATEUR
+| MOINS_MOINS IDENTIFICATEUR
+| IDENTIFICATEUR PLUS_PLUS
+| IDENTIFICATEUR MOINS_MOINS
 
 // Ici expression_mat
 
 expression_mat
 : TRANSPOSITION expression_mat %prec UEXPR {;}
+| expression_mat PLUS expression_mat
+| expression_mat MOINS expression_mat
+| expression_mat FOIS expression_mat
+| expression_mat DIVISE expression_mat
 | IDENTIFICATEUR   // Juste pour les IDs associés au type matrix du coup 
+// Operation avec constante
+| expression_mat PLUS CONSTANTE_FLOTTANTE
+| expression_mat MOINS CONSTANTE_FLOTTANTE
+| expression_mat FOIS CONSTANTE_FLOTTANTE
+| expression_mat DIVISE CONSTANTE_FLOTTANTE
+// Dans l'autre sens
+| CONSTANTE_FLOTTANTE PLUS expression_mat
+| CONSTANTE_FLOTTANTE MOINS expression_mat
+| CONSTANTE_FLOTTANTE FOIS expression_mat
+| CONSTANTE_FLOTTANTE DIVISE expression_mat
+// Autre
+| expression_mat PLUS_PLUS
+| expression_mat MOINS_MOINS
+| PLUS_PLUS expression_mat
+| MOINS_MOINS expression_mat
+| MOINS expression_mat
+// Extraction   --> Je pense partir comme ça, mais avant faut que tu me dises si 
+//possible pour toi de regarder les conditions sur les dimensions pour l'extraction
+| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
+
 
 operande
 : IDENTIFICATEUR
@@ -355,7 +361,6 @@ operande
 type
 : INT {$$ = ENTIER;}
 | FLOAT {$$ = REEL;}
-| MATRIX  // A voir si utile car type imposé lors de la declaration de matrice, et pas d'autre appel
 
 condition
 : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE
