@@ -102,12 +102,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 38 "bison/parser.y"
+#line 39 "bison/parser.y"
 
      struct
      {
          struct symbol * ptr;
          type_t type;
+         int num;
      } exprval;
 
      name_t strval;
@@ -133,7 +134,13 @@ union YYSTYPE
 
      enum {EQ, NEQ, LT, LE, GE, GT} typetest;
 
-#line 137 "./include/parser.h"
+     struct {
+         struct symbol * id;
+         struct symbol * ptr;
+         int num;
+     } for_fin_t;
+
+#line 144 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

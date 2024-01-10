@@ -9,18 +9,62 @@ int main ()
     /* c = a * 5; */
     /* c = a - b; */
     /* c = -a; */
-
-    if (a < 1)
+    if (a == 1)
     {
-        int e = 4;
-        e = e + 1;
+        for (int i = 0; i < 5; i = i + 1)
+        {
+            int d = 4;
+        }
+        c = 1;
+        float d = 2.;
+        int i = 0;
     }
     else
     {
-        float d = a + b;
+        int j = 0;
+        while (j < 1)
+        {
+            int d = 1;
+        }
     }
-// Ne sait pas où aller
 
-    float f = 5.2;
-    f = f + 1;
+/*     if (a < 1) */
+/*     { */
+/*         int e = 4; */
+/*         e = 5*(e + 1)*5; */
+/*     } */
+/*     else */
+/*     { */
+/*         /// interdit  : if ((a < 1) || a == 1) */
+/*         if (a<1 && a == 1 || a > 1) */
+/*         { */
+/*             float d = a + b; */
+/*         } */
+/*     } */
+/* // Ne sait pas où aller */
+
+/*     float f = 5.2; */
+/*     f = f + 1; */
+    int fin = 1;
 }
+
+/*---------------------------------------------------*/
+
+/* int main() */
+/* { */
+/*     float test = 3.0; */
+/*     int a = 1; */
+/*     a = a + 1; */
+/*     while (a < 1) */
+/*     { */
+/*         a = a-1; */
+/*     } */
+/*     //float b = 2.0; */
+
+/*     for (int i = 0; i < 5; i = i + 2) */
+/*     { */
+/*         int c = 3; */
+/*     } */
+/*     float b = 3.0; */
+/*     //return 0; */
+/* } */

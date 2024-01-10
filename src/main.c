@@ -1,6 +1,6 @@
 #include "CMat.h"
 
-struct symtable * SYMTAB;
+struct table_hachage_t * SYMTAB;
 struct code * CODE;
 
 extern int yydebug;
@@ -8,13 +8,14 @@ extern int yydebug;
 int main(void)
 {
     //yydebug = 1;
-    SYMTAB = symtable_new();
+    SYMTAB = table_hachage_init();
     CODE = code_new();
     int r = yyparse();
-    //printf("-> Analyseur lexical retourne : %d\n", r);
-    symtable_dump(SYMTAB);
+
+
+    table_hachage_print(SYMTAB);
     code_dump(CODE);
-    symtable_free(SYMTAB);
+    table_hachage_free(SYMTAB);
     code_free(CODE);
     return r;
 }

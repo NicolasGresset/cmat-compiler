@@ -5,7 +5,7 @@
 typedef char name_t[TAILLE_MAX_TOKEN];
 typedef enum {ENTIER, REEL} type_t;
 typedef union { int int_value; float float_value; } value_t;
-struct id_t {name_t name; type_t type;}; // Structure de l'identificateur
+struct id_t {type_t type; name_t name;}; // Structure de l'identificateur
 
 struct symbol {
     enum {NAME, // Pour les identificateurs
@@ -26,6 +26,13 @@ struct symtable {
     unsigned int size;
     struct symbol * symbols;
 };
+
+struct symbol * symbol_id(const struct id_t id);
+
+struct symbol * symbol_const_int(int intval);
+
+struct symbol * symbol_const_float(float floatval);
+
 
 struct symtable * symtable_new();
 
@@ -72,7 +79,7 @@ void gencode(struct code * c,
              struct symbol * s2,
              struct symbol * s3);
 
-struct symbol *newtemp(struct symtable * t);
+//struct symbol *newtemp(struct symtable * t);
 
 void code_dump(struct code * c);
 void code_free(struct code * c);

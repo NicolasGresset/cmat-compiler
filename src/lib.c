@@ -3,6 +3,32 @@
 #include <stdio.h>
 #include "lib.h"
 
+
+struct symbol * symbol_id(const struct id_t id)
+{
+    struct symbol * sym = malloc(sizeof(struct symbol));
+    sym->kind = NAME;
+    snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
+    sym->u.id.type = id.type;
+    return sym;
+}
+
+struct symbol * symbol_const_int(int intval)
+{
+    struct symbol * sym = malloc(sizeof(struct symbol));
+    sym->kind = INT_CONSTANT;
+    sym->u.int_value = intval;
+    return sym;
+}
+
+struct symbol * symbol_const_float(float floatval)
+{
+    struct symbol * sym = malloc(sizeof(struct symbol));
+    sym->kind = FLOAT_CONSTANT;
+    sym->u.float_value = floatval;
+    return sym;
+}
+
 struct symtable * symtable_new()
 {
     struct symtable * t = malloc(sizeof(struct symtable));
@@ -161,16 +187,16 @@ void gencode(struct code * c,
     ++ (c->nextquad);
 }
 
-struct symbol *newtemp(struct symtable * t)
-{
-  struct symbol * s;
-  name_t name;
-  sprintf(name,"t%d",t->temporary);
-  int typeval = ENTIER; //temporaire
-  s = symtable_put(t,name, typeval);
-  ++ (t->temporary);
-  return s;
-}
+/* struct symbol *newtemp(struct symtable * t) */
+/* { */
+/*   struct symbol * s; */
+/*   name_t name; */
+/*   sprintf(name,"t%d",t->temporary); */
+/*   int typeval = ENTIER; //temporaire */
+/*   s = symtable_put(t,name, typeval); */
+/*   ++ (t->temporary); */
+/*   return s; */
+/* } */
 
 static void symbol_dump(struct symbol * s)
 {

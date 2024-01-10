@@ -39,7 +39,7 @@ _CONSTANTE_CARACTERE '\\?{LETTRE}'
 _CONSTANTE_FLOTTANTE {SIGNIFICANT}{EXPONENT}?{SUFFIX}?
 
 COMMENTAIRE_SIMPLE \/\/(.)*
-COMMENTAIRE_PLUSIEURS_LIGNES \/\*([^\*]|\**[^\/])*\*\/
+COMMENTAIRE_PLUSIEURS_LIGNES [/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]
 _COMMENTAIRE {COMMENTAIRE_SIMPLE}|{COMMENTAIRE_PLUSIEURS_LIGNES}
 
 _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\)|\[|\]|\{|\}|\&|\||<<|>>|'|"]
@@ -98,7 +98,8 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 ">=" return SUPERIEUR_EGAL;
 "!" return POINT_EXCLAMATION;
 "==" return EGAL_EGAL;
-
+"||" return OR;
+"&&" return AND;
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;
