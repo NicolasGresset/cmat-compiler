@@ -203,7 +203,7 @@ affectation
 | affectation_mat
 
 
-// Ici affectation bin (j'ai juste repris l'ancienne déclaration/affectation et ajouté POINT_VIRGULE en fin, je sais pas si c'est bon pour ta partie)
+// Ici affectation bin 
 
 affectation_bin
 : IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE {
@@ -241,7 +241,9 @@ expression
 | expression_mat
 
 // Ici expression_bin
-// J'y pense, mais on est pas censé éviter les boucles recursives à gauche ? Faut peut-être reprendre ça de la même facon qu'en TD
+// A la fin, j'ai mis element de matrice
+// Je sais qu'on en a parlé, notamment avec CONSTANTE_FLOTTANTE, mais je ne retrouve plus le fil de pensée
+// Dis moi tout de suite s'il faut que je revise un truc pour que ce soit bon pour toi
 
 expression_bin
 : expression_bin PLUS expression_bin {
@@ -289,11 +291,15 @@ expression_bin
 // |  POINT_EXCLAMATION expression %prec UEXPR {;}
 |  PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE {;}
 //| operateur2 IDENTIFICATEUR expression %prec UEXPR {;}
-| operande {$$.type = $1.type;}
 | PLUS_PLUS IDENTIFICATEUR
 | MOINS_MOINS IDENTIFICATEUR
 | IDENTIFICATEUR PLUS_PLUS
 | IDENTIFICATEUR MOINS_MOINS
+| operande {$$.type = $1.type;}
+// Cas element d'une matrice
+| id_matrix
+| id_vector
+
 
 // Ici expression_mat
 
@@ -341,21 +347,7 @@ operande
 | CONSTANTE_FLOTTANTE {$$.ptr = symtable_const_float(SYMTAB,$1); $$.type = REEL;}
 
 
- // POUR SIMPLIFIER
-/* op_fin : PLUS_PLUS */
-/*         | MOINS_MOINS */
 
- // On doit les mettre tous un par un sinon on se souvient pas de quel
- // token a été utiliisé est ça crée des confits shift/reduce
-/* operateur : PLUS */
-/*             | MOINS */
-/*             | FOIS */
-/*             | DIVISE */
-
-/* operateur2 : PLUS */
-/*             | MOINS */
-/*             | POINT_EXCLAMATION */
-/*             | TRANSPOSITION */
 
 
 type
