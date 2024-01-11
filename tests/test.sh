@@ -34,4 +34,28 @@ make clean
 cd ..
 coloredEcho "OK" green
 
+#
+# Test analyseur syntaxique
+#
+
+annoncer "Test analyseur syntaxique"
+cd analyse_syntaxique
+cd ..
+
+
+#
+# Test fonctions vecteurs et matrices
+#
+
+annoncer "Test fonctions vecteurs et matrices"
+cd fonction_mat
+make clean
+make >> $LOG 2>&1 || fail
+./exec >> monresultat.txt 2>&1 || fail
+diff attendu.txt monresultat.txt || fail
+make clean
+cd ..
+coloredEcho "OK" green
+
+
 exit 0
