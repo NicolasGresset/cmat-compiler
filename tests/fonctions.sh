@@ -121,6 +121,23 @@ test_fichiers_entree_sortie ()
   test_entree_sortie "$STDIN" "$ATTENDU" "$3"
 }
 
+# Vérifie si le programme contient une erreur de segmentation
+
+test_segfault ()
+{
+  STDIN=$1
+  "$STDIN" | $VALGRIND ./$1 > valgrind_output.txt   2>&1
+  EXITCODE=$?
+  if [ $EXITCODE -eq 43 ]
+  then
+    coloredEcho "OK" green
+  else
+    coloredEcho "==> Échec du test '$COURANT'" red
+    coloredEcho "==> Le programme ne contient pas de segfault comme attendu" red
+    coloredEcho "==> Exit" red
+    exit 1
+  fi
+}
 
 
 # Affichage en couleur

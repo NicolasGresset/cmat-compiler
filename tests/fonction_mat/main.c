@@ -56,9 +56,6 @@ int main(void) {
     matrix *E = mult_matrix(A, D);
     printmat(E);
 
-    // The following line exists to exit the program (ok)
-    // matrix * E = mult_matrix(A, transpose_matrix(D));
-
     // Same tests on vectors
     /*__________init_mat_matrix__________*/
     matrix *a = init_mat_matrix(1, 2);
@@ -127,6 +124,18 @@ int main(void) {
     // Warning about those allocated memories but no bytes reachable.
     /* free_matrix(Z); */
     free_matrix(z);
+
+#ifdef C_EXEMPLE_1
+    E = add_matrix(A, transpose_matrix(D));
+#endif
+
+#ifdef C_EXEMPLE_2
+    E = mult_matrix(A, transpose_matrix(D));
+#endif
+
+#ifdef C_EXEMPLE_3
+    E = div_matrix(A, D);
+#endif
 
     return 0;
 }

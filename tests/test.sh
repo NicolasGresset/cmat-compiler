@@ -51,8 +51,15 @@ annoncer "Test fonctions vecteurs et matrices"
 cd fonction_mat
 make clean
 make >> $LOG 2>&1 || fail
-./exec >> monresultat.txt 2>&1 || fail
+./exec > monresultat.txt 2>&1 || fail
 diff attendu.txt monresultat.txt || fail
+coloredEcho "Les fonctions sont OK pour des matrices compatibles" green
+
+test_segfault "./exemple1" || fail
+test_segfault "./exemple2" || fail
+test_segfault "./exemple3" || fail
+coloredEcho "Les fonctions sont OK pour des matrices incompatibles" green
+
 make clean
 cd ..
 coloredEcho "OK" green

@@ -110,6 +110,7 @@ struct quad {
 struct symbol *quad_label(void);
 
 struct code {
+    char *filename;
     unsigned int capacity;
     unsigned int nextquad;
     struct quad *quads;
