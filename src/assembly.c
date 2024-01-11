@@ -125,6 +125,7 @@ void manage_bop_plus(struct quad *quad, struct assembly_code *code) {
  * @param out
  */
 void manage_quad(struct quad *quad, struct assembly_code *code) {
+  // manage identificateurs
   switch (quad->kind) {
   case BOP_PLUS:
     manage_bop_plus(quad, code);
