@@ -28,6 +28,8 @@ void move_int_symbol(struct symbol *symbol, struct assembly_code *code,
             symbol->u.int_value);
     break;
   case NAME:
+    // u.id.name va correspondre à une étiquette dans le code MIPS, on les
+    // écrira après
     fprintf(code->out, "  lw %s, %s\n", registers[register_number],
             symbol->u.id.name);
     break;
@@ -64,22 +66,57 @@ void move_float_symbol(struct symbol *symbol, struct assembly_code *code,
   }
 }
 
+void add_floats_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  add.s %s, %s, %s\n", registers[F0], registers[F0],
+          registers[F2]);
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
+}
+
+void add_ints_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  add %s, %s, %s\n", registers[T0], registers[T0],
+          registers[T1]);
+  fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
+}
+
+int is_symbol_float(struct symbol *symbol) {
+  return symbol->kind == FLOAT_CONSTANT ||
+         (symbol->kind == NAME && symbol->u.id.type == REEL);
+}
+
+int is_symbol_int(struct symbol *symbol) {
+  return symbol->kind == INT_CONSTANT ||
+         (symbol->kind == NAME && symbol->u.id.type == ENTIER);
+}
+
 void manage_bop_plus(struct quad *quad, struct assembly_code *code) {
   if (quad->sym1->kind != NAME) {
     fprintf(stderr, "Error: first operand of BOP_PLUS is not a NAME\n");
     exit(1);
   }
 
-  if (quad->sym2->kind == FLOAT_CONSTANT) {
-    if (quad->sym3->kind == INT_CONSTANT || quad->sym3->kind == LABEL) {
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym3)) {
       fprintf(stderr, "Error: can't add a label or a int to a float\n");
       exit(1);
     }
 
-    move_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F0);
+    move_float_symbol(quad->sym3, code, F2);
+    add_floats_and_store(quad, code);
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym3)) {
+      fprintf(stderr, "Error: can't add a label or a float to an int\n");
+      exit(1);
+    }
+
+    move_int_symbol(quad->sym2, code, T0);
+    move_int_symbol(quad->sym3, code, T1);
+    add_ints_and_store(quad, code);
+  } else {
+    fprintf(stderr, "Error: can't add a label to a label\n");
+    exit(1);
   }
 }
-
 /**
  * @brief Gère un quadruplet
  *
