@@ -100,7 +100,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 %start S
 
 %%
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions RETURN CONSTANTE_ENTIERE ACCOLADE_FERMANTE
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions RETURN CONSTANTE_ENTIERE POINT_VIRGULE ACCOLADE_FERMANTE
 
 liste_instructions
 : liste_instructions M instruction {complete($1.next, $2); $$.next = $3.next;}
@@ -120,7 +120,7 @@ instruction
 
 declaration
 : declaration_bin
-| declaration_mat
+| MATRIX declaration_mat
 
 // Ici déclaration bin
 
@@ -153,30 +153,23 @@ declaration_bin
 // Ici déclaration matrix.
 
 declaration_mat
- // Si tu veux on peut separer encore plus matrice et vecteurs
-: MATRIX id_matrix fin_crea_mat 
-| MATRIX id_vector fin_crea_mat
-| MATRIX id_matrix EGAL creation_matrix fin_crea_mat
-| MATRIX id_vector EGAL creation_vector fin_crea_mat
-| MATRIX id_matrix EGAL expression_mat fin_crea_mat
+: MATRIX id_matrix_declar fin_crea_mat 
+| MATRIX id_vector_declar fin_crea_mat
+| MATRIX id_matrix_declar EGAL creation_matrix fin_crea_mat
+| MATRIX id_vector_declar EGAL creation_vector fin_crea_mat
+| MATRIX id_matrix_declar EGAL expression_mat fin_crea_mat
 // Si on separe matrix et vector, on peut aussi faire expression_mat et expression_vec
-| MATRIX id_vector EGAL expression_mat fin_crea_mat 
+| MATRIX id_vector_declar EGAL expression_mat fin_crea_mat 
 
-id_matrix
+id_matrix_declar
 : IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT CROCHET_OUVRANT operande CROCHET_FERMANT
 
-id_vector
+id_vector_declar
 : IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT
-
-creation_mat
-: id_matrix fin_crea_mat
-| id_vector fin_crea_mat
-| id_matrix EGAL creation_matrix fin_crea_mat 
-| id_vector EGAL creation_vector fin_crea_mat
 
 fin_crea_mat
 : POINT_VIRGULE
-| VIRGULE creation_mat
+| VIRGULE declaration_mat
 
 
 creation_matrix
@@ -202,7 +195,6 @@ affectation
 : affectation_bin
 | affectation_mat
 
-
 // Ici affectation bin 
 
 affectation_bin
@@ -225,11 +217,19 @@ affectation_bin
 
 // Ici affectation matrix
 
+// id_matrix et id_vector ici sont utilisés pour l'affectation et l'expression bin, au besoin on peut à nouveau diviser ça en affect et expression
+
+id_matrix_affect
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT CROCHET_OUVRANT operande CROCHET_FERMANT
+
+id_vector_affect
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT
+
 affectation_mat
 // 2 choses possibles : affectation matrice complète, ou affectation case matrice -> 2e cas = affectation_bin, t'as une préférence sur où le mettre ?
 : IDENTIFICATEUR EGAL expression_mat POINT_VIRGULE
-| id_matrix EGAL expression_bin POINT_VIRGULE
-| id_vector EGAL expression_bin POINT_VIRGULE
+| id_matrix_affect EGAL expression_bin POINT_VIRGULE
+| id_vector_affect EGAL expression_bin POINT_VIRGULE
 
 
 
@@ -242,8 +242,7 @@ expression
 
 // Ici expression_bin
 // A la fin, j'ai mis element de matrice
-// Je sais qu'on en a parlé, notamment avec CONSTANTE_FLOTTANTE, mais je ne retrouve plus le fil de pensée
-// Dis moi tout de suite s'il faut que je revise un truc pour que ce soit bon pour toi
+// Dis moi s'il faut que je revise un truc pour que ce soit bon pour toi
 
 expression_bin
 : expression_bin PLUS expression_bin {
@@ -297,8 +296,8 @@ expression_bin
 | IDENTIFICATEUR MOINS_MOINS
 | operande {$$.type = $1.type;}
 // Cas element d'une matrice
-| id_matrix
-| id_vector
+| id_matrix_affect
+| id_vector_affect
 
 
 // Ici expression_mat

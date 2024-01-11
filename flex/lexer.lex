@@ -49,6 +49,7 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 "for" return FOR;
 
 "main" return MAIN;
+"return" return RETURN;
 
 {_CONSTANTE_ENTIERE} return ecrireToken(CONSTANTE_ENTIERE);
 {_CONSTANTE_FLOTTANTE} return ecrireToken(CONSTANTE_FLOTTANTE);
