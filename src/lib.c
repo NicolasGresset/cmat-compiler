@@ -1,191 +1,171 @@
+#include "lib.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include "lib.h"
 
-
-struct symbol * symbol_id(const struct id_t id)
-{
-    struct symbol * sym = malloc(sizeof(struct symbol));
+struct symbol *symbol_id(const struct id_t id) {
+    struct symbol *sym = malloc(sizeof(struct symbol));
     sym->kind = NAME;
-    //snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
+    // snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
     strncpy(sym->u.id.name, id.name, TAILLE_MAX_TOKEN);
     sym->u.id.type = id.type;
     return sym;
 }
 
-struct symbol * symbol_const_int(int intval)
-{
-    struct symbol * sym = malloc(sizeof(struct symbol));
+struct symbol *symbol_const_int(int intval) {
+    struct symbol *sym = malloc(sizeof(struct symbol));
     sym->kind = INT_CONSTANT;
     sym->u.int_value = intval;
     return sym;
 }
 
-struct symbol * symbol_const_float(float floatval)
-{
-    struct symbol * sym = malloc(sizeof(struct symbol));
+struct symbol *symbol_const_float(float floatval) {
+    struct symbol *sym = malloc(sizeof(struct symbol));
     sym->kind = FLOAT_CONSTANT;
     sym->u.float_value = floatval;
     return sym;
 }
 
-struct symtable * symtable_new()
-{
-    struct symtable * t = malloc(sizeof(struct symtable));
+struct symtable *symtable_new() {
+    struct symtable *t = malloc(sizeof(struct symtable));
     t->capacity = 1024;
-    t->symbols = malloc(t->capacity*sizeof(struct symbol));
+    t->symbols = malloc(t->capacity * sizeof(struct symbol));
     t->temporary = 0;
     t->size = 0;
     return t;
 }
 
-static void symtable_grow(struct symtable * t)
-{
+static void symtable_grow(struct symtable *t) {
     t->capacity += 1024;
-    t->symbols = realloc(t->symbols,t->capacity*sizeof(struct symbol));
-    if(t->symbols == NULL)
-    {
-      fprintf(stderr,"Error attempting to grow symbol table (actual size is %d)\n",t->size);
+    t->symbols = realloc(t->symbols, t->capacity * sizeof(struct symbol));
+    if (t->symbols == NULL) {
+        fprintf(stderr,
+                "Error attempting to grow symbol table (actual size is %d)\n",
+                t->size);
         exit(1);
     }
 }
 
-struct symbol * symtable_const_int(struct symtable * t, int e)
-{
+struct symbol *symtable_const_int(struct symtable *t, int e) {
     unsigned int i;
-    for ( i=0 ; i<t->size; i++ )
-    {
-        if  (t->symbols[i].kind == INT_CONSTANT && t->symbols[i].u.int_value == e)
+    for (i = 0; i < t->size; i++) {
+        if (t->symbols[i].kind == INT_CONSTANT &&
+            t->symbols[i].u.int_value == e)
             break;
     }
 
-    if(i==t->size)
-    {
-        if(t->size==t->capacity)
+    if (i == t->size) {
+        if (t->size == t->capacity)
             symtable_grow(t);
         struct symbol *s = &(t->symbols[t->size]);
         s->kind = INT_CONSTANT;
         s->u.int_value = e;
-        ++ (t->size);
+        ++(t->size);
         return s;
-    }
-    else
+    } else
         return &(t->symbols[i]);
 }
 
-struct symbol * symtable_const_float(struct symtable * t, float v)
-{
+struct symbol *symtable_const_float(struct symtable *t, float v) {
     unsigned int i;
-    for ( i=0 ; i<t->size; i++ )
-    {
-        if  (t->symbols[i].kind == FLOAT_CONSTANT && t->symbols[i].u.float_value == v)
+    for (i = 0; i < t->size; i++) {
+        if (t->symbols[i].kind == FLOAT_CONSTANT &&
+            t->symbols[i].u.float_value == v)
             break;
     }
 
-    if(i==t->size)
-    {
-        if(t->size==t->capacity)
+    if (i == t->size) {
+        if (t->size == t->capacity)
             symtable_grow(t);
         struct symbol *s = &(t->symbols[t->size]);
         s->kind = FLOAT_CONSTANT;
         s->u.float_value = v;
-        ++ (t->size);
+        ++(t->size);
         return s;
-    }
-    else
+    } else
         return &(t->symbols[i]);
 }
 
-struct symbol * symtable_get(struct symtable * t, const char * id)
-{
+struct symbol *symtable_get(struct symtable *t, const char *id) {
     unsigned int i;
-    for ( i=0 ; i<t->size && strcmp(t->symbols[i].u.id.name,id) != 0; i++ );
-    if(i<t->size)
-      return &(t->symbols[i]);
+    for (i = 0; i < t->size && strcmp(t->symbols[i].u.id.name, id) != 0; i++)
+        ;
+    if (i < t->size)
+        return &(t->symbols[i]);
     return NULL;
 }
 
-struct symbol * symtable_put(struct symtable * t,
-                             const char * id, type_t type)
-{
-    if(t->size==t->capacity)
-      symtable_grow(t);
+struct symbol *symtable_put(struct symtable *t, const char *id, type_t type) {
+    if (t->size == t->capacity)
+        symtable_grow(t);
     struct symbol *s = &(t->symbols[t->size]);
     s->kind = NAME;
-    strcpy(s->u.id.name,id);
+    strcpy(s->u.id.name, id);
     s->u.id.type = type;
-    ++ (t->size);
+    ++(t->size);
     return s;
 }
 
-void symtable_dump(struct symtable * t)
-{
+void symtable_dump(struct symtable *t) {
     unsigned int i;
-    for ( i=0 ; i<t->size; i++ )
-    {
-      switch(t->symbols[i].kind)
-      {
-      case INT_CONSTANT:
-          printf("       %p = %d\n",&(t->symbols[i]),t->symbols[i].u.int_value);
-          break;
-      case FLOAT_CONSTANT:
-          printf("       %p = %f\n",&(t->symbols[i]),t->symbols[i].u.float_value);
-          break;
-      case NAME:
-          printf("       %p = %s  %d\n",&(t->symbols[i]),t->symbols[i].u.id.name, t->symbols[i].u.id.type);
-          break;
-      case LABEL:
-          printf("       %p = %d\n",&(t->symbols[i]),t->symbols[i].u.addr);
-          break;
-      default:
-          break;
-      }
+    for (i = 0; i < t->size; i++) {
+        switch (t->symbols[i].kind) {
+        case INT_CONSTANT:
+            printf("       %p = %d\n", &(t->symbols[i]),
+                   t->symbols[i].u.int_value);
+            break;
+        case FLOAT_CONSTANT:
+            printf("       %p = %f\n", &(t->symbols[i]),
+                   t->symbols[i].u.float_value);
+            break;
+        case NAME:
+            printf("       %p = %s  %d\n", &(t->symbols[i]),
+                   t->symbols[i].u.id.name, t->symbols[i].u.id.type);
+            break;
+        case LABEL:
+            printf("       %p = %d\n", &(t->symbols[i]), t->symbols[i].u.addr);
+            break;
+        default:
+            break;
+        }
     }
     printf("       --------\n");
 }
 
-
-void symtable_free(struct symtable * t)
-{
+void symtable_free(struct symtable *t) {
     free(t->symbols);
     free(t);
 }
 
-struct code * code_new()
-{
-    struct code * r = malloc(sizeof(struct code));
+struct code *code_new() {
+    struct code *r = malloc(sizeof(struct code));
     r->capacity = 1024;
-    r->quads = malloc(r->capacity*sizeof(struct quad));
+    r->quads = malloc(r->capacity * sizeof(struct quad));
     r->nextquad = 0;
     return r;
 }
 
-static void code_grow(struct code * c)
-{
+static void code_grow(struct code *c) {
     c->capacity += 1024;
-    c->quads = realloc(c->quads,c->capacity*sizeof(struct quad));
-    if(c->quads == NULL)
-    {
-      fprintf(stderr,"Error attempting to grow quad list (actual size is %d)\n",c->nextquad);
+    c->quads = realloc(c->quads, c->capacity * sizeof(struct quad));
+    if (c->quads == NULL) {
+        fprintf(stderr,
+                "Error attempting to grow quad list (actual size is %d)\n",
+                c->nextquad);
         exit(1);
     }
 }
 
-void gencode(struct code * c,
-              enum quad_kind k,
-              struct symbol * s1,
-              struct symbol * s2,
-              struct symbol * s3)
-{
-    if ( c->nextquad == c->capacity )
+void gencode(struct code *c, enum quad_kind k, struct symbol *s1,
+             struct symbol *s2, struct symbol *s3) {
+    if (c->nextquad == c->capacity)
         code_grow(c);
-    struct quad * q = &(c->quads[c->nextquad]);
+    struct quad *q = &(c->quads[c->nextquad]);
     q->kind = k;
     q->sym1 = s1;
     q->sym2 = s2;
     q->sym3 = s3;
-    ++ (c->nextquad);
+    ++(c->nextquad);
 }
 
 /* struct symbol *newtemp(struct symtable * t) */
@@ -199,15 +179,13 @@ void gencode(struct code * c,
 /*   return s; */
 /* } */
 
-static void symbol_dump(struct symbol * s)
-{
-    switch ( s->kind )
-    {
+static void symbol_dump(struct symbol *s) {
+    switch (s->kind) {
     case NAME:
-        printf("%s",s->u.id.name);
+        printf("%s", s->u.id.name);
         break;
     case INT_CONSTANT:
-        printf("%d",s->u.int_value);
+        printf("%d", s->u.int_value);
         break;
     case FLOAT_CONSTANT:
         printf("%f", s->u.float_value);
@@ -219,19 +197,16 @@ static void symbol_dump(struct symbol * s)
     }
 }
 
-struct symbol * quad_label(void)
-{
-    struct symbol * q = malloc(sizeof(struct symbol));
+struct symbol *quad_label(void) {
+    struct symbol *q = malloc(sizeof(struct symbol));
     if (q == NULL)
         exit(1);
     q->kind = LABEL;
     return q;
 }
 
-static void quad_dump(struct quad * q)
-{
-    switch ( q->kind )
-    {
+static void quad_dump(struct quad *q) {
+    switch (q->kind) {
     case BOP_PLUS:
         symbol_dump(q->sym1);
         printf(" := ");
@@ -342,19 +317,16 @@ static void quad_dump(struct quad * q)
     }
 }
 
-void code_dump(struct code * c)
-{
+void code_dump(struct code *c) {
     unsigned int i;
-    for ( i=0 ; i<c->nextquad ; i++ )
-    {
-        printf("%4u | ",i);
+    for (i = 0; i < c->nextquad; i++) {
+        printf("%4u | ", i);
         quad_dump(&(c->quads[i]));
         printf("\n");
     }
 }
 
-void code_free(struct code * c)
-{
+void code_free(struct code *c) {
     free(c->quads->sym1);
     free(c->quads->sym2);
     free(c->quads->sym3);

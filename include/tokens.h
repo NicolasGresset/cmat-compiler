@@ -23,7 +23,6 @@
 #define DIFFERENT 14
 #define POINT_EXCLAMATION 15
 
-
 #define PARENTHESE_OUVRANTE 21
 #define PARENTHESE_FERMANTE 22
 #define ACCOLADE_OUVRANTE 23
@@ -34,7 +33,6 @@
 #define APOSTROPHE 28
 #define POINT_VIRGULE 29
 #define GUILLEMET 30
-
 
 // Structure de contrôle
 #define ELSE 103
