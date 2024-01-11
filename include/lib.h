@@ -3,7 +3,7 @@
 #define TAILLE_MAX_TOKEN 32
 
 typedef char name_t[TAILLE_MAX_TOKEN];
-typedef enum { ENTIER, REEL } type_t;
+typedef enum { ENTIER, REEL, MATRIX_TYPE } type_t;
 typedef union {
     int int_value;
     float float_value;
@@ -11,6 +11,14 @@ typedef union {
 struct id_t {
     type_t type;
     name_t name;
+    union
+    { /// Connaître la taille de MATRIX
+        struct
+        {
+            int row; // Nombre de lignes
+            int col; // Nombre de colonnes
+        };
+    };
 }; // Structure de l'identificateur
 
 struct symbol {
@@ -41,6 +49,10 @@ struct symbol *symbol_const_int(int intval);
 
 struct symbol *symbol_const_float(float floatval);
 
+struct symbol * symbol_declare(const struct id_t id);
+
+struct symbol * symbol_declare_tab(const struct id_t id);
+
 struct symtable *symtable_new();
 
 struct symbol *symtable_const_int(struct symtable *t, int e);
@@ -60,19 +72,29 @@ void symtable_free(struct symtable *t);
 
 struct quad {
     enum quad_kind {
+        Q_DECLARE,
+        Q_DECLARE_MAT,
+        // Q_SET, = COPY
+        Q_SET_MAT,
+
         BOP_PLUS,
         BOP_MOINS,
         BOP_MULT,
         BOP_DIVISE,
         UOP_PLUS,
         UOP_MOINS,
+
         COPY,
+
+        ADRESSE,
+
         Q_IF_EQ,
         Q_IF_NEQ,
         Q_IF_LT,
         Q_IF_LE,
         Q_IF_GE,
         Q_IF_GT,
+
         Q_GOTO,
         Q_GOTO_UNKNOWN,
         CALL_PRINT

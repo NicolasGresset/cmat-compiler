@@ -140,7 +140,12 @@ union YYSTYPE
          int num;
      } for_fin_t;
 
-#line 144 "./include/parser.h"
+     struct {
+         int row;
+         int col;
+     } taille_mat_t;
+
+#line 149 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -9,6 +9,11 @@ struct symbol *symbol_id(const struct id_t id) {
     // snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
     strncpy(sym->u.id.name, id.name, TAILLE_MAX_TOKEN);
     sym->u.id.type = id.type;
+    if (id.type == MATRIX_TYPE)
+    {
+        sym->u.id.row = id.row;
+        sym->u.id.col = id.col;
+    }
     return sym;
 }
 
@@ -251,7 +256,20 @@ static void quad_dump(struct quad *q) {
         printf("print ");
         symbol_dump(q->sym1);
         break;
+    case Q_DECLARE:
+        printf("DECLARE ");
+        symbol_dump(q->sym1);
+        break;
+    case Q_DECLARE_MAT:
+        printf("DECLARE ");
+        symbol_dump(q->sym1);
+        break;
     case COPY:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        break;
+    case ADRESSE:
         symbol_dump(q->sym1);
         printf(" := ");
         symbol_dump(q->sym2);

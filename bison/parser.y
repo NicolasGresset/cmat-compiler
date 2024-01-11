@@ -72,6 +72,11 @@ void complete(struct ListLabel * l, unsigned int addr)
          struct symbol * ptr;
          int num;
      } for_fin_t;
+
+     struct {
+         int row;
+         int col;
+     } taille_mat_t;
 }
 
 %token <strval> IDENTIFICATEUR
@@ -89,14 +94,15 @@ void complete(struct ListLabel * l, unsigned int addr)
     GUILLEMET MAIN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
 
-%type <exprval> declaration operande expression
+%type <exprval> declaration_bin operande expression_bin id_matrix
 %type <typeval> type
+%type <taille_mat_t> creation_matrix creation_matrix_prime creation_vector creation_vector_prime
 %type <intval> M
 %type <N_t> N
 %type <for_fin_t> for_fin
 %type <typetest> op_test
 %type <boolexpr> test test2 test3
-%type <instr_type> liste_instructions instruction condition condition_suite boucle_while boucle_for
+%type <instr_type> liste_instructions instruction condition condition_suite boucle_while boucle_for declaration
 
 
 %left PLUS MOINS
@@ -121,10 +127,14 @@ instruction
 | condition {$$.next = $1.next;}
 | boucle_while {$$.next = $1.next;}
 | boucle_for {$$.next = $1.next;}
-| affectation {$$.next = NULL;}
+| affectation_bin {$$.next = NULL;}
 
 declaration
-: type IDENTIFICATEUR fin_aff {
+: declaration_bin {$$.next = NULL;}
+| MATRIX declaration_mat {$$.next = NULL;}
+
+declaration_bin
+: type IDENTIFICATEUR POINT_VIRGULE {
     struct id_t * id = table_hachage_get(SYMTAB,$2);
      if ( id != NULL )
      {
@@ -133,9 +143,12 @@ declaration
      }
      id = id_init($2, $1);
      table_hachage_put(SYMTAB,id);
-     //gencode(CODE,COPY,id,NULL,NULL);
+
+
+     struct symbol * sym_id = symbol_id(*id);
+     gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
  }
-| type IDENTIFICATEUR EGAL expression fin_aff  {
+| type IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE  {
     struct id_t * id = table_hachage_get(SYMTAB, $2);
     if ( id != NULL )
     {
@@ -145,15 +158,125 @@ declaration
 
     id = id_init($2, $1);
     table_hachage_put(SYMTAB,id);
+
     struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
     gencode(CODE,COPY,sym_id,$4.ptr,NULL);
 
  }
 ;
 
-affectation
-//: IDENTIFICATEUR fin_aff --> affectation sans effet, à garder ?
-: IDENTIFICATEUR EGAL expression fin_aff {
+// Ici déclaration matrix.
+
+declaration_mat
+ // Si tu veux on peut separer encore plus matrice et vecteurs
+: id_matrix fin_crea_mat
+| id_vector fin_crea_mat
+| id_matrix EGAL creation_matrix fin_crea_mat
+| id_vector EGAL creation_vector fin_crea_mat
+| MATRIX id_matrix EGAL expression_mat fin_crea_mat
+// Si on separe matrix et vector, on peut aussi faire expression_bin_mat et expression_bin_vec
+| MATRIX id_vector EGAL expression_mat fin_crea_mat
+
+id_matrix
+: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id != NULL )
+    {
+        fprintf(stderr, "error: redeclaration of ‘%s’ with no linkage\n", $1);
+        exit(1);
+    }
+    id = id_init($1, MATRIX_TYPE);
+
+    id->row = $3;
+    id->col = $6;
+    table_hachage_put(SYMTAB,id);
+
+    struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, Q_DECLARE_MAT, sym_id,NULL,NULL);
+};
+
+id_vector
+: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id != NULL )
+    {
+        fprintf(stderr, "error: redeclaration of ‘%s’ with no linkage\n", $1);
+        exit(1);
+    }
+    id = id_init($1, MATRIX_TYPE);
+
+    id->row = $3;
+    id->col = 1;
+    table_hachage_put(SYMTAB,id);
+
+    struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, Q_DECLARE_MAT, sym_id,NULL,NULL);
+};
+
+fin_crea_mat
+: POINT_VIRGULE
+| VIRGULE declaration_mat
+
+
+creation_matrix
+//: expression_mat
+: ACCOLADE_OUVRANTE creation_matrix_prime creation_vector ACCOLADE_FERMANTE
+{
+    if ($2.row != -1 && $2.row != $3.row)
+        fprintf(stderr, "error : incompatible column size\n");
+
+    $$.col = 1 + $2.col;
+    $$.row = $2.row;
+}
+creation_matrix_prime
+:  creation_matrix_prime creation_vector VIRGULE
+{
+    if ($1.row != -1 && $1.row != $2.row)
+        fprintf(stderr, "error : incompatible column size\n");
+
+    $$.col = 1 + $2.col;
+    $$.row = $1.row;
+}
+| %empty
+{
+    $$.row = -1;
+    $$.col = 0;
+};
+
+creation_vector
+//: expression_vector
+: ACCOLADE_OUVRANTE creation_vector_prime operande ACCOLADE_FERMANTE
+{
+    $$.row = 1 + $2.row;
+    $$.col = 1;
+    // newtemp
+    struct symbol * sym_temp = newtemp(SYMTAB, REEL);
+    gencode(CODE, Q_DECLARE, sym_temp,NULL,NULL);
+    gencode(CODE, COPY, sym_temp, $3.ptr, NULL);
+
+};
+creation_vector_prime
+: creation_vector_prime operande VIRGULE
+{
+    $$.row = 1 + $1.row;
+    $$.col = 1;
+    // newtemp
+    struct symbol * sym_temp = newtemp(SYMTAB, REEL);
+    gencode(CODE, Q_DECLARE, sym_temp,NULL,NULL);
+    gencode(CODE, COPY, sym_temp, $2.ptr, NULL);
+}
+| %empty {$$.row = 0; $$.col = 0;};
+
+
+
+// Affectation
+
+affectation_bin
+//: IDENTIFICATEUR fin_aff --> affectation_bin sans effet, à garder ?
+: IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE {
     struct id_t * id = table_hachage_get(SYMTAB,$1);
     if ( id == NULL )
     {
@@ -163,24 +286,18 @@ affectation
     if (id->type != $3.type)
     {
         fprintf(stderr, "error: incompatible types\n");
-        exit(1);
+        //exit(1);
     }
 
     struct symbol *  sym_id = symbol_id(*id);
     gencode(CODE,COPY,sym_id,$3.ptr,NULL);
 
  }
- //| expression fin_aff
-;
 
-fin_aff
-: POINT_VIRGULE
-| VIRGULE affectation
 
-// Changer expression en ecpreesion_bin puis mettre dans la grammaire expression : expression_bin | expression_mat
-expression
-: expression PLUS expression {
-    // Le cas où les 2 expressions n'ont pas le même type n'est pas géré
+expression_bin
+: expression_bin PLUS expression_bin {
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     $$.ptr = newtemp(SYMTAB, $1.type);
     gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
 
@@ -190,7 +307,7 @@ expression
     $$.num = MAX($1.num, $3.num);
     $$.num += 1;
 }
-| expression MOINS expression {
+| expression_bin MOINS expression_bin {
     $$.ptr = newtemp(SYMTAB, $1.type);
     gencode(CODE,BOP_MOINS,$$.ptr,$1.ptr,$3.ptr);
 
@@ -200,7 +317,7 @@ expression
     $$.num = MAX($1.num, $3.num);
     $$.num += 1;
 }
-| expression FOIS expression {
+| expression_bin FOIS expression_bin {
     $$.ptr = newtemp(SYMTAB, $1.type);
     gencode(CODE,BOP_MULT,$$.ptr,$1.ptr,$3.ptr);
 
@@ -210,7 +327,7 @@ expression
     $$.num = MAX($1.num, $3.num);
     $$.num += 1;
 }
-| expression DIVISE expression {
+| expression_bin DIVISE expression_bin {
     $$.ptr = newtemp(SYMTAB, $1.type);
     gencode(CODE,BOP_DIVISE,$$.ptr,$1.ptr,$3.ptr);
 
@@ -220,7 +337,7 @@ expression
     $$.num = MAX($1.num, $3.num);
     $$.num += 1;
 }
-|  MOINS expression %prec UEXPR   {
+|  MOINS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB, $2.type);
     gencode(CODE,UOP_MOINS,$$.ptr,$2.ptr,NULL);
 
@@ -229,7 +346,7 @@ expression
 
     $$.num = $2.num + 1;
 }
-|  PLUS expression %prec UEXPR   {
+|  PLUS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB, $2.type);
     gencode(CODE,UOP_PLUS,$$.ptr,$2.ptr,NULL);
 
@@ -238,13 +355,55 @@ expression
 
     $$.num = $2.num + 1;
 }
-|  POINT_EXCLAMATION expression %prec UEXPR {;} // A completer
-|  TRANSPOSITION expression %prec UEXPR {;} // Faire un nouveau terminal avec expression_mat pour différencier les 2 dans les conditions ?
-|  PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE {$$.ptr = $2.ptr; $$.type = $2.type; $$.num = $2.num;}
-//| operateur2 IDENTIFICATEUR expression %prec UEXPR {;}
-| operande {$$.type = $1.type; $$.num = 0;}
- //| op_fin IDENTIFICATEUR
- //| IDENTIFICATEUR op_fin
+|  POINT_EXCLAMATION expression_bin %prec UEXPR {;} // A completer
+|  TRANSPOSITION expression_bin %prec UEXPR {;} // Faire un nouveau terminal avec expression_bin_mat pour différencier les 2 dans les conditions ?
+|  PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE {$$.ptr = $2.ptr; $$.type = $2.type; $$.num = $2.num;}
+//| operateur2 IDENTIFICATEUR expression_bin %prec UEXPR {;}
+| PLUS_PLUS operande
+{
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+    $$.ptr = newtemp(SYMTAB, $2.type);
+    struct symbol * one = symbol_const_int(1);
+    gencode(CODE,BOP_PLUS,$$.ptr,one,$2.ptr);
+
+    // Type temporaire en fonction de int ou float convertir le type
+    $$.type = $2.type;
+    $$.num = 1;
+}
+| MOINS_MOINS operande
+{
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+    $$.ptr = newtemp(SYMTAB, $2.type);
+    struct symbol * one = symbol_const_int(1);
+    gencode(CODE,BOP_MOINS,$$.ptr,$2.ptr, one);
+
+    // Type temporaire en fonction de int ou float convertir le type
+    $$.type = $2.type;
+    $$.num += 1;
+}
+| operande PLUS_PLUS
+{
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+    $$.ptr = newtemp(SYMTAB, $1.type);
+    struct symbol * one = symbol_const_int(1);
+    gencode(CODE,BOP_PLUS,$$.ptr,one,$1.ptr);
+
+    // Type temporaire en fonction de int ou float convertir le type
+    $$.type = $1.type;
+    $$.num = 1;
+}
+| operande MOINS_MOINS
+{
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+    $$.ptr = newtemp(SYMTAB, $1.type);
+    struct symbol * one = symbol_const_int(1);
+    gencode(CODE,BOP_MOINS,$$.ptr, $1.ptr, one);
+
+    // Type temporaire en fonction de int ou float convertir le type
+    $$.type = $1.type;
+    $$.num = 1;
+}
+| operande {$$.type = $1.type; $$.num = 0;};
 
 operande
 : IDENTIFICATEUR
@@ -255,18 +414,139 @@ operande
         fprintf(stderr,"Name '%s' undeclared\n",$1);
         exit(1);
     }
+    if (id->type == MATRIX_TYPE)
+    {
+        printf("%s is of type MATRIX : pas encore géré\n",$1);
+        //exit(1);
+    }
 
     struct symbol * sym_id = symbol_id(*id);
     $$.ptr = sym_id;
     $$.type = sym_id->u.id.type;
 }
-| CONSTANTE_ENTIERE {$$.ptr = symbol_const_int($1); $$.type = ENTIER;}
+| CONSTANTE_ENTIERE {$$.ptr = symbol_const_int((int)$1); $$.type = ENTIER;}
 | CONSTANTE_FLOTTANTE {$$.ptr = symbol_const_float($1); $$.type = REEL;}
-| MATRIX
+| IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
+CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
+{
 
- // POUR SIMPLIFIER
-/* op_fin : PLUS_PLUS */
-/*         | MOINS_MOINS */
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr,"Name '%s' undeclared\n",$1);
+        exit(1);
+    }
+    if (id->type != MATRIX_TYPE)
+    {
+        fprintf(stderr,"%s is not of type MATRIX\n",$1);
+        exit(1);
+    }
+    // test sur les dimensions du tableau
+    if (id->row <= $3 || id->col <= $6)
+    {
+        fprintf(stderr, "Erreur de dimension pour %s\n", $1);
+    }
+
+    // Pour obtenir la valeur du tableau
+    /* T3 = T1*20 */
+    struct symbol * t3 = newtemp(SYMTAB, ENTIER);
+    struct symbol * t3_temp = symbol_const_int(($3 + 1) * id->col);
+    struct symbol * j = symbol_const_int(($6 + 1));
+    /*     T3 = T3+T2 */
+    gencode(CODE, BOP_PLUS, t3, j, t3_temp);
+    /*     T4 = adr(A) /\* adresse de base de A *\/ */
+    struct symbol * t4 = newtemp(SYMTAB, ENTIER);
+    struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, ADRESSE, t4, sym_id, NULL);
+    /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
+    struct symbol * nbw_row = symbol_const_int(4 * (id->col + 1));
+    gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
+    /*     T5 = 4*T3 */
+    struct symbol * t5 = newtemp(SYMTAB, ENTIER);
+    struct symbol * nbw = symbol_const_int(4);
+    gencode(CODE, BOP_MULT, t5, nbw, t3);
+    /*     T6 = T4[T5] /\* = T4+T5 *\/ */
+    struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
+
+    $$.ptr = symbol_composante;
+    $$.type = REEL;
+}
+| IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr,"Name '%s' undeclared\n",$1);
+        exit(1);
+    }
+    if (id->type != MATRIX_TYPE)
+    {
+        fprintf(stderr,"%s is not of type MATRIX\n",$1);
+        exit(1);
+    }
+    // test sur les dimensions du tableau
+    if (id->row >= $3)
+    {
+        fprintf(stderr, "Erreur de dimension pour %s\n", $1);
+    }
+
+    // Pour obtenir la valeur du tableau
+    /* T3 = T1*20 */
+    struct symbol * t3 = newtemp(SYMTAB, ENTIER);
+    struct symbol * t3_temp = symbol_const_int($3 * id->col);
+    struct symbol * j = symbol_const_int(1);
+    /*     T3 = T3+T2 */
+    gencode(CODE, BOP_PLUS, t3, j, t3_temp);
+    /*     T4 = adr(A) /\* adresse de base de A *\/ */
+    struct symbol * t4 = newtemp(SYMTAB, ENTIER);
+    struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, ADRESSE, t4, sym_id, NULL);
+    /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
+    struct symbol * nbw_row = symbol_const_int(4 * (id->col + 1));
+    gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
+    /*     T5 = 4*T3 */
+    struct symbol * t5 = newtemp(SYMTAB, ENTIER);
+    struct symbol * nbw = symbol_const_int(4);
+    gencode(CODE, BOP_MULT, t5, nbw, t3);
+    /*     T6 = T4[T5] /\* = T4+T5 *\/ */
+    struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
+
+    $$.ptr = symbol_composante;
+    $$.type = REEL;
+};
+
+// Ici expression_mat
+
+expression_mat
+: TRANSPOSITION expression_mat %prec UEXPR {;}
+| expression_mat PLUS expression_mat
+| expression_mat MOINS expression_mat
+| expression_mat FOIS expression_mat
+| expression_mat DIVISE expression_mat
+| IDENTIFICATEUR   // Juste pour les IDs associés au type matrix du coup
+| CONSTANTE_FLOTTANTE
+  // Pose des problèmes de shift/reduce
+/* // Operation avec constante */
+/* | expression_mat PLUS CONSTANTE_FLOTTANTE */
+/* | expression_mat MOINS CONSTANTE_FLOTTANTE */
+/* | expression_mat FOIS CONSTANTE_FLOTTANTE */
+/* | expression_mat DIVISE CONSTANTE_FLOTTANTE */
+/* // Dans l'autre sens */
+/* | CONSTANTE_FLOTTANTE PLUS expression_mat */
+/* | CONSTANTE_FLOTTANTE MOINS expression_mat */
+/* | CONSTANTE_FLOTTANTE FOIS expression_mat */
+/* | CONSTANTE_FLOTTANTE DIVISE expression_mat */
+// Autre
+| MOINS expression_mat %prec UEXPR
+| IDENTIFICATEUR PLUS_PLUS
+| IDENTIFICATEUR MOINS_MOINS
+| PLUS_PLUS IDENTIFICATEUR
+| MOINS_MOINS IDENTIFICATEUR
+// Extraction   --> Je pense partir comme ça, mais avant faut que tu me dises si
+//possible pour toi de regarder les conditions sur les dimensions pour l'extraction
+  //| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
 
 
 type
@@ -361,7 +641,7 @@ for_init
         gencode(CODE,COPY,$1.id,$1.ptr,NULL);
     }
 }
-| type IDENTIFICATEUR EGAL expression
+| type IDENTIFICATEUR EGAL expression_bin
 {
     struct id_t * id = table_hachage_get(SYMTAB,$2);
     if ( id != NULL )
@@ -390,7 +670,7 @@ for_fin
     $$.id = sym_id;
     $$.ptr = NULL;
 }
-| IDENTIFICATEUR EGAL expression
+| IDENTIFICATEUR EGAL expression_bin
 {
     struct id_t * id = table_hachage_get(SYMTAB,$1);
     if ( id == NULL )
@@ -430,7 +710,7 @@ test2
 | test3 {$$.true = $1.true; $$.false = $1.false;}
 
 test3
-:  expression op_test expression
+:  expression_bin op_test expression_bin
 {
     $$.true = NULL;
     $$.false = NULL;
@@ -465,7 +745,7 @@ test3
     $$.false = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
 }
-| expression
+| expression_bin
 {
     $$.true = NULL;
     $$.false = NULL;

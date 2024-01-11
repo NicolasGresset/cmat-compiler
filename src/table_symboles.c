@@ -118,10 +118,13 @@ struct id_t *table_hachage_get(struct table_hachage_t *hash_tab,
 void id_print(struct id_t *id) {
     switch (id->type) {
     case ENTIER:
-        printf("    %p :     int    %s\n", &(id->name), id->name);
+        printf("    %p :     int       %s\n", &(id->name), id->name);
         break;
     case REEL:
-        printf("    %p :     float    %s\n", &(id->name), id->name);
+        printf("    %p :     float     %s\n", &(id->name), id->name);
+        break;
+    case MATRIX_TYPE:
+        printf("    %p :     MATRIX    %s[%d][%d]\n", &(id->name), id->name, id->row, id->col);
         break;
     default:
         printf("    Type non reconnu     %s\n", id->name);
