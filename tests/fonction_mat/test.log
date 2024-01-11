@@ -1,26 +1,3 @@
-gcc main.c ../../src/matrix.c -o exec
-gcc main.c ../../src/matrix.c -o exec
-gcc main.c ../../src/matrix.c -o exec
-gcc main.c ../../src/matrix.c -o exec -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_1 -o exemple1 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_2 -o exemple2 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_3 -o exemple3 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -o exec -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_1 -o exemple1 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_2 -o exemple2 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_3 -o exemple3 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -o exec -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_1 -o exemple1 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_2 -o exemple2 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_3 -o exemple3 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -o exec -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_1 -o exemple1 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_2 -o exemple2 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_3 -o exemple3 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -o exec -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_1 -o exemple1 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_2 -o exemple2 -Wall -Wextra -Werror
-gcc main.c ../../src/matrix.c -DC_EXEMPLE_3 -o exemple3 -Wall -Wextra -Werror
 gcc main.c ../../src/matrix.c -o exec -Wall -Wextra -Werror
 gcc main.c ../../src/matrix.c -DC_EXEMPLE_1 -o exemple1 -Wall -Wextra -Werror
 gcc main.c ../../src/matrix.c -DC_EXEMPLE_2 -o exemple2 -Wall -Wextra -Werror
