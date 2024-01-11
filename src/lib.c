@@ -139,6 +139,7 @@ void symtable_free(struct symtable *t) {
 
 struct code *code_new() {
     struct code *r = malloc(sizeof(struct code));
+    r->filename = NULL;
     r->capacity = 1024;
     r->quads = malloc(r->capacity * sizeof(struct quad));
     r->nextquad = 0;

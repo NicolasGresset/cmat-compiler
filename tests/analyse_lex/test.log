@@ -100,3 +100,13 @@ lex.yy.c:1297:17: warning: ‘yyunput’ defined but not used [-Wunused-function
       |                 ^~~~~~~
 gcc -c main.c -Wall -Wextra -g
 gcc lex.yy.o main.o -lfl -o lexer -Wall -Wextra -g
+flex lexer.lex
+gcc -c lex.yy.c -Wall -Wextra -g
+lex.yy.c:1340:16: warning: ‘input’ defined but not used [-Wunused-function]
+ 1340 |     static int input  (void)
+      |                ^~~~~
+lex.yy.c:1297:17: warning: ‘yyunput’ defined but not used [-Wunused-function]
+ 1297 |     static void yyunput (int c, char * yy_bp )
+      |                 ^~~~~~~
+gcc -c main.c -Wall -Wextra -g
+gcc lex.yy.o main.o -lfl -o lexer -Wall -Wextra -g
