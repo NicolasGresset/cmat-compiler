@@ -18,6 +18,8 @@ struct assembly_code {
   int next_int_temporary;   // le procain entier temporaire à utiliser
   int next_float_temporary; // le prochain flottant temporaire à utiliser
   FILE *out; // pointeur vers le fichier de sortie où écrire le code MIPS
+  struct symtable *symtable; // la table des symboles : permet de savoir un
+                             // symbole a déjà été rencontré ou non
 };
 
 void move_int_symbol(struct symbol *symbol, struct assembly_code *code,
@@ -159,9 +161,39 @@ void generate_mips_code(struct code *code) {
   /* On va itérer sur les quads compris dans code et transformer chacun d'eux en
    * code MIPS*/
   struct assembly_code assembly_code;
+  assembly_code.symtable = symtable_new();
+
   assembly_code.out = open_file(FILE_NAME);
 
   for (int i = 0; i < code->nextquad; i++) {
     manage_quad(&code->quads[i], &assembly_code);
+  }
+}
+
+/**
+ * @brief Gère un identificateur rencontré dans le code 3 adresses
+ *
+ * @param symbol
+ * @param code
+ */
+void manage_identificateur(struct symbol *symbol, struct assembly_code *code) {}
+
+/**
+ * @brief Parcourt les différents identificateurs rencontrés dans le code 3
+ * adresses Si ils ont déjà étés rencontrés, on ne fait rien sinon, on leur
+ * associe un emplacement mémoire dans le segment data du code MIPS via
+ * l'étiquette correspondante au nom de l'identificateur
+ *
+ * @param quad
+ */
+void manage_identificateurs(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind == NAME) {
+    manage_identificateur(quad->sym1, code);
+  }
+  if (quad->sym2->kind == NAME) {
+    manage_identificateur(quad->sym2, code);
+  }
+  if (quad->sym3->kind == NAME) {
+    manage_identificateur(quad->sym3, code);
   }
 }
