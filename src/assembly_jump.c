@@ -22,6 +22,7 @@ void manage_q_if_eq(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# if eq\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't compare a float to a non float\n");
@@ -65,6 +66,7 @@ void manage_q_if_neq(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# if neq\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't compare a float to a non float\n");
@@ -108,6 +110,7 @@ void manage_q_if_lt(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# if lt\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't compare a float to a non float\n");
@@ -152,6 +155,7 @@ void manage_q_if_le(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# if le\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't compare a float to a non float\n");
@@ -194,6 +198,7 @@ void manage_q_if_gt(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# if gt\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't compare a float to a non float\n");
@@ -240,6 +245,7 @@ void manage_q_if_ge(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# if ge\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't compare a float to a non float\n");

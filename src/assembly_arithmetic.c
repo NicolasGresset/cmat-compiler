@@ -26,6 +26,7 @@ void manage_bop_plus(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# plus\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym3)) {
       fprintf(stderr, "Error: can't add a label or a int to a float\n");
@@ -70,6 +71,7 @@ void manage_bop_moins(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# moins\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't affect a float to a non float\n");
@@ -124,6 +126,7 @@ void manage_bop_mult(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# mult\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't affect a float to a non float\n");
@@ -178,6 +181,8 @@ void manage_bop_divise(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+
+  fprintf(code->out, "# divise\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't affect a float to a non float\n");
@@ -228,6 +233,8 @@ void manage_uop_plus(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+
+  fprintf(code->out, "uop_plus\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't affect a float to a non float\n");
@@ -272,6 +279,8 @@ void manage_uop_moins(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+
+  fprintf(code->out, "uop_moins\n");
   if (is_symbol_float(quad->sym2)) {
     if (!is_symbol_float(quad->sym1)) {
       fprintf(stderr, "Error: can't affect a float to a non float\n");

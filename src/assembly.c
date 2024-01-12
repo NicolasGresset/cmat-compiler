@@ -1,9 +1,9 @@
 #include "../include/assembly.h"
+#include "CMat.h" // pour SYMTAB
 #include "assembly_arithmetic.h"
 #include "assembly_jump.h"
-#include "CMat.h" // pour SYMTAB
-#include "table_symboles.h"
 #include "data_segment.h"
+#include "table_symboles.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -108,10 +108,12 @@ void save_float_symbol(struct symbol *symbol, struct assembly_code *code,
  * @param quad
  * @param code
  * @param register_number_float
- * @param register_number_int 
+ * @param register_number_int
  */
-void save_float_into_int_symbol(struct symbol *symbol, struct assembly_code *code,
-                     int register_number_float, int register_number_int) {
+void save_float_into_int_symbol(struct symbol *symbol,
+                                struct assembly_code *code,
+                                int register_number_float,
+                                int register_number_int) {
 
   switch (symbol->kind) {
   case NAME:
@@ -140,8 +142,10 @@ void save_float_into_int_symbol(struct symbol *symbol, struct assembly_code *cod
  * @param register_number_float
  * @param register_number_int
  */
-void save_int_into_float_symbol(struct symbol *symbol, struct assembly_code *code,
-                     int register_number_float, int register_number_int) {
+void save_int_into_float_symbol(struct symbol *symbol,
+                                struct assembly_code *code,
+                                int register_number_float,
+                                int register_number_int) {
 
   switch (symbol->kind) {
   case NAME:
@@ -164,16 +168,15 @@ void manage_copy(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 
+  fprintf(code->out, "# copy to %s\n", quad->sym1->u.id.name);
   if (quad->sym1->u.id.type == ENTIER) {
     if (!is_symbol_int(quad->sym2) || !is_symbol_float(quad->sym2)) {
-
     }
 
     if (is_symbol_int(quad->sym2)) {
       move_int_symbol(quad->sym2, code, T0);
       save_int_symbol(quad->sym1, code, T0);
-    }
-    else if (is_symbol_float(quad->sym2)) {
+    } else if (is_symbol_float(quad->sym2)) {
       move_float_symbol(quad->sym2, code, F0);
       save_float_into_int_symbol(quad->sym1, code, F0, T0);
     }
@@ -182,13 +185,12 @@ void manage_copy(struct quad *quad, struct assembly_code *code) {
       fprintf(stderr, "Error: can't copy a label to an int\n");
       exit(1);
     }
-    
+
   } else if (quad->sym1->u.id.type == REEL) {
     if (is_symbol_float(quad->sym2)) {
       move_float_symbol(quad->sym2, code, F0);
       save_float_symbol(quad->sym1, code, F0);
-    }
-    else if (is_symbol_int(quad->sym2)) {
+    } else if (is_symbol_int(quad->sym2)) {
       move_int_symbol(quad->sym2, code, T0);
       save_int_into_float_symbol(quad->sym1, code, F0, T0);
     }
@@ -197,7 +199,6 @@ void manage_copy(struct quad *quad, struct assembly_code *code) {
       fprintf(stderr, "Error: can't copy a label or a int to a float\n");
       exit(1);
     }
-
 
   } else {
     fprintf(stderr, "Error: can't copy a label\n");
@@ -223,6 +224,8 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
     fprintf(stderr, "Error: first operand of DECLARE is not a NAME\n");
     exit(1);
   }
+
+  fprintf(code->out, "# declare %s\n", quad->sym1->u.id.name);
 
   char declaration[MAX_DATA_SIZE];
   int res;
@@ -334,7 +337,6 @@ void manage_quads(struct code *code, struct assembly_code *assembly_code) {
     manage_quad(&code->quads[i], assembly_code);
   }
 }
-
 
 /**
  * @brief La fonction qui génère le code MIPS à partir du code 3 adresses
