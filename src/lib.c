@@ -253,10 +253,83 @@ static void quad_dump(struct quad *q) {
         printf("- ");
         symbol_dump(q->sym2);
         break;
+
+    case MATOP_PLUS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" + ");
+        symbol_dump(q->sym3);
+        break;
+    case MATOP_MOINS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" - ");
+        symbol_dump(q->sym3);
+        break;
+    case MATOP_MULT:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" * ");
+        symbol_dump(q->sym3);
+        break;
+    case MATOP_DIVISE:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" / ");
+        symbol_dump(q->sym3);
+        break;
+    case UMATOP_PLUS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        printf("+ ");
+        symbol_dump(q->sym2);
+        break;
+    case UMATOP_MOINS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        printf("- ");
+        symbol_dump(q->sym2);
+        break;
+
+    case MAT_BIN_PLUS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" + ");
+        symbol_dump(q->sym3);
+        break;
+    case MAT_BIN_MOINS:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" - ");
+        symbol_dump(q->sym3);
+        break;
+    case MAT_BIN_MULT:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" * ");
+        symbol_dump(q->sym3);
+        break;
+    case MAT_BIN_DIVISE:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf(" / ");
+        symbol_dump(q->sym3);
+        break;
+
+
     case CALL_PRINT:
         printf("print ");
         symbol_dump(q->sym1);
         break;
+
     case Q_DECLARE:
         printf("DECLARE ");
         symbol_dump(q->sym1);
@@ -265,6 +338,7 @@ static void quad_dump(struct quad *q) {
         printf("DECLARE ");
         symbol_dump(q->sym1);
         break;
+
     case COPY:
         symbol_dump(q->sym1);
         printf(" := ");
@@ -275,6 +349,7 @@ static void quad_dump(struct quad *q) {
         printf(" := ");
         symbol_dump(q->sym2);
         break;
+
     case Q_IF_EQ:
         printf("if ");
         symbol_dump(q->sym1);

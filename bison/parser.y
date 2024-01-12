@@ -73,28 +73,59 @@ void complete(struct ListLabel * l, unsigned int addr)
          printf("wrong operation quad\n");
      }
 
-     if (expr2.type == MATRIX_TYPE && expr3.type == MATRIX_TYPE)
+     if (k == UOP_PLUS || k == UOP_MOINS)
      {
-        if (expr2.ptr->u.id.col != expr3.ptr->u.id.col || expr2.ptr->u.id.row != expr3.ptr->u.id.row)
-        {
-            fprintf(stderr, "error : dimensional error on matrix %s and %s\n", expr2.ptr->u.id.name, expr3.ptr->u.id.name);
-            exit(1);
-        }
-        expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
 
-        gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
+         if (expr2.type == MATRIX_TYPE)
+         {
+             expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
 
+             gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
 
-        gencode(CODE, k1, expr1.ptr, expr2.ptr, expr3.ptr);
-    }
-    // Operération avec 1 matrice et 1 float
-    else if (expr2.type == MATRIX_TYPE)
-    {
-        expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+             gencode(CODE, k1, expr1.ptr, expr2.ptr, NULL);
+         }
+         else
+         {
+             expr1.ptr = newtemp(SYMTAB, expr2.type);
+             gencode(CODE, Q_DECLARE, expr1.ptr, NULL, NULL);
 
-        gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
-        gencode(CODE, k2, expr1.ptr, expr2.ptr, expr3.ptr);
-    }
+             gencode(CODE, k, expr1.ptr,expr2.ptr,NULL);
+         }
+         expr1.type = expr2.type;
+
+         expr1.num = expr2.num + 1;
+         return expr1;
+     }
+
+     else if (expr2.type == MATRIX_TYPE && expr3.type == MATRIX_TYPE)
+     {
+         // Pour l'addition et la soustraction matricielles
+         if ( (k == BOP_PLUS || k == BOP_MOINS) && (expr2.ptr->u.id.col != expr3.ptr->u.id.col || expr2.ptr->u.id.row != expr3.ptr->u.id.row))
+         {
+             fprintf(stderr, "error : dimensional error on matrix %s and %s\n", expr2.ptr->u.id.name, expr3.ptr->u.id.name);
+             exit(1);
+         }
+         // Pour multiplication et division matricielles
+         if ( (k == BOP_MULT || k == BOP_DIVISE) && (expr2.ptr->u.id.col != expr3.ptr->u.id.row))
+         {
+             fprintf(stderr, "error : dimensional error on matrix %s and %s\n", expr2.ptr->u.id.name, expr3.ptr->u.id.name);
+             printf("col : %d %d row : %d %d", expr2.ptr->u.id.row, expr2.ptr->u.id.col, expr3.ptr->u.id.row, expr3.ptr->u.id.col);
+             exit(1);
+         }
+         expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+
+         gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
+
+         gencode(CODE, k1, expr1.ptr, expr2.ptr, expr3.ptr);
+     }
+     // Operération avec 1 matrice et 1 float
+     else if (expr2.type == MATRIX_TYPE)
+     {
+         expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+
+         gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
+         gencode(CODE, k2, expr1.ptr, expr2.ptr, expr3.ptr);
+     }
     // Opératione entre 1 float et 1 matrice
     else if (expr3.type == MATRIX_TYPE)
     {
@@ -263,9 +294,27 @@ declaration_mat
 | id_vector fin_crea_mat
 | id_matrix EGAL creation_matrix fin_crea_mat
 | id_vector EGAL creation_vector fin_crea_mat
-| MATRIX id_matrix EGAL expression_mat fin_crea_mat
+| MATRIX id_matrix EGAL expression_bin fin_crea_mat
+{
+    // id_matrix regarde si l'identificateur existe
+
+    if ($4.type != MATRIX_TYPE)
+    {
+        fprintf(stderr, "error : incorrect type in declaration matrix\n");
+        exit(1);
+    }
+}
 // Si on separe matrix et vector, on peut aussi faire expression_bin_mat et expression_bin_vec
-| MATRIX id_vector EGAL expression_mat fin_crea_mat
+| MATRIX id_vector EGAL expression_bin fin_crea_mat
+{
+    // id_vector regarde si l'identificateur existe
+    if ($4.type != MATRIX_TYPE)
+    {
+        fprintf(stderr, "error : incorrect type in declaration matrix\n");
+        exit(1);
+    }
+};
+
 
 id_matrix
 : IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
@@ -354,7 +403,7 @@ creation_vector_prime
     $$.col = 1;
     // newtemp
     struct symbol * sym_temp = newtemp(SYMTAB, REEL);
-    gencode(CODE, Q_DECLARE, sym_temp,NULL,NULL);
+    gencode(CODE, Q_DECLARE, sym_temp, NULL,NULL);
     gencode(CODE, COPY, sym_temp, $2.ptr, NULL);
 }
 | %empty {$$.row = 0; $$.col = 0;};
@@ -398,26 +447,12 @@ expression_bin
     $$ = expression_gestion(CODE, SYMTAB, BOP_DIVISE, $$, $1, $3);
 }
 |  MOINS expression_bin %prec UEXPR   {
-    $$.ptr = newtemp(SYMTAB, $2.type);
-    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-    gencode(CODE,UOP_MOINS,$$.ptr,$2.ptr,NULL);
-
-    // Type temporaire
-    $$.type = $2.type;
-
-    $$.num = $2.num + 1;
+    struct exprval expr_null;
+    $$ = expression_gestion(CODE, SYMTAB, UOP_MOINS, $$, $2, expr_null);
 }
 |  PLUS expression_bin %prec UEXPR   {
-    $$.ptr = newtemp(SYMTAB, $2.type);
-    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-    gencode(CODE,UOP_PLUS,$$.ptr,$2.ptr,NULL);
-
-    // Type temporaire
-    $$.type = $2.type;
-
-    $$.num = $2.num + 1;
+    struct exprval expr_null;
+    $$ = expression_gestion(CODE, SYMTAB, UOP_PLUS, $$, $2, expr_null);
 }
 //|  POINT_EXCLAMATION expression_bin %prec UEXPR {;} // A completer
 |  TRANSPOSITION expression_bin %prec UEXPR {;} // Faire un nouveau terminal avec expression_mat pour différencier les 2 dans les conditions ?
@@ -491,7 +526,7 @@ operande
     $$.ptr = sym_id;
     $$.type = sym_id->u.id.type;
 }
-| CONSTANTE_ENTIERE {$$.ptr = symbol_const_int((int)$1); $$.type = ENTIER;}
+| CONSTANTE_ENTIERE {$$.ptr = symbol_const_int($1); $$.type = ENTIER;}
 | CONSTANTE_FLOTTANTE {$$.ptr = symbol_const_float($1); $$.type = REEL;}
 | IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
 CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
@@ -596,14 +631,14 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
 
 // Ici expression_mat
 
-expression_mat
-: TRANSPOSITION expression_mat %prec UEXPR {;}
-| expression_mat PLUS expression_mat
-| expression_mat MOINS expression_mat
-| expression_mat FOIS expression_mat
-| expression_mat DIVISE expression_mat
-| IDENTIFICATEUR   // Juste pour les IDs associés au type matrix du coup
-| CONSTANTE_FLOTTANTE
+/* expression_mat */
+/* : TRANSPOSITION expression_mat %prec UEXPR {;} */
+/* | expression_mat PLUS expression_mat */
+/* | expression_mat MOINS expression_mat */
+/* | expression_mat FOIS expression_mat */
+/* | expression_mat DIVISE expression_mat */
+/* | IDENTIFICATEUR   // Juste pour les IDs associés au type matrix du coup */
+/* | CONSTANTE_FLOTTANTE */
   // Pose des problèmes de shift/reduce
 /* // Operation avec constante */
 /* | expression_mat PLUS CONSTANTE_FLOTTANTE */
@@ -616,11 +651,11 @@ expression_mat
 /* | CONSTANTE_FLOTTANTE FOIS expression_mat */
 /* | CONSTANTE_FLOTTANTE DIVISE expression_mat */
 // Autre
-| MOINS expression_mat %prec UEXPR
-| IDENTIFICATEUR PLUS_PLUS
-| IDENTIFICATEUR MOINS_MOINS
-| PLUS_PLUS IDENTIFICATEUR
-| MOINS_MOINS IDENTIFICATEUR
+/* | MOINS expression_mat %prec UEXPR */
+/* | IDENTIFICATEUR PLUS_PLUS */
+/* | IDENTIFICATEUR MOINS_MOINS */
+/* | PLUS_PLUS IDENTIFICATEUR */
+/* | MOINS_MOINS IDENTIFICATEUR */
 // Extraction   --> Je pense partir comme ça, mais avant faut que tu me dises si
 //possible pour toi de regarder les conditions sur les dimensions pour l'extraction
   //| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
@@ -730,9 +765,10 @@ for_init
     table_hachage_put(SYMTAB,id);
 
     struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, Q_DECLARE, sym_id, NULL, NULL);
     gencode(CODE,COPY,sym_id,$4.ptr,NULL);
-}
 
+}
 for_fin
 : IDENTIFICATEUR
 {

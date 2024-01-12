@@ -90,8 +90,8 @@ struct quad {
         BOP_MOINS,
         BOP_MULT,
         BOP_DIVISE,
-        UOP_PLUS,
-        UOP_MOINS,
+        UOP_PLUS,    // faire a = +b  (idem copy...)
+        UOP_MOINS,   // faire a = -b (en dur multipler par -1 avant ?)
 
         // Operation entre 2 matrices
         MATOP_PLUS,
@@ -107,8 +107,6 @@ struct quad {
         MAT_BIN_MOINS,
         MAT_BIN_MULT,
         MAT_BIN_DIVISE,
-        // UMAT_BIN_PLUS, Impossible
-        // UMAT_BIN_MOINS, Impossible
 
         COPY,
 
@@ -124,6 +122,7 @@ struct quad {
         Q_GOTO,
         Q_GOTO_UNKNOWN,
         CALL_PRINT
+
     } kind;
     struct symbol *sym1;
     struct symbol *sym2;
