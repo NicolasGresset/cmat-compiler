@@ -312,10 +312,6 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   default:
     manage_default_case(quad, code);
     break;
-  case COPY:
-    manage_copy(quad, code);
-  default:
-    manage_default_case(quad, code);
   }
 }
 
@@ -354,15 +350,7 @@ void generate_mips_code(struct code *code) {
   assembly_code.out =
       open_file(FILE_NAME); // todo gérer le commutateur de la ligne de commande
 
-<<<<<<< HEAD
   append_to_data(&assembly_code, ".data\n");
   manage_quads(code, &assembly_code);
   write_data_to_file(&assembly_code);
-=======
-  assembly_code.out = open_file(FILE_NAME);
-
-  for (unsigned int i = 0; i < code->nextquad; i++) {
-    manage_quad(&code->quads[i], &assembly_code);
-  }
->>>>>>> dev_code_intermediaire
 }
