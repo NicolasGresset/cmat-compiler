@@ -72,17 +72,21 @@
 /*---------------------------------------------------*/
 /*-------------test MATRIX---------------------------*/
 
-int main() {
+int main()
+{
     matrix A[2][2]={{12,27},{64,42}}, IA[2][2], B[2]={1,8}, X[2];
     float det;
+    int c = 3;
 /* Calcul de la matrice inverse de A */
     //IA = ~A;
     //IA = IA[1;0][1;0];
     //IA[0][1] = -IA[0][1];
     //IA[1][0] = -IA[1][0];
 /* Calcul du déterminant de A */
-    det = 1/(A[0][0]*A[1][1]-A[0][1]*A[1][0]);
-
+    //det = 1/(A[0][0]*A[1][1]-A[0][1]*A[1][0]);
+    //IA = A + IA;
     //IA = det*IA;
+    int b = det + c;
 /* Calcul de X */
     //X = IA*B;
+}
