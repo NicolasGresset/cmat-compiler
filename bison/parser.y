@@ -1,116 +1,5 @@
 
 %{
-#include <stdio.h>
-extern int yylex();
-extern int yyval;
-void yyerror (const char * msg);
-
-
-%}
-
-%token INT FLOAT MATRIX ELSE IF WHILE FOR 
-    CONSTANTE_ENTIERE CONSTANTE_FLOTTANTE 
-    CONSTANTE_CARACTERE IDENTIFICATEUR 
-    PLUS MOINS FOIS DIVISE PLUS_PLUS 
-    MOINS_MOINS EGAL TRANSPOSITION 
-    PARENTHESE_OUVRANTE PARENTHESE_FERMANTE 
-    CROCHET_OUVRANT CROCHET_FERMANT 
-    ACCOLADE_OUVRANTE ACCOLADE_FERMANTE 
-    VIRGULE POINT_VIRGULE APOSTROPHE 
-    GUILLEMET MAIN
-
-%start S
-
-
-%%
-
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE 
-
-liste_instructions : %empty
-                    | liste_instructions instruction
-
-instruction : %empty
-            | declaration
-            | affectation
-            | condition
-            | boucle_while 
-            | boucle_for 
-            
-
-
-
-
-
-declaration : type IDENTIFICATEUR fin_crea
-            | type IDENTIFICATEUR EGAL expression fin_crea
-            | declaration_matrix
-
-
-
-creation : IDENTIFICATEUR fin_crea
-            | IDENTIFICATEUR EGAL expression fin_crea
-
-fin_crea : POINT_VIRGULE
-        | VIRGULE creation
-
-
-
-
-declaration_matrix : type id_matrix fin_crea_mat
-        | type id_vector fin_crea_mat
-        | type id_matrix EGAL creation_matrix fin_crea_mat
-        | type id_vector EGAL creation_vector fin_crea_mat
-
-id_matrix : IDENTIFICATEUR CROCHET_OUVRANT expression CROCHET_FERMANT CROCHET_OUVRANT expression CROCHET_FERMANT
-
-id_vector : IDENTIFICATEUR CROCHET_OUVRANT expression CROCHET_FERMANT
-
-creation_mat : id_matrix fin_crea_mat
-            | id_vector fin_crea_mat
-            | id_matrix EGAL creation_matrix fin_crea_mat
-            | id_vector EGAL creation_vector fin_crea_mat
-
-fin_crea_mat : POINT_VIRGULE
-        | VIRGULE creation_mat
-
-
-
-creation_matrix : ACCOLADE_OUVRANTE creation_vector creation_matrix_prime ACCOLADE_FERMANTE
-
-creation_matrix_prime : VIRGULE creation_vector creation_matrix_prime
-                    | %empty
-
-creation_vector : ACCOLADE_OUVRANTE CONSTANTE_ENTIERE creation_vector_prime ACCOLADE_FERMANTE
-
-creation_vector_prime : VIRGULE CONSTANTE_CARACTERE creation_vector_prime
-                    | %empty
-
-
-
-
-
-
-
-
-
-
-
-affectation : IDENTIFICATEUR EGAL expression POINT_VIRGULE
-            | id_matrix EGAL expression POINT_VIRGULE
-            | id_vector EGAL expression POINT_VIRGULE
-
-
-expression : op_fin IDENTIFICATEUR
-            | IDENTIFICATEUR op_fin
-            | operateur2 expression
-            | expression operateur expression
-            | PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE
-            | operande
-
-operande : IDENTIFICATEUR
-        | CONSTANTE_ENTIERE
-        | CONSTANTE_FLOTTANTE
-%{
 #include "CMat.h"
 
 void yyerror (const char * msg);
@@ -192,6 +81,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     VIRGULE POINT_VIRGULE APOSTROPHE
     GUILLEMET MAIN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
+    RETURN
 
 %type <exprval> declaration operande expression
 %type <typeval> type
@@ -210,7 +100,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 %start S
 
 %%
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions RETURN CONSTANTE_ENTIERE POINT_VIRGULE ACCOLADE_FERMANTE
 
 liste_instructions
 : liste_instructions M instruction {complete($1.next, $2); $$.next = $3.next;}
@@ -223,8 +113,19 @@ instruction
 | boucle_for {$$.next = NULL;}
 | affectation {$$.next = NULL;}
 
+
+
+
+// Ici declaration
+
 declaration
-: type IDENTIFICATEUR fin_aff {
+: declaration_bin
+| MATRIX declaration_mat
+
+// Ici déclaration bin
+
+declaration_bin
+: type IDENTIFICATEUR POINT_VIRGULE {
     struct symbol * id = symtable_get(SYMTAB,$2);
      if ( id != NULL )
      {
@@ -234,7 +135,7 @@ declaration
      id = symtable_put(SYMTAB,$2, $1);
      //gencode(CODE,COPY,id,NULL,NULL);
  }
-| type IDENTIFICATEUR EGAL expression fin_aff  {
+| type IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE  {
     struct symbol * id = symtable_get(SYMTAB,$2);
     if ( id != NULL )
     {
@@ -244,12 +145,60 @@ declaration
     id = symtable_put(SYMTAB,$2, $1);
     gencode(CODE,COPY,id,$4.ptr,NULL);
  }
-| declaration_matrix --> en vrai ça on peut le mettre direct après instruction si tu pre+éfères---
 ;
 
+
+
+
+// Ici déclaration matrix.
+
+declaration_mat
+: MATRIX id_matrix_declar fin_crea_mat 
+| MATRIX id_vector_declar fin_crea_mat
+| MATRIX id_matrix_declar EGAL creation_matrix fin_crea_mat
+| MATRIX id_vector_declar EGAL creation_vector fin_crea_mat
+| MATRIX id_matrix_declar EGAL expression_mat fin_crea_mat
+// Si on separe matrix et vector, on peut aussi faire expression_mat et expression_vec
+| MATRIX id_vector_declar EGAL expression_mat fin_crea_mat 
+
+id_matrix_declar
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT CROCHET_OUVRANT operande CROCHET_FERMANT
+
+id_vector_declar
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT
+
+fin_crea_mat
+: POINT_VIRGULE
+| VIRGULE declaration_mat
+
+
+creation_matrix
+: expression_mat
+| ACCOLADE_OUVRANTE creation_vector creation_matrix_prime ACCOLADE_FERMANTE
+
+creation_matrix_prime
+: VIRGULE creation_vector creation_matrix_prime
+| %empty
+
+creation_vector
+: expression_vector
+| ACCOLADE_OUVRANTE expression_bin creation_vector_prime ACCOLADE_FERMANTE
+
+creation_vector_prime
+: VIRGULE CONSTANTE_FLOTTANTE creation_vector_prime
+| %empty
+
+
+// Ici affectation
+
 affectation
-//: IDENTIFICATEUR fin_aff --> affectation sans effet, à garder ? REP : sans effet pour une affectation mais pas pour une declaration, faut voir si changement ou pas, jsp
-: IDENTIFICATEUR EGAL expression fin_aff {
+: affectation_bin
+| affectation_mat
+
+// Ici affectation bin 
+
+affectation_bin
+: IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE {
     struct symbol * id = symtable_get(SYMTAB,$1);
     if ( id == NULL )
     {
@@ -264,109 +213,122 @@ affectation
     gencode(CODE,COPY,id,$3.ptr,NULL);
 
  }
- //| expression fin_aff
 ;
 
-fin_aff
-: POINT_VIRGULE
-| VIRGULE affectation
+// Ici affectation matrix
+
+// id_matrix et id_vector ici sont utilisés pour l'affectation et l'expression bin, au besoin on peut à nouveau diviser ça en affect et expression
+
+id_matrix_affect
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT CROCHET_OUVRANT operande CROCHET_FERMANT
+
+id_vector_affect
+: IDENTIFICATEUR CROCHET_OUVRANT operande CROCHET_FERMANT
+
+affectation_mat
+// 2 choses possibles : affectation matrice complète, ou affectation case matrice -> 2e cas = affectation_bin, t'as une préférence sur où le mettre ?
+: IDENTIFICATEUR EGAL expression_mat POINT_VIRGULE
+| id_matrix_affect EGAL expression_bin POINT_VIRGULE
+| id_vector_affect EGAL expression_bin POINT_VIRGULE
 
 
 
-declaration_matrix 
- // Si tu veux on peut separer encore plus matrice et vecteurs
-: MATRIX id_matrix fin_crea_mat 
-| MATRIX id_vector fin_crea_mat
-| MATRIX id_matrix EGAL creation_matrix fin_crea_mat
-| MATRIX id_vector EGAL creation_vector fin_crea_mat
-| MATRIX id_matrix EGAL expression_mat fin_crea_mat
-| MATRIX id_vector EGAL expression_vector fin_crea_mat --> J'y pense là à l'instant, faut que je vois encore
 
-id_matrix
-: IDENTIFICATEUR CROCHET_OUVRANT expression CROCHET_FERMANT CROCHET_OUVRANT expression CROCHET_FERMANT
+// Ici expression
 
-id_vector
-: IDENTIFICATEUR CROCHET_OUVRANT expression CROCHET_FERMANT
+expression 
+: expression_bin
+| expression_mat
 
-creation_mat
-: id_matrix fin_crea_mat
-| id_vector fin_crea_mat
-| id_matrix EGAL creation_matrix fin_crea_mat --> correspond a une affectation pour mat, faut-il separer de la declaration ?
-| id_vector EGAL creation_vector fin_crea_mat
+// Ici expression_bin
+// A la fin, j'ai mis element de matrice
+// Dis moi s'il faut que je revise un truc pour que ce soit bon pour toi
 
-fin_crea_mat
-: POINT_VIRGULE
-| VIRGULE creation_mat
-
-
-creation_matrix
-: expression_mat
-| ACCOLADE_OUVRANTE creation_vector creation_matrix_prime ACCOLADE_FERMANTE
-
-creation_matrix_prime
-: VIRGULE creation_vector creation_matrix_prime
-| %empty
-
-creation_vector
-: expression_vector
-| ACCOLADE_OUVRANTE expression creation_vector_prime ACCOLADE_FERMANTE
-
-creation_vector_prime
-: VIRGULE expression creation_vector_prime
-| %empty
-
-
-// Changer expression en ecpreesion_bin puis mettre dans la grammaire expression : expression_bin | expression_mat
-expression
-: expression PLUS expression {
+expression_bin
+: expression_bin PLUS expression_bin {
     $$.ptr = newtemp(SYMTAB);
     gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
     $$.type = $1.type;
 }
-| expression MOINS expression {
+| expression_bin MOINS expression_bin {
     $$.ptr = newtemp(SYMTAB);
     gencode(CODE,BOP_MOINS,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
     $$.type = $1.type;
 }
-| expression FOIS expression {
+| expression_bin FOIS expression_bin {
     $$.ptr = newtemp(SYMTAB);
     gencode(CODE,BOP_MULT,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
     $$.type = $1.type;
 }
-| expression DIVISE expression {
+| expression_bin DIVISE expression_bin {
     $$.ptr = newtemp(SYMTAB);
     gencode(CODE,BOP_DIVISE,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
     $$.type = $1.type;
 }
-|  MOINS expression %prec UEXPR   {
+|  MOINS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB);
     gencode(CODE,UOP_MOINS,$$.ptr,$2.ptr,NULL);
 
     // Type temporaire
     $$.type = $2.type;
 }
-|  PLUS expression %prec UEXPR   {
+|  PLUS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB);
     gencode(CODE,UOP_PLUS,$$.ptr,$2.ptr,NULL);
 
     // Type temporaire
     $$.type = $2.type;
 }
-|  POINT_EXCLAMATION expression %prec UEXPR {;}
-|  TRANSPOSITION expression %prec UEXPR {;} // Faire un nouveau terminal avec expression_mat pour différencier les 2 dans les conditions ?
+// |  POINT_EXCLAMATION expression %prec UEXPR {;}
 |  PARENTHESE_OUVRANTE expression PARENTHESE_FERMANTE {;}
 //| operateur2 IDENTIFICATEUR expression %prec UEXPR {;}
+| PLUS_PLUS IDENTIFICATEUR
+| MOINS_MOINS IDENTIFICATEUR
+| IDENTIFICATEUR PLUS_PLUS
+| IDENTIFICATEUR MOINS_MOINS
 | operande {$$.type = $1.type;}
- //| op_fin IDENTIFICATEUR
- //| IDENTIFICATEUR op_fin
+// Cas element d'une matrice
+| id_matrix_affect
+| id_vector_affect
+
+
+// Ici expression_mat
+
+expression_mat
+: TRANSPOSITION expression_mat %prec UEXPR {;}
+| expression_mat PLUS expression_mat
+| expression_mat MOINS expression_mat
+| expression_mat FOIS expression_mat
+| expression_mat DIVISE expression_mat
+| IDENTIFICATEUR   // Juste pour les IDs associés au type matrix du coup 
+// Operation avec constante
+| expression_mat PLUS CONSTANTE_FLOTTANTE
+| expression_mat MOINS CONSTANTE_FLOTTANTE
+| expression_mat FOIS CONSTANTE_FLOTTANTE
+| expression_mat DIVISE CONSTANTE_FLOTTANTE
+// Dans l'autre sens
+| CONSTANTE_FLOTTANTE PLUS expression_mat
+| CONSTANTE_FLOTTANTE MOINS expression_mat
+| CONSTANTE_FLOTTANTE FOIS expression_mat
+| CONSTANTE_FLOTTANTE DIVISE expression_mat
+// Autre
+| expression_mat PLUS_PLUS
+| expression_mat MOINS_MOINS
+| PLUS_PLUS expression_mat
+| MOINS_MOINS expression_mat
+| MOINS expression_mat
+// Extraction   --> Je pense partir comme ça, mais avant faut que tu me dises si 
+//possible pour toi de regarder les conditions sur les dimensions pour l'extraction
+| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
+
 
 operande
 : IDENTIFICATEUR
@@ -382,23 +344,9 @@ operande
 }
 | CONSTANTE_ENTIERE {$$.ptr = symtable_const_int(SYMTAB,$1); $$.type = ENTIER;}
 | CONSTANTE_FLOTTANTE {$$.ptr = symtable_const_float(SYMTAB,$1); $$.type = REEL;}
-| MATRIX  --> Pas sur que nécessaire à garder ---
 
- // POUR SIMPLIFIER
-/* op_fin : PLUS_PLUS */
-/*         | MOINS_MOINS */
 
- // On doit les mettre tous un par un sinon on se souvient pas de quel
- // token a été utiliisé est ça crée des confits shift/reduce
-/* operateur : PLUS */
-/*             | MOINS */
-/*             | FOIS */
-/*             | DIVISE */
 
-/* operateur2 : PLUS */
-/*             | MOINS */
-/*             | POINT_EXCLAMATION */
-/*             | TRANSPOSITION */
 
 
 type
@@ -523,65 +471,3 @@ void yyerror(const char * msg) {
 }
 
 
-op_fin : %empty
-        |PLUS_PLUS
-        | MOINS_MOINS
-
-operateur : PLUS
-            | MOINS
-            | FOIS
-            | DIVISE
-
-operateur2 : PLUS
-            | MOINS
-            | TRANSPOSITION
-
-type : INT
-    | FLOAT
-    | MATRIX
-
-condition : IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE 
-            ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
-            condition_suite
-
-condition_suite : %empty
-                | ELSE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
-
-boucle_while : WHILE PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
-                ACCOLADE_FERMANTE liste_instructions ACCOLADE_FERMANTE
-
-boucle_for : FOR ACCOLADE_OUVRANTE for_init POINT_VIRGULE test POINT_VIRGULE
-            expression PARENTHESE_FERMANTE 
-            ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
-
-test : PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE
-    | expression
-    | op_test2 test
-    | test op_test test
-
-op_test : %empty
-
-op_test2 : %empty
-
-for_init : IDENTIFICATEUR
-            | IDENTIFICATEUR EGAL operande
-            | type IDENTIFICATEUR EGAL operande
-
-            
-
-
-
-%%
-
-
-
-
-int main() {
-
-    printf("Bonjour\n");
-    return 0;
-}
-
-void yyerror(const char * msg) {
-	fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
-}
