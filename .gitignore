@@ -1,6 +1,8 @@
 bin/main
 .*.*
 *.o
+*.s
+src/parser.c
 ./obj
 .gitignore
 TAGS
