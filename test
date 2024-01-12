@@ -9,11 +9,6 @@ int main() {
     le i++ dans le for ne marche pas
     */
 
-    int a;
-    a = 2;
-    float b = 3.0;
-    int c = a + b;
-
     /*if (a == b) {
         a = 2; // test commentaire
     } else {
@@ -25,4 +20,12 @@ int main() {
     while (a < b) {
         a = a + 1;
     }*/
+
+    int a = 1;
+    float b = 2.0;
+    int c = a + b;
+
+    matrix A[2][2] = {{12, 27}, {64, 42}}, IA[2][2], B[2] = {1, 8}, X[2];
+
+    return 0;
 }

@@ -182,7 +182,8 @@ void complete(struct ListLabel * l, unsigned int addr)
     ACCOLADE_OUVRANTE ACCOLADE_FERMANTE
     VIRGULE POINT_VIRGULE APOSTROPHE
     GUILLEMET MAIN POINT_EXCLAMATION
-    INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL 
+    INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
+    RETURN POINT PRINT PRINTF PRINTMAT 
 
 %type <exprval_t> declaration_bin operande expression_bin id_matrix
 %type <typeval> type
@@ -203,7 +204,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 %start S
 
 %%
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions ACCOLADE_FERMANTE
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions RETURN CONSTANTE_ENTIERE POINT_VIRGULE ACCOLADE_FERMANTE
 {
     ListLabel_free($6.next);
 }
@@ -218,6 +219,21 @@ instruction
 | boucle_while {$$.next = $1.next;}
 | boucle_for {$$.next = $1.next;}
 | affectation_bin {$$.next = NULL;}
+// Ajout affectation_mat (on a vraiment oublié de faire ça ? *oups* )
+| affectation_mat
+// Pour gérer une expression seule sans égal
+| expression_seule
+// Fonctions toutes faites
+| PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE
+| PRINT PARENTHESE_OUVRANTE operande PARENTHESE_FERMANTE POINT_VIRGULE
+| PRINTMAT PARENTHESE_OUVRANTE IDENTIFICATEUR PARENTHESE_FERMANTE POINT_VIRGULE
+// il me faut un empty si il y a que return dans le main
+| %empty {$$.next = NULL;}
+
+// Ca je pense c'est bien, ça permet de prendre en compte le ++ et le -- sans rien ajouter de complexe.
+expression_seule
+: expression_bin
+| expression_mat
 
 declaration
 : declaration_bin {$$.next = NULL;}
@@ -595,7 +611,11 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     $$.type = REEL;
 };
 
-// Ici expression_mat
+// Ici affectation_mat
+
+affectation_mat
+: IDENTIFICATEUR EGAL expression_mat POINT_VIRGULE
+| IDENTIFICATEUR PLUS EGAL expression_mat POINT_VIRGULE
 
 expression_mat
 : TRANSPOSITION expression_mat %prec UEXPR {;}
@@ -625,6 +645,17 @@ expression_mat
 // Extraction   --> Je pense partir comme ça, mais avant faut que tu me dises si
 //possible pour toi de regarder les conditions sur les dimensions pour l'extraction
   //| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
+
+intervalle
+: CONSTANTE_ENTIERE intervalle_prime
+| CONSTANTE_ENTIERE POINT POINT CONSTANTE_ENTIERE intervalle_prime
+| FOIS intervalle_prime
+
+intervalle_prime
+: POINT_VIRGULE CONSTANTE_ENTIERE intervalle_prime
+| POINT_VIRGULE CONSTANTE_ENTIERE POINT POINT CONSTANTE_ENTIERE intervalle_prime
+| POINT_VIRGULE FOIS intervalle_prime
+| %empty
 
 
 type

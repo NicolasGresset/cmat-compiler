@@ -11,3 +11,15 @@ liste de ce qui marche pas:
     avec un error type au milieu
     le i++ dans le for ne marche pas
     
+
+    _STRING \"([^\\\n]|(\\.))*?\"
+
+Paragraphes pour le rapport (complétez si vous avez des trucs)
+
+Capacités du compilateur
+
+Tests implémentés
+
+Limites du compilateur
+- support de fonctions
+- instructions sans affectations (genre a+b;)

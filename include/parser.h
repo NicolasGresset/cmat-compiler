@@ -94,7 +94,12 @@ extern int yydebug;
     SUPERIEUR = 295,               /* SUPERIEUR  */
     SUPERIEUR_EGAL = 296,          /* SUPERIEUR_EGAL  */
     EGAL_EGAL = 297,               /* EGAL_EGAL  */
-    UEXPR = 298                    /* UEXPR  */
+    RETURN = 298,                  /* RETURN  */
+    POINT = 299,                   /* POINT  */
+    PRINT = 300,                   /* PRINT  */
+    PRINTF = 301,                  /* PRINTF  */
+    PRINTMAT = 302,                /* PRINTMAT  */
+    UEXPR = 303                    /* UEXPR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -141,7 +146,7 @@ union YYSTYPE
          int col;
      } taille_mat_t;
 
-#line 145 "./include/parser.h"
+#line 150 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
