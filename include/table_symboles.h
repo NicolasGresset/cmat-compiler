@@ -35,6 +35,10 @@ struct stack_id_t {
 struct symbol *newtemp(struct table_hachage_t *hash_tab, type_t type);
 
 /**
+ * Nouvel identificateur temporaire
+ */
+struct symbol *newtemp_mat(struct table_hachage_t *hash_tab, type_t type, int col, int row);
+/**
  * Initialiser la table de symboles
  */
 struct table_hachage_t *table_hachage_init(void);

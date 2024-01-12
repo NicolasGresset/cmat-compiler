@@ -590,11 +590,14 @@ void manage_q_if_ge(struct quad *quad, struct assembly_code *code) {
 
 
 void manage_copy(struct quad *quad, struct assembly_code *code){
-  // le quad copy correspond à une affectation
+    // le quad copy correspond à une affectation
+    printf("rien %d %d", quad->kind, code->next_int_temporary);
+
 }
 
 void manage_default_case(struct quad *quad, struct assembly_code *code) {
   fprintf(stderr, "Error: can't manage quad of kind %d\n", quad->kind);
+  printf("rien %d %d", quad->kind, code->next_int_temporary);
   exit(1);
 }
 
@@ -646,6 +649,7 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
     break;
   case COPY:
     manage_copy(quad, code);
+    break;
   default:
     manage_default_case(quad, code);
   }

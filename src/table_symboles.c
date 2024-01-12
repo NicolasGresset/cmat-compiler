@@ -93,6 +93,21 @@ struct symbol *newtemp(struct table_hachage_t *hash_tab, type_t type) {
     return symbol_id(*id);
 }
 
+struct symbol *newtemp_mat(struct table_hachage_t *hash_tab, type_t type, int col, int row) {
+    struct id_t *id;
+    name_t name;
+
+    snprintf(name, TAILLE_MAX_TOKEN, ".tmp%d", hash_tab->temporary);
+    id = id_init(name, type);
+    id->row = row;
+    id->col = col;
+
+    table_hachage_put(hash_tab, id);
+    ++(hash_tab->temporary);
+
+    return symbol_id(*id);
+}
+
 struct id_t *table_hachage_get(struct table_hachage_t *hash_tab,
                                const char *name) {
     if (hash_tab->alveoles == NULL) {

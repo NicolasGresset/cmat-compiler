@@ -33,16 +33,105 @@ void complete(struct ListLabel * l, unsigned int addr)
     }
 }
 
-%}
+ struct exprval expression_gestion(struct code * CODE,
+                                   struct table_hachage_t * SYMTAB,
+                                   enum quad_kind k,
+                                   struct exprval expr1,
+                                   struct exprval expr2,
+                                   struct exprval expr3)
+ {
+     // Affecter le bon quad pour les opérations matricielles si nécessaire
+     enum quad_kind k1;
+     enum quad_kind k2;
+     switch (k)
+     {
+     case BOP_PLUS:
+         k1 = MATOP_PLUS;
+         k2 = MAT_BIN_PLUS;
+         break;
 
+     case BOP_MOINS:
+         k1 = MATOP_MOINS;
+         k2 = MAT_BIN_MOINS;
+         break;
+     case BOP_MULT:
+         k1 = MATOP_MULT;
+         k2 = MAT_BIN_MULT;
+         break;
+     case BOP_DIVISE:
+         k1 = MATOP_DIVISE;
+         k2 = MAT_BIN_DIVISE;
+         break;
+     case UOP_PLUS:
+         k1 = UMATOP_PLUS;
+         break;
+     case UOP_MOINS:
+         k1 = UMATOP_MOINS;
+         break;
+
+     default:
+         printf("wrong operation quad\n");
+     }
+
+     if (expr2.type == MATRIX_TYPE && expr3.type == MATRIX_TYPE)
+     {
+        if (expr2.ptr->u.id.col != expr3.ptr->u.id.col || expr2.ptr->u.id.row != expr3.ptr->u.id.row)
+        {
+            fprintf(stderr, "error : dimensional error on matrix %s and %s\n", expr2.ptr->u.id.name, expr3.ptr->u.id.name);
+            exit(1);
+        }
+        expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+
+        gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
+
+
+        gencode(CODE, k1, expr1.ptr, expr2.ptr, expr3.ptr);
+    }
+    // Operération avec 1 matrice et 1 float
+    else if (expr2.type == MATRIX_TYPE)
+    {
+        expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+
+        gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
+        gencode(CODE, k2, expr1.ptr, expr2.ptr, expr3.ptr);
+    }
+    // Opératione entre 1 float et 1 matrice
+    else if (expr3.type == MATRIX_TYPE)
+    {
+        expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr3.ptr->u.id.col, expr3.ptr->u.id.row);
+
+        gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
+        gencode(CODE, k2, expr1.ptr, expr3.ptr, expr2.ptr);
+    }
+    // Operation entre 2 entiers
+    else if (expr2.type == ENTIER && expr3.type == ENTIER)
+    {
+        // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+        expr1.ptr = newtemp(SYMTAB, expr2.type);
+        gencode(CODE, Q_DECLARE, expr1.ptr, NULL, NULL);
+
+        gencode(CODE, k,expr1.ptr,expr2.ptr,expr3.ptr);
+    }
+    // Operation entre au moins 1 flottant (conversion gérée plus tard)
+    else
+    {
+        expr1.ptr = newtemp(SYMTAB, REEL);
+        gencode(CODE, Q_DECLARE, expr1.ptr, NULL, NULL);
+
+        gencode(CODE, k,expr1.ptr,expr2.ptr,expr3.ptr);
+    }
+
+    // Utile pour la boucle_for savoir où compléter test.true
+    expr1.num = MAX(expr2.num, expr3.num);
+    expr1.num += 1;
+
+     return expr1;
+ }
+
+%}
 %union
  {
-     struct
-     {
-         struct symbol * ptr;
-         type_t type;
-         int num;
-     } exprval;
+     struct exprval exprval_t;
 
      name_t strval;
      type_t typeval;
@@ -94,7 +183,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     GUILLEMET MAIN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
 
-%type <exprval> declaration_bin operande expression_bin id_matrix
+%type <exprval_t> declaration_bin operande expression_bin id_matrix
 %type <typeval> type
 %type <taille_mat_t> creation_matrix creation_matrix_prime creation_vector creation_vector_prime
 %type <intval> M
@@ -297,101 +386,16 @@ affectation_bin
 
 expression_bin
 : expression_bin PLUS expression_bin {
-    // Operation entre 2 matrix
-    if ($1.type == MATRIX_TYPE && $3.type == MATRIX_TYPE)
-    {
-        if ($1.ptr->u.id.col != $3.ptr->u.id.col || $1.ptr->u.id.row != $3.ptr->u.id.row)
-        {
-            fprintf(stderr, "error : dimensional error on matrix %s and %s\n", $1.ptr->u.id.name, $3.ptr->u.id.name);
-            exit(1);
-        }
-        $$.ptr = newtemp(SYMTAB, MATRIX_TYPE);
-        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-        $$.ptr->u.id.col = $1.ptr->u.id.col;
-        $$.ptr->u.id.row = $1.ptr->u.id.row;
-
-        gencode(CODE, MATOP_PLUS, $$.ptr, $1.ptr, $3.ptr);
-    }
-    // Operération avec 1 matrice et 1 float
-    else if ($1.type == MATRIX_TYPE)
-    {
-        $$.ptr = newtemp(SYMTAB, MATRIX_TYPE);
-        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-        $$.ptr->u.id.col = $1.ptr->u.id.col;
-        $$.ptr->u.id.row = $1.ptr->u.id.row;
-
-        gencode(CODE, MATOP_PLUS, $$.ptr, $1.ptr, $3.ptr);
-    }
-    // Opératione entre 1 float et 1 matrice
-    else if ($3.type == MATRIX_TYPE)
-    {
-
-
-        $$.ptr = newtemp(SYMTAB, MATRIX_TYPE);
-        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-        $$.ptr->u.id.col = $3.ptr->u.id.col;
-        $$.ptr->u.id.row = $3.ptr->u.id.row;
-
-        gencode(CODE, MAT_BIN_PLUS, $$.ptr, $3.ptr, $1.ptr);
-    }
-    // Operation entre 2 entiers
-    else if ($1.type == ENTIER && $3.type == ENTIER)
-    {
-        // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
-        $$.ptr = newtemp(SYMTAB, $1.type);
-        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-        gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
-    }
-    // Operation entre au moins 1 flottant (conversion gérée plus tard)
-    else
-    {
-        $$.ptr = newtemp(SYMTAB, REEL);
-        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-        gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
-    }
-
-    // Utile pour la boucle_for savoir où compléter test.true
-    $$.num = MAX($1.num, $3.num);
-    $$.num += 1;
+    $$ = expression_gestion(CODE, SYMTAB, BOP_PLUS, $$, $1, $3);
 }
 | expression_bin MOINS expression_bin {
-    $$.ptr = newtemp(SYMTAB, $1.type);
-    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-    gencode(CODE,BOP_MOINS,$$.ptr,$1.ptr,$3.ptr);
-
-    // Type temporaire
-    $$.type = $1.type;
-
-    $$.num = MAX($1.num, $3.num);
-    $$.num += 1;
+    $$ = expression_gestion(CODE, SYMTAB, BOP_MOINS, $$, $1, $3);
 }
 | expression_bin FOIS expression_bin {
-    $$.ptr = newtemp(SYMTAB, $1.type);
-    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-    gencode(CODE,BOP_MULT,$$.ptr,$1.ptr,$3.ptr);
-
-    // Type temporaire
-    $$.type = $1.type;
-
-    $$.num = MAX($1.num, $3.num);
-    $$.num += 1;
+    $$ = expression_gestion(CODE, SYMTAB, BOP_MULT, $$, $1, $3);
 }
 | expression_bin DIVISE expression_bin {
-    $$.ptr = newtemp(SYMTAB, $1.type);
-    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
-
-    gencode(CODE,BOP_DIVISE,$$.ptr,$1.ptr,$3.ptr);
-
-    // Type temporaire
-    $$.type = $1.type;
-
-    $$.num = MAX($1.num, $3.num);
-    $$.num += 1;
+    $$ = expression_gestion(CODE, SYMTAB, BOP_DIVISE, $$, $1, $3);
 }
 |  MOINS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB, $2.type);
