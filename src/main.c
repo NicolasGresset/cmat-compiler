@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
     }
     int r = yyparse();
     generate_mips_code(CODE);
-
+    
     if (context->tos == 1)
         table_hachage_print(SYMTAB);
     code_dump(CODE);

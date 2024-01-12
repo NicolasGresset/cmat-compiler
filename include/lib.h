@@ -85,6 +85,26 @@ struct quad {
         UOP_PLUS,
         UOP_MOINS,
 
+        // Operation entre 2 matrices
+        MATOP_PLUS,
+        MATOP_MOINS,
+        MATOP_MULT,
+        MATOP_DIVISE,
+        UMATOP_PLUS,
+        UMATOP_MOINS,
+        UMATOP_TRANSPOSE,
+
+        // Operation entre 1 matrice et 1 float ou entier
+        MAT_BIN_PLUS,
+        MAT_BIN_MOINS,
+        MAT_BIN_MULT,
+        MAT_BIN_DIVISE,
+        UMAT_BIN_PLUS,
+        UMAT_BIN_MOINS,
+        UMAT_BIN_TRANSPOSE,
+
+
+
         COPY,
 
         ADRESSE,

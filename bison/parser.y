@@ -297,18 +297,70 @@ affectation_bin
 
 expression_bin
 : expression_bin PLUS expression_bin {
-    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
-    $$.ptr = newtemp(SYMTAB, $1.type);
-    gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
+    // Operation entre 2 matrix
+    if ($1.type == MATRIX_TYPE && $3.type == MATRIX_TYPE)
+    {
+        if ($1.ptr->u.id.col != $3.ptr->u.id.col || $1.ptr->u.id.row != $3.ptr->u.id.row)
+        {
+            fprintf(stderr, "error : dimensional error on matrix %s and %s\n", $1.ptr->u.id.name, $3.ptr->u.id.name);
+            exit(1);
+        }
+        $$.ptr = newtemp(SYMTAB, MATRIX_TYPE);
+        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+        $$.ptr->u.id.col = $1.ptr->u.id.col;
+        $$.ptr->u.id.row = $1.ptr->u.id.row;
 
-    // Type temporaire en fonction de int ou float convertir le type
-    $$.type = $1.type;
+        gencode(CODE, MATOP_PLUS, $$.ptr, $1.ptr, $3.ptr);
+    }
+    // Operération avec 1 matrice et 1 float
+    else if ($1.type == MATRIX_TYPE)
+    {
+        $$.ptr = newtemp(SYMTAB, MATRIX_TYPE);
+        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+        $$.ptr->u.id.col = $1.ptr->u.id.col;
+        $$.ptr->u.id.row = $1.ptr->u.id.row;
+
+        gencode(CODE, MATOP_PLUS, $$.ptr, $1.ptr, $3.ptr);
+    }
+    // Opératione entre 1 float et 1 matrice
+    else if ($3.type == MATRIX_TYPE)
+    {
+
+
+        $$.ptr = newtemp(SYMTAB, MATRIX_TYPE);
+        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
+        $$.ptr->u.id.col = $3.ptr->u.id.col;
+        $$.ptr->u.id.row = $3.ptr->u.id.row;
+
+        gencode(CODE, MAT_BIN_PLUS, $$.ptr, $3.ptr, $1.ptr);
+    }
+    // Operation entre 2 entiers
+    else if ($1.type == ENTIER && $3.type == ENTIER)
+    {
+        // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+        $$.ptr = newtemp(SYMTAB, $1.type);
+        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
+        gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
+    }
+    // Operation entre au moins 1 flottant (conversion gérée plus tard)
+    else
+    {
+        $$.ptr = newtemp(SYMTAB, REEL);
+        gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
+        gencode(CODE,BOP_PLUS,$$.ptr,$1.ptr,$3.ptr);
+    }
+
     // Utile pour la boucle_for savoir où compléter test.true
     $$.num = MAX($1.num, $3.num);
     $$.num += 1;
 }
 | expression_bin MOINS expression_bin {
     $$.ptr = newtemp(SYMTAB, $1.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     gencode(CODE,BOP_MOINS,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
@@ -319,6 +371,8 @@ expression_bin
 }
 | expression_bin FOIS expression_bin {
     $$.ptr = newtemp(SYMTAB, $1.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     gencode(CODE,BOP_MULT,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
@@ -329,6 +383,8 @@ expression_bin
 }
 | expression_bin DIVISE expression_bin {
     $$.ptr = newtemp(SYMTAB, $1.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     gencode(CODE,BOP_DIVISE,$$.ptr,$1.ptr,$3.ptr);
 
     // Type temporaire
@@ -339,6 +395,8 @@ expression_bin
 }
 |  MOINS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB, $2.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     gencode(CODE,UOP_MOINS,$$.ptr,$2.ptr,NULL);
 
     // Type temporaire
@@ -348,6 +406,8 @@ expression_bin
 }
 |  PLUS expression_bin %prec UEXPR   {
     $$.ptr = newtemp(SYMTAB, $2.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     gencode(CODE,UOP_PLUS,$$.ptr,$2.ptr,NULL);
 
     // Type temporaire
@@ -355,14 +415,16 @@ expression_bin
 
     $$.num = $2.num + 1;
 }
-|  POINT_EXCLAMATION expression_bin %prec UEXPR {;} // A completer
-|  TRANSPOSITION expression_bin %prec UEXPR {;} // Faire un nouveau terminal avec expression_bin_mat pour différencier les 2 dans les conditions ?
+//|  POINT_EXCLAMATION expression_bin %prec UEXPR {;} // A completer
+|  TRANSPOSITION expression_bin %prec UEXPR {;} // Faire un nouveau terminal avec expression_mat pour différencier les 2 dans les conditions ?
 |  PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE {$$.ptr = $2.ptr; $$.type = $2.type; $$.num = $2.num;}
 //| operateur2 IDENTIFICATEUR expression_bin %prec UEXPR {;}
 | PLUS_PLUS operande
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     $$.ptr = newtemp(SYMTAB, $2.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_PLUS,$$.ptr,one,$2.ptr);
 
@@ -374,6 +436,8 @@ expression_bin
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     $$.ptr = newtemp(SYMTAB, $2.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_MOINS,$$.ptr,$2.ptr, one);
 
@@ -385,6 +449,8 @@ expression_bin
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     $$.ptr = newtemp(SYMTAB, $1.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_PLUS,$$.ptr,one,$1.ptr);
 
@@ -396,6 +462,8 @@ expression_bin
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     $$.ptr = newtemp(SYMTAB, $1.type);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_MOINS,$$.ptr, $1.ptr, one);
 
@@ -413,11 +481,6 @@ operande
     {
         fprintf(stderr,"Name '%s' undeclared\n",$1);
         exit(1);
-    }
-    if (id->type == MATRIX_TYPE)
-    {
-        printf("%s is of type MATRIX : pas encore géré\n",$1);
-        //exit(1);
     }
 
     struct symbol * sym_id = symbol_id(*id);
@@ -450,12 +513,16 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     // Pour obtenir la valeur du tableau
     /* T3 = T1*20 */
     struct symbol * t3 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t3, NULL, NULL);
+
     struct symbol * t3_temp = symbol_const_int(($3 + 1) * id->col);
     struct symbol * j = symbol_const_int(($6 + 1));
     /*     T3 = T3+T2 */
     gencode(CODE, BOP_PLUS, t3, j, t3_temp);
     /*     T4 = adr(A) /\* adresse de base de A *\/ */
     struct symbol * t4 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t4, NULL, NULL);
+
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, ADRESSE, t4, sym_id, NULL);
     /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
@@ -463,10 +530,12 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
     /*     T5 = 4*T3 */
     struct symbol * t5 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t5, NULL, NULL);
     struct symbol * nbw = symbol_const_int(4);
     gencode(CODE, BOP_MULT, t5, nbw, t3);
     /*     T6 = T4[T5] /\* = T4+T5 *\/ */
     struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, symbol_composante, NULL, NULL);
     gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
 
     $$.ptr = symbol_composante;
@@ -494,12 +563,14 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     // Pour obtenir la valeur du tableau
     /* T3 = T1*20 */
     struct symbol * t3 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t3, NULL, NULL);
     struct symbol * t3_temp = symbol_const_int($3 * id->col);
     struct symbol * j = symbol_const_int(1);
     /*     T3 = T3+T2 */
     gencode(CODE, BOP_PLUS, t3, j, t3_temp);
     /*     T4 = adr(A) /\* adresse de base de A *\/ */
     struct symbol * t4 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t4, NULL, NULL);
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, ADRESSE, t4, sym_id, NULL);
     /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
@@ -507,10 +578,12 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
     /*     T5 = 4*T3 */
     struct symbol * t5 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t5, NULL, NULL);
     struct symbol * nbw = symbol_const_int(4);
     gencode(CODE, BOP_MULT, t5, nbw, t3);
     /*     T6 = T4[T5] /\* = T4+T5 *\/ */
     struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, symbol_composante, NULL, NULL);
     gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
 
     $$.ptr = symbol_composante;
