@@ -3,6 +3,8 @@ bin/main
 *.o
 *.s
 src/parser.c
+data/main.c
+mips_code.s
 ./obj
 .gitignore
 TAGS
