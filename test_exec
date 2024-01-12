@@ -1,0 +1,13 @@
+complete : empty list 0
+complete : empty list 1
+complete : empty list 2
+-----Pile du Contexte Courant-----
+    0x5651b548a3e4 :     int    a
+    0x5651b548b4b4 :     float    b
+    0x5651b548b574 :     int    .tmp0
+    0x5651b548b5d4 :     int    c
+-------------------------------
+   0 | a := 2
+   1 | b := 3.000000
+   2 | .tmp0 := a + b
+   3 | c := .tmp0

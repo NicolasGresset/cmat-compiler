@@ -171,6 +171,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 %token <strval> IDENTIFICATEUR
 %token <intval> CONSTANTE_ENTIERE
 %token <floatval> CONSTANTE_FLOTTANTE
+%token <strval> STRING
 
 %token INT FLOAT MATRIX ELSE IF WHILE FOR
     CONSTANTE_CARACTERE AND OR NOT
@@ -181,7 +182,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     ACCOLADE_OUVRANTE ACCOLADE_FERMANTE
     VIRGULE POINT_VIRGULE APOSTROPHE
     GUILLEMET MAIN POINT_EXCLAMATION
-    INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
+    INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL 
 
 %type <exprval_t> declaration_bin operande expression_bin id_matrix
 %type <typeval> type

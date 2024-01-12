@@ -44,6 +44,8 @@ _COMMENTAIRE {COMMENTAIRE_SIMPLE}|{COMMENTAIRE_PLUSIEURS_LIGNES}
 
 _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\)|\[|\]|\{|\}|\&|\||<<|>>|'|"]
 
+_STRING \"([^\\\n]|(\\.))*?\"
+
 %%
 "int" return INT;
 "float" return FLOAT;
@@ -73,6 +75,8 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
     //return ecrireToken(IDENTIFICATEUR);
     return IDENTIFICATEUR;
 }
+
+{_STRING} { return STRING; }
 
 "+" return PLUS;
 "-" return MOINS;

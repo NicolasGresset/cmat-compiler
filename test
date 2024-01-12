@@ -1,0 +1,28 @@
+int main() {
+    /* liste de ce qui marche pas:
+    int a, b;
+    tout calcul sans qqch = avant
+    genre "a + b;" "a++;" "a;"
+    a += 1; ne marche pas (mais a = a++; marche)
+    quand on utilise un type pas super correct, il y a deux piles retournées
+    avec un error type au milieu
+    le i++ dans le for ne marche pas
+    */
+
+    int a;
+    a = 2;
+    float b = 3.0;
+    int c = a + b;
+
+    /*if (a == b) {
+        a = 2; // test commentaire
+    } else {
+        b = 3;
+    }
+    // if et else marche que si accolade (pas un pb, juste pour qu'on s'en
+    // souvienne quand on fait des tests)
+
+    while (a < b) {
+        a = a + 1;
+    }*/
+}
