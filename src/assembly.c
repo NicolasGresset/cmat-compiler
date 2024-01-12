@@ -228,7 +228,6 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "# declare %s\n", quad->sym1->u.id.name);
 
   char declaration[MAX_DATA_SIZE];
-  int res;
 
   switch (quad->sym1->u.id.type) {
   case ENTIER:
@@ -242,8 +241,8 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
     append_to_data(code, declaration);
     break;
   case MATRIX_TYPE:
-    res = snprintf(declaration, MAX_DATA_SIZE, "  %s: .float ",
-                   quad->sym1->u.id.name);
+    snprintf(declaration, MAX_DATA_SIZE, "  %s: .float ",
+             quad->sym1->u.id.name);
     append_to_data(code, declaration);
     for (int j = 0; j < quad->sym1->u.id.row; j++) {
       for (int k = 0; k < quad->sym1->u.id.col; k++) {
@@ -255,6 +254,39 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
     fprintf(stderr, "Error: can't declare a label\n");
     exit(1);
   }
+}
+
+
+void manage_call_print(struct quad *quad, struct assembly_code *code) {
+  /*
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of CALL_PRINT is not a NAME\n");
+    exit(1);
+  }
+
+  fprintf(code->out, "# call print\n");
+
+  switch (quad->sym1->u.id.type) {
+  case ENTIER:
+    fprintf(code->out, "  li $v0, 1\n");
+    fprintf(code->out, "  lw $a0, %s\n", quad->sym1->u.id.name);
+    fprintf(code->out, "  syscall\n");
+    break;
+  case REEL:
+    fprintf(code->out, "  li $v0, 2\n");
+    fprintf(code->out, "  l.s $f12, %s\n", quad->sym1->u.id.name);
+    fprintf(code->out, "  syscall\n");
+    break;
+  case MATRIX_TYPE:
+    fprintf(code->out, "  li $v0, 4\n");
+    fprintf(code->out, "  la $a0, %s\n", quad->sym1->u.id.name);
+    fprintf(code->out, "  syscall\n");
+    break;
+  default:
+    fprintf(stderr, "Error: can't print a label\n");
+    exit(1);
+  }
+  */
 }
 
 /**
@@ -303,11 +335,20 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case Q_IF_GE:
     manage_q_if_ge(quad, code);
     break;
+  case Q_GOTO:
+    manage_q_goto(quad, code);
+    break;
+  case Q_GOTO_UNKNOWN:
+    manage_q_goto_unknown(quad, code);
+    break;
   case COPY:
     manage_copy(quad, code);
     break;
   case Q_DECLARE:
     manage_declare(quad, code);
+    break;
+  case CALL_PRINT:
+    manage_call_print(quad, code);
     break;
   default:
     manage_default_case(quad, code);
@@ -334,6 +375,9 @@ FILE *open_file(const char *file_name) {
 void manage_quads(struct code *code, struct assembly_code *assembly_code) {
   fprintf(assembly_code->out, ".text\n");
   for (unsigned int i = 0; i < code->nextquad; i++) {
+    fprintf(assembly_code->out, "line%u:\n",
+            i); // simule les lignes du code intermédiaire 3 adresses
+    // c'est plutôt sale mais ça marche
     manage_quad(&code->quads[i], assembly_code);
   }
 }

@@ -16,3 +16,7 @@ void manage_q_if_gt(struct quad *quad, struct assembly_code *code) ;
 void manage_q_if_le(struct quad *quad, struct assembly_code *code) ;
 
 void manage_q_if_ge(struct quad *quad, struct assembly_code *code) ;
+
+void manage_q_goto(struct quad *quad, struct assembly_code *code) ;
+
+void manage_q_goto_unknown(struct quad *quad, struct assembly_code *code) ;

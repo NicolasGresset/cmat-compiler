@@ -541,16 +541,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   217
+#define YYLAST   195
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  43
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  39
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  94
+#define YYNRULES  93
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  197
+#define YYNSTATES  195
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   297
@@ -606,13 +606,13 @@ static const yytype_int16 yyrline[] =
        0,   116,   116,   122,   123,   126,   127,   128,   129,   130,
      133,   134,   137,   151,   173,   174,   175,   176,   177,   179,
      182,   201,   220,   221,   226,   235,   243,   251,   262,   271,
-     279,   299,   310,   320,   330,   340,   349,   358,   359,   360,
-     362,   373,   384,   395,   406,   409,   427,   428,   429,   475,
-     523,   524,   525,   526,   527,   528,   529,   542,   543,   544,
-     545,   546,   553,   554,   558,   559,   557,   584,   585,   586,
-     585,   596,   597,   595,   613,   617,   613,   637,   644,   660,
-     673,   693,   700,   703,   710,   713,   748,   765,   766,   767,
-     768,   769,   770,   772,   773
+     279,   299,   360,   372,   384,   396,   407,   419,   420,   422,
+     435,   448,   461,   474,   477,   490,   491,   492,   544,   596,
+     597,   598,   599,   600,   601,   602,   615,   616,   617,   618,
+     619,   626,   627,   631,   632,   630,   657,   658,   659,   658,
+     669,   670,   668,   686,   690,   686,   710,   717,   733,   746,
+     766,   773,   776,   783,   786,   821,   838,   839,   840,   841,
+     842,   843,   845,   846
 };
 #endif
 
@@ -653,12 +653,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-161)
+#define YYPACT_NINF (-154)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-76)
+#define YYTABLE_NINF (-75)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -667,26 +667,26 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       4,   -17,    39,    21,  -161,    16,    32,   102,    27,  -161,
-    -161,    95,    48,    59,    61,    64,  -161,  -161,  -161,  -161,
-     101,  -161,  -161,  -161,     8,    79,   139,  -161,    68,    88,
-       8,  -161,  -161,  -161,   102,    -8,    94,  -161,  -161,     8,
-       8,   130,   130,     8,     8,     8,    63,   115,   141,   129,
-     132,    96,    95,  -161,  -161,   124,  -161,    38,    -7,   142,
-    -161,     8,   120,  -161,     8,  -161,   153,  -161,  -161,  -161,
-    -161,  -161,    98,  -161,     8,     8,     8,     8,  -161,  -161,
-    -161,   133,    42,    42,  -161,   107,  -161,  -161,   107,   135,
-    -161,  -161,  -161,  -161,  -161,     8,  -161,   134,  -161,    12,
-     136,   157,   137,  -161,    70,   138,  -161,   121,   121,  -161,
-    -161,   140,   122,  -161,    42,   159,   161,    42,    17,    17,
-     124,  -161,   130,  -161,  -161,   111,     8,  -161,     8,   143,
-       8,   145,  -161,  -161,   144,   166,  -161,  -161,  -161,  -161,
-    -161,  -161,    42,    42,    42,    42,  -161,  -161,   116,   118,
-     142,  -161,  -161,  -161,   111,     8,     8,   169,   146,   131,
-     131,  -161,  -161,  -161,  -161,  -161,  -161,   102,  -161,   111,
-      -9,   147,  -161,   148,   102,   162,  -161,   149,   150,   151,
-    -161,   152,   154,   167,  -161,  -161,   155,  -161,   102,  -161,
-     156,   102,   158,   160,  -161,   163,  -161
+       7,   -13,    37,    33,  -154,    20,    32,   121,    61,  -154,
+    -154,    56,    68,   116,   118,   112,  -154,  -154,  -154,  -154,
+     141,  -154,  -154,  -154,    97,   119,   142,  -154,    66,    72,
+      97,  -154,  -154,  -154,   121,   -17,   120,  -154,  -154,    97,
+      97,   135,   135,    97,    97,    60,    85,   144,   126,   127,
+     122,    56,  -154,  -154,   124,  -154,    -9,    -1,   140,  -154,
+      97,    41,  -154,    97,  -154,   151,  -154,  -154,  -154,  -154,
+    -154,    36,    97,    97,    97,    97,  -154,  -154,  -154,   128,
+      21,    21,  -154,    44,  -154,  -154,    44,   134,  -154,  -154,
+    -154,  -154,  -154,    97,  -154,   129,  -154,     8,   136,   157,
+     130,  -154,    91,   133,  -154,    62,    62,  -154,  -154,   137,
+      95,  -154,    21,   160,   162,    21,    54,    54,   124,  -154,
+     135,  -154,  -154,   117,    97,  -154,    97,   138,    97,   143,
+    -154,  -154,   145,   164,  -154,  -154,  -154,  -154,  -154,  -154,
+      21,    21,    21,    21,  -154,  -154,    57,    82,   140,  -154,
+    -154,  -154,   117,    97,    97,   165,   146,   106,   106,  -154,
+    -154,  -154,  -154,  -154,  -154,   121,  -154,   117,     3,   147,
+    -154,   148,   121,   167,  -154,   149,   150,   155,  -154,   152,
+     154,   168,  -154,  -154,   156,  -154,   121,  -154,   158,   121,
+     159,   161,  -154,   163,  -154
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -694,44 +694,44 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     1,     0,     0,     0,     0,    62,
-      63,     0,     0,     0,     0,    93,     4,     5,    10,     9,
+       0,     0,     0,     0,     1,     0,     0,     0,     0,    61,
+      62,     0,     0,     0,     0,    92,     4,     5,    10,     9,
        0,     6,     7,     8,     0,     0,     0,    11,     0,     0,
-       0,    93,    74,     2,     0,     0,    45,    46,    47,     0,
-       0,     0,     0,     0,     0,     0,     0,    44,     0,     0,
-       0,     0,     0,    22,    14,     0,    15,    86,     0,    82,
-      84,     0,     0,     3,     0,    12,     0,    36,    35,    40,
-      41,    38,     0,    37,     0,     0,     0,     0,    30,    42,
-      43,     0,     0,     0,    26,     0,    23,    29,     0,     0,
-      89,    90,    91,    92,    87,     0,    93,     0,    93,     0,
-      79,     0,     0,    77,     0,     0,    39,    31,    32,    33,
-      34,    21,    55,    56,     0,     0,     0,     0,     0,     0,
-       0,    16,     0,    17,    88,    85,     0,    93,     0,     0,
-       0,     0,    93,    13,    49,     0,    58,    59,    57,    60,
-      61,    50,     0,     0,     0,     0,    18,    19,     0,     0,
-      81,    64,    83,    93,    80,     0,     0,     0,     0,    51,
-      52,    53,    54,    24,    25,    27,    28,     0,    71,    78,
-       0,     0,    20,    93,     0,     0,    48,     0,    93,     0,
-      94,     0,     0,    67,    73,    93,     0,    66,     0,    68,
-      93,     0,     0,    93,    76,     0,    70
+       0,    92,    73,     2,     0,     0,    44,    45,    46,     0,
+       0,     0,     0,     0,     0,     0,    43,     0,     0,     0,
+       0,     0,    22,    14,     0,    15,    85,     0,    81,    83,
+       0,     0,     3,     0,    12,     0,    36,    35,    39,    40,
+      37,     0,     0,     0,     0,     0,    30,    41,    42,     0,
+       0,     0,    26,     0,    23,    29,     0,     0,    88,    89,
+      90,    91,    86,     0,    92,     0,    92,     0,    78,     0,
+       0,    76,     0,     0,    38,    31,    32,    33,    34,    21,
+      54,    55,     0,     0,     0,     0,     0,     0,     0,    16,
+       0,    17,    87,    84,     0,    92,     0,     0,     0,     0,
+      92,    13,    48,     0,    57,    58,    56,    59,    60,    49,
+       0,     0,     0,     0,    18,    19,     0,     0,    80,    63,
+      82,    92,    79,     0,     0,     0,     0,    50,    51,    52,
+      53,    24,    25,    27,    28,     0,    70,    77,     0,     0,
+      20,    92,     0,     0,    47,     0,    92,     0,    93,     0,
+       0,    66,    72,    92,     0,    65,     0,    67,    92,     0,
+       0,    92,    75,     0,    69
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -161,  -161,  -160,   164,  -161,  -161,   165,   168,   170,   -26,
-    -161,  -161,    65,  -161,  -161,   -23,   -37,   -74,   119,  -161,
-    -161,  -161,  -161,  -161,  -161,  -161,  -161,  -161,  -161,  -161,
-    -161,  -161,    14,   -59,    66,    67,  -161,   -31,  -161
+    -154,  -154,  -153,   139,  -154,  -154,   125,   166,   169,   -26,
+    -154,  -154,    53,  -154,  -154,   -23,   -37,   -74,   123,  -154,
+    -154,  -154,  -154,  -154,  -154,  -154,  -154,  -154,  -154,  -154,
+    -154,  -154,    13,   -58,    63,    64,  -154,   -31,  -154
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_uint8 yydefgoto[] =
 {
-       0,     2,    15,    16,    17,    18,    27,    28,    29,    54,
-      85,   120,    88,   122,    19,    57,    47,   118,    20,    21,
-     167,   177,   187,   191,   195,    22,   174,   181,    23,    62,
-     192,   102,   103,    58,    59,    60,    95,    34,   183
+       0,     2,    15,    16,    17,    18,    27,    28,    29,    53,
+      83,   118,    86,   120,    19,    56,    46,   116,    20,    21,
+     165,   175,   185,   189,   193,    22,   172,   179,    23,    61,
+     190,   100,   101,    57,    58,    59,    93,    34,   181
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -739,54 +739,50 @@ static const yytype_uint8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      61,    46,    99,    56,    69,    70,    96,   173,    96,   119,
-       1,    36,    37,    38,   178,    64,    67,    68,     3,    97,
-      71,    72,    73,   175,    65,    39,    40,    96,   190,    41,
-      42,   193,    43,    44,   142,   143,   144,   145,   129,     4,
-     138,   104,     6,   141,    45,   112,     5,   113,    52,    53,
-      24,   107,   108,   109,   110,    74,    75,    76,    77,   121,
-     114,     7,   123,   115,   116,   126,   117,   128,   159,   160,
-     161,   162,   125,    30,    89,    90,    91,    92,    93,    94,
-      74,    75,    76,    77,    31,   149,    32,    74,    75,    76,
-      77,    51,   146,   147,    33,    78,   151,   170,    25,    52,
-      53,   156,   133,    26,    35,     8,    48,   154,     9,    10,
-      11,    55,    12,    13,    14,    74,    75,    76,    77,    52,
-      53,    66,   168,   100,   106,    84,     9,    10,    74,    75,
-      76,    77,   169,    36,    37,    38,    79,    80,    52,    53,
-      76,    77,    25,   136,   137,    81,   163,   164,   165,   166,
-     144,   145,    82,    87,   188,    83,    98,   105,   124,   130,
-     131,   111,   139,   127,   140,   100,   134,   135,   155,   132,
-     158,   157,   153,   171,   172,   176,   186,   182,   -65,   180,
-     -72,   101,   184,   185,   189,   148,   -75,     0,   194,   179,
-     -69,     0,   150,   196,    49,   152,    50,     0,    63,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    86
+      60,    45,    97,    55,    68,    69,    63,   117,    72,    73,
+      74,    75,   171,     1,    94,    64,    66,    67,    94,   176,
+      70,    71,     3,    94,   110,    95,   111,    87,    88,    89,
+      90,    91,    92,   188,   127,   173,   191,     4,   136,   112,
+     102,   139,   113,   114,    98,   115,     6,     9,    10,   105,
+     106,   107,   108,    72,    73,    74,    75,   119,     5,    25,
+     121,     7,   104,   124,    26,   126,   157,   158,   159,   160,
+     123,   140,   141,   142,   143,    51,    52,    72,    73,    74,
+      75,    74,    75,   147,    24,    51,    52,   161,   162,    50,
+     144,   145,    76,    30,   149,    54,   168,    51,    52,   154,
+      36,    37,    38,    51,    52,   152,    77,    78,    72,    73,
+      74,    75,   163,   164,    39,    40,   134,   135,    41,    42,
+     166,    43,    44,   131,     8,   142,   143,     9,    10,    11,
+     167,    12,    13,    14,    72,    73,    74,    75,    36,    37,
+      38,    31,    33,    32,    35,    25,    47,    65,    79,    80,
+      81,    82,   186,    85,    96,   103,   109,   122,   125,   128,
+     129,   132,   130,   137,   133,   138,   153,   151,   156,   169,
+      98,   146,   155,    62,   170,   174,    84,   184,   -64,   178,
+     -71,   180,   182,   183,    99,   187,   177,   148,   -74,   192,
+     150,   -68,    48,   194,     0,    49
 };
 
 static const yytype_int16 yycheck[] =
 {
-      31,    24,    61,    29,    41,    42,    15,   167,    15,    83,
-       6,     3,     4,     5,   174,    23,    39,    40,    35,    26,
-      43,    44,    45,    32,    32,    17,    18,    15,   188,    21,
-      22,   191,    24,    25,    17,    18,    19,    20,    26,     0,
-     114,    64,    26,   117,    36,     3,    25,     5,    31,    32,
-      23,    74,    75,    76,    77,    17,    18,    19,    20,    85,
-      18,    29,    88,    21,    22,    96,    24,    98,   142,   143,
-     144,   145,    95,    25,    36,    37,    38,    39,    40,    41,
-      17,    18,    19,    20,    25,   122,    25,    17,    18,    19,
-      20,    23,   118,   119,    30,    32,   127,   156,     3,    31,
-      32,   132,    32,     8,     3,     3,    27,   130,     6,     7,
-       8,    23,    10,    11,    12,    17,    18,    19,    20,    31,
-      32,    27,   153,     3,    26,    29,     6,     7,    17,    18,
-      19,    20,   155,     3,     4,     5,    21,    22,    31,    32,
-      19,    20,     3,    21,    22,     4,    30,    31,    30,    31,
-      19,    20,    23,    29,   185,    23,    14,     4,    23,    23,
-       3,    28,     3,    29,     3,     3,    28,    27,    23,    32,
-       4,    27,    29,     4,    28,    28,     9,    26,    30,    30,
-      30,    62,    30,    29,    29,   120,    30,    -1,    30,   175,
-      30,    -1,   126,    30,    26,   128,    26,    -1,    34,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    52
+      31,    24,    60,    29,    41,    42,    23,    81,    17,    18,
+      19,    20,   165,     6,    15,    32,    39,    40,    15,   172,
+      43,    44,    35,    15,     3,    26,     5,    36,    37,    38,
+      39,    40,    41,   186,    26,    32,   189,     0,   112,    18,
+      63,   115,    21,    22,     3,    24,    26,     6,     7,    72,
+      73,    74,    75,    17,    18,    19,    20,    83,    25,     3,
+      86,    29,    26,    94,     8,    96,   140,   141,   142,   143,
+      93,    17,    18,    19,    20,    31,    32,    17,    18,    19,
+      20,    19,    20,   120,    23,    31,    32,    30,    31,    23,
+     116,   117,    32,    25,   125,    23,   154,    31,    32,   130,
+       3,     4,     5,    31,    32,   128,    21,    22,    17,    18,
+      19,    20,    30,    31,    17,    18,    21,    22,    21,    22,
+     151,    24,    25,    32,     3,    19,    20,     6,     7,     8,
+     153,    10,    11,    12,    17,    18,    19,    20,     3,     4,
+       5,    25,    30,    25,     3,     3,    27,    27,     4,    23,
+      23,    29,   183,    29,    14,     4,    28,    23,    29,    23,
+       3,    28,    32,     3,    27,     3,    23,    29,     4,     4,
+       3,   118,    27,    34,    28,    28,    51,     9,    30,    30,
+      30,    26,    30,    29,    61,    29,   173,   124,    30,    30,
+     126,    30,    26,    30,    -1,    26
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -797,22 +793,22 @@ static const yytype_int8 yystos[] =
        7,     8,    10,    11,    12,    45,    46,    47,    48,    57,
       61,    62,    68,    71,    23,     3,     8,    49,    50,    51,
       25,    25,    25,    30,    80,     3,     3,     4,     5,    17,
-      18,    21,    22,    24,    25,    36,    58,    59,    27,    50,
-      51,    23,    31,    32,    52,    23,    52,    58,    76,    77,
-      78,    80,    72,    46,    23,    32,    27,    58,    58,    59,
-      59,    58,    58,    58,    17,    18,    19,    20,    32,    21,
-      22,     4,    23,    23,    29,    53,    49,    29,    55,    36,
-      37,    38,    39,    40,    41,    79,    15,    26,    14,    76,
-       3,    61,    74,    75,    58,     4,    26,    58,    58,    58,
-      58,    28,     3,     5,    18,    21,    22,    24,    60,    60,
-      54,    52,    56,    52,    23,    58,    80,    29,    80,    26,
-      23,     3,    32,    32,    28,    27,    21,    22,    60,     3,
-       3,    60,    17,    18,    19,    20,    52,    52,    55,    59,
-      77,    80,    78,    29,    58,    23,    80,    27,     4,    60,
-      60,    60,    60,    30,    31,    30,    31,    63,    80,    58,
-      76,     4,    28,    45,    69,    32,    28,    64,    45,    75,
-      30,    70,    26,    81,    30,    29,     9,    65,    80,    29,
-      45,    66,    73,    45,    30,    67,    30
+      18,    21,    22,    24,    25,    58,    59,    27,    50,    51,
+      23,    31,    32,    52,    23,    52,    58,    76,    77,    78,
+      80,    72,    46,    23,    32,    27,    58,    58,    59,    59,
+      58,    58,    17,    18,    19,    20,    32,    21,    22,     4,
+      23,    23,    29,    53,    49,    29,    55,    36,    37,    38,
+      39,    40,    41,    79,    15,    26,    14,    76,     3,    61,
+      74,    75,    58,     4,    26,    58,    58,    58,    58,    28,
+       3,     5,    18,    21,    22,    24,    60,    60,    54,    52,
+      56,    52,    23,    58,    80,    29,    80,    26,    23,     3,
+      32,    32,    28,    27,    21,    22,    60,     3,     3,    60,
+      17,    18,    19,    20,    52,    52,    55,    59,    77,    80,
+      78,    29,    58,    23,    80,    27,     4,    60,    60,    60,
+      60,    30,    31,    30,    31,    63,    80,    58,    76,     4,
+      28,    45,    69,    32,    28,    64,    45,    75,    30,    70,
+      26,    81,    30,    29,     9,    65,    80,    29,    45,    66,
+      73,    45,    30,    67,    30
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -822,12 +818,12 @@ static const yytype_int8 yyr1[] =
       47,    47,    48,    48,    49,    49,    49,    49,    49,    49,
       50,    51,    52,    52,    53,    54,    54,    55,    56,    56,
       57,    58,    58,    58,    58,    58,    58,    58,    58,    58,
-      58,    58,    58,    58,    58,    59,    59,    59,    59,    59,
+      58,    58,    58,    58,    59,    59,    59,    59,    59,    60,
       60,    60,    60,    60,    60,    60,    60,    60,    60,    60,
-      60,    60,    61,    61,    63,    64,    62,    65,    66,    67,
-      65,    69,    70,    68,    72,    73,    71,    74,    74,    75,
-      75,    76,    76,    77,    77,    78,    78,    79,    79,    79,
-      79,    79,    79,    80,    81
+      60,    61,    61,    63,    64,    62,    65,    66,    67,    65,
+      69,    70,    68,    72,    73,    71,    74,    74,    75,    75,
+      76,    76,    77,    77,    78,    78,    79,    79,    79,    79,
+      79,    79,    80,    81
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -836,13 +832,13 @@ static const yytype_int8 yyr2[] =
        0,     2,     7,     3,     1,     1,     1,     1,     1,     1,
        1,     2,     3,     5,     2,     2,     4,     4,     5,     5,
        7,     4,     1,     2,     4,     3,     0,     4,     3,     0,
-       4,     3,     3,     3,     3,     2,     2,     2,     2,     3,
-       2,     2,     2,     2,     1,     1,     1,     1,     7,     4,
-       2,     3,     3,     3,     3,     1,     1,     2,     2,     2,
-       2,     2,     1,     1,     0,     0,    12,     0,     0,     0,
-       6,     0,     0,    11,     0,     0,    15,     1,     4,     1,
-       3,     4,     1,     4,     1,     3,     1,     1,     2,     1,
-       1,     1,     1,     0,     0
+       4,     3,     3,     3,     3,     2,     2,     2,     3,     2,
+       2,     2,     2,     1,     1,     1,     1,     7,     4,     2,
+       3,     3,     3,     3,     1,     1,     2,     2,     2,     2,
+       2,     1,     1,     0,     0,    12,     0,     0,     0,     6,
+       0,     0,    11,     0,     0,    15,     1,     4,     1,     3,
+       4,     1,     4,     1,     3,     1,     1,     2,     1,     1,
+       1,     1,     0,     0
 };
 
 
@@ -1310,61 +1306,61 @@ yyreduce:
 {
     ListLabel_free((yyvsp[-1].instr_type).next);
 }
-#line 1314 "src/parser.c"
+#line 1310 "src/parser.c"
     break;
 
   case 3: /* liste_instructions: liste_instructions M instruction  */
 #line 122 "bison/parser.y"
                                    {complete((yyvsp[-2].instr_type).next, (yyvsp[-1].intval));  ListLabel_free((yyvsp[-2].instr_type).next); (yyval.instr_type).next = (yyvsp[0].instr_type).next;}
-#line 1320 "src/parser.c"
+#line 1316 "src/parser.c"
     break;
 
   case 4: /* liste_instructions: instruction  */
 #line 123 "bison/parser.y"
               {(yyval.instr_type).next = (yyvsp[0].instr_type).next;}
-#line 1326 "src/parser.c"
+#line 1322 "src/parser.c"
     break;
 
   case 5: /* instruction: declaration  */
 #line 126 "bison/parser.y"
               {(yyval.instr_type).next = NULL;}
-#line 1332 "src/parser.c"
+#line 1328 "src/parser.c"
     break;
 
   case 6: /* instruction: condition  */
 #line 127 "bison/parser.y"
             {(yyval.instr_type).next = (yyvsp[0].instr_type).next;}
-#line 1338 "src/parser.c"
+#line 1334 "src/parser.c"
     break;
 
   case 7: /* instruction: boucle_while  */
 #line 128 "bison/parser.y"
                {(yyval.instr_type).next = (yyvsp[0].instr_type).next;}
-#line 1344 "src/parser.c"
+#line 1340 "src/parser.c"
     break;
 
   case 8: /* instruction: boucle_for  */
 #line 129 "bison/parser.y"
              {(yyval.instr_type).next = (yyvsp[0].instr_type).next;}
-#line 1350 "src/parser.c"
+#line 1346 "src/parser.c"
     break;
 
   case 9: /* instruction: affectation_bin  */
 #line 130 "bison/parser.y"
                   {(yyval.instr_type).next = NULL;}
-#line 1356 "src/parser.c"
+#line 1352 "src/parser.c"
     break;
 
   case 10: /* declaration: declaration_bin  */
 #line 133 "bison/parser.y"
                   {(yyval.instr_type).next = NULL;}
-#line 1362 "src/parser.c"
+#line 1358 "src/parser.c"
     break;
 
   case 11: /* declaration: MATRIX declaration_mat  */
 #line 134 "bison/parser.y"
                          {(yyval.instr_type).next = NULL;}
-#line 1368 "src/parser.c"
+#line 1364 "src/parser.c"
     break;
 
   case 12: /* declaration_bin: type IDENTIFICATEUR POINT_VIRGULE  */
@@ -1383,7 +1379,7 @@ yyreduce:
      struct symbol * sym_id = symbol_id(*id);
      gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
  }
-#line 1387 "src/parser.c"
+#line 1383 "src/parser.c"
     break;
 
   case 13: /* declaration_bin: type IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE  */
@@ -1404,7 +1400,7 @@ yyreduce:
     gencode(CODE,COPY,sym_id,(yyvsp[-1].exprval).ptr,NULL);
 
  }
-#line 1408 "src/parser.c"
+#line 1404 "src/parser.c"
     break;
 
   case 20: /* id_matrix: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
@@ -1425,7 +1421,7 @@ yyreduce:
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, Q_DECLARE_MAT, sym_id,NULL,NULL);
 }
-#line 1429 "src/parser.c"
+#line 1425 "src/parser.c"
     break;
 
   case 21: /* id_vector: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
@@ -1446,7 +1442,7 @@ yyreduce:
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, Q_DECLARE_MAT, sym_id,NULL,NULL);
 }
-#line 1450 "src/parser.c"
+#line 1446 "src/parser.c"
     break;
 
   case 24: /* creation_matrix: ACCOLADE_OUVRANTE creation_matrix_prime creation_vector ACCOLADE_FERMANTE  */
@@ -1458,7 +1454,7 @@ yyreduce:
     (yyval.taille_mat_t).col = 1 + (yyvsp[-2].taille_mat_t).col;
     (yyval.taille_mat_t).row = (yyvsp[-2].taille_mat_t).row;
 }
-#line 1462 "src/parser.c"
+#line 1458 "src/parser.c"
     break;
 
   case 25: /* creation_matrix_prime: creation_matrix_prime creation_vector VIRGULE  */
@@ -1470,7 +1466,7 @@ yyreduce:
     (yyval.taille_mat_t).col = 1 + (yyvsp[-1].taille_mat_t).col;
     (yyval.taille_mat_t).row = (yyvsp[-2].taille_mat_t).row;
 }
-#line 1474 "src/parser.c"
+#line 1470 "src/parser.c"
     break;
 
   case 26: /* creation_matrix_prime: %empty  */
@@ -1479,7 +1475,7 @@ yyreduce:
     (yyval.taille_mat_t).row = -1;
     (yyval.taille_mat_t).col = 0;
 }
-#line 1483 "src/parser.c"
+#line 1479 "src/parser.c"
     break;
 
   case 27: /* creation_vector: ACCOLADE_OUVRANTE creation_vector_prime operande ACCOLADE_FERMANTE  */
@@ -1493,7 +1489,7 @@ yyreduce:
     gencode(CODE, COPY, sym_temp, (yyvsp[-1].exprval).ptr, NULL);
 
 }
-#line 1497 "src/parser.c"
+#line 1493 "src/parser.c"
     break;
 
   case 28: /* creation_vector_prime: creation_vector_prime operande VIRGULE  */
@@ -1506,13 +1502,13 @@ yyreduce:
     gencode(CODE, Q_DECLARE, sym_temp,NULL,NULL);
     gencode(CODE, COPY, sym_temp, (yyvsp[-1].exprval).ptr, NULL);
 }
-#line 1510 "src/parser.c"
+#line 1506 "src/parser.c"
     break;
 
   case 29: /* creation_vector_prime: %empty  */
 #line 271 "bison/parser.y"
          {(yyval.taille_mat_t).row = 0; (yyval.taille_mat_t).col = 0;}
-#line 1516 "src/parser.c"
+#line 1512 "src/parser.c"
     break;
 
   case 30: /* affectation_bin: IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE  */
@@ -1534,29 +1530,81 @@ yyreduce:
     gencode(CODE,COPY,sym_id,(yyvsp[-1].exprval).ptr,NULL);
 
  }
-#line 1538 "src/parser.c"
+#line 1534 "src/parser.c"
     break;
 
   case 31: /* expression_bin: expression_bin PLUS expression_bin  */
 #line 299 "bison/parser.y"
                                      {
-    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
-    (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-2].exprval).type);
-    gencode(CODE,BOP_PLUS,(yyval.exprval).ptr,(yyvsp[-2].exprval).ptr,(yyvsp[0].exprval).ptr);
+    // Operation entre 2 matrix
+    if ((yyvsp[-2].exprval).type == MATRIX_TYPE && (yyvsp[0].exprval).type == MATRIX_TYPE)
+    {
+        if ((yyvsp[-2].exprval).ptr->u.id.col != (yyvsp[0].exprval).ptr->u.id.col || (yyvsp[-2].exprval).ptr->u.id.row != (yyvsp[0].exprval).ptr->u.id.row)
+        {
+            fprintf(stderr, "error : dimensional error on matrix %s and %s\n", (yyvsp[-2].exprval).ptr->u.id.name, (yyvsp[0].exprval).ptr->u.id.name);
+            exit(1);
+        }
+        (yyval.exprval).ptr = newtemp(SYMTAB, MATRIX_TYPE);
+        gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+        (yyval.exprval).ptr->u.id.col = (yyvsp[-2].exprval).ptr->u.id.col;
+        (yyval.exprval).ptr->u.id.row = (yyvsp[-2].exprval).ptr->u.id.row;
 
-    // Type temporaire en fonction de int ou float convertir le type
-    (yyval.exprval).type = (yyvsp[-2].exprval).type;
+        gencode(CODE, MATOP_PLUS, (yyval.exprval).ptr, (yyvsp[-2].exprval).ptr, (yyvsp[0].exprval).ptr);
+    }
+    // Operération avec 1 matrice et 1 float
+    else if ((yyvsp[-2].exprval).type == MATRIX_TYPE)
+    {
+        (yyval.exprval).ptr = newtemp(SYMTAB, MATRIX_TYPE);
+        gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+        (yyval.exprval).ptr->u.id.col = (yyvsp[-2].exprval).ptr->u.id.col;
+        (yyval.exprval).ptr->u.id.row = (yyvsp[-2].exprval).ptr->u.id.row;
+
+        gencode(CODE, MATOP_PLUS, (yyval.exprval).ptr, (yyvsp[-2].exprval).ptr, (yyvsp[0].exprval).ptr);
+    }
+    // Opératione entre 1 float et 1 matrice
+    else if ((yyvsp[0].exprval).type == MATRIX_TYPE)
+    {
+
+
+        (yyval.exprval).ptr = newtemp(SYMTAB, MATRIX_TYPE);
+        gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
+        (yyval.exprval).ptr->u.id.col = (yyvsp[0].exprval).ptr->u.id.col;
+        (yyval.exprval).ptr->u.id.row = (yyvsp[0].exprval).ptr->u.id.row;
+
+        gencode(CODE, MAT_BIN_PLUS, (yyval.exprval).ptr, (yyvsp[0].exprval).ptr, (yyvsp[-2].exprval).ptr);
+    }
+    // Operation entre 2 entiers
+    else if ((yyvsp[-2].exprval).type == ENTIER && (yyvsp[0].exprval).type == ENTIER)
+    {
+        // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+        (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-2].exprval).type);
+        gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
+        gencode(CODE,BOP_PLUS,(yyval.exprval).ptr,(yyvsp[-2].exprval).ptr,(yyvsp[0].exprval).ptr);
+    }
+    // Operation entre au moins 1 flottant (conversion gérée plus tard)
+    else
+    {
+        (yyval.exprval).ptr = newtemp(SYMTAB, REEL);
+        gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
+        gencode(CODE,BOP_PLUS,(yyval.exprval).ptr,(yyvsp[-2].exprval).ptr,(yyvsp[0].exprval).ptr);
+    }
+
     // Utile pour la boucle_for savoir où compléter test.true
     (yyval.exprval).num = MAX((yyvsp[-2].exprval).num, (yyvsp[0].exprval).num);
     (yyval.exprval).num += 1;
 }
-#line 1554 "src/parser.c"
+#line 1600 "src/parser.c"
     break;
 
   case 32: /* expression_bin: expression_bin MOINS expression_bin  */
-#line 310 "bison/parser.y"
+#line 360 "bison/parser.y"
                                       {
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-2].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     gencode(CODE,BOP_MOINS,(yyval.exprval).ptr,(yyvsp[-2].exprval).ptr,(yyvsp[0].exprval).ptr);
 
     // Type temporaire
@@ -1565,13 +1613,15 @@ yyreduce:
     (yyval.exprval).num = MAX((yyvsp[-2].exprval).num, (yyvsp[0].exprval).num);
     (yyval.exprval).num += 1;
 }
-#line 1569 "src/parser.c"
+#line 1617 "src/parser.c"
     break;
 
   case 33: /* expression_bin: expression_bin FOIS expression_bin  */
-#line 320 "bison/parser.y"
+#line 372 "bison/parser.y"
                                      {
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-2].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     gencode(CODE,BOP_MULT,(yyval.exprval).ptr,(yyvsp[-2].exprval).ptr,(yyvsp[0].exprval).ptr);
 
     // Type temporaire
@@ -1580,13 +1630,15 @@ yyreduce:
     (yyval.exprval).num = MAX((yyvsp[-2].exprval).num, (yyvsp[0].exprval).num);
     (yyval.exprval).num += 1;
 }
-#line 1584 "src/parser.c"
+#line 1634 "src/parser.c"
     break;
 
   case 34: /* expression_bin: expression_bin DIVISE expression_bin  */
-#line 330 "bison/parser.y"
+#line 384 "bison/parser.y"
                                        {
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-2].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     gencode(CODE,BOP_DIVISE,(yyval.exprval).ptr,(yyvsp[-2].exprval).ptr,(yyvsp[0].exprval).ptr);
 
     // Type temporaire
@@ -1595,13 +1647,15 @@ yyreduce:
     (yyval.exprval).num = MAX((yyvsp[-2].exprval).num, (yyvsp[0].exprval).num);
     (yyval.exprval).num += 1;
 }
-#line 1599 "src/parser.c"
+#line 1651 "src/parser.c"
     break;
 
   case 35: /* expression_bin: MOINS expression_bin  */
-#line 340 "bison/parser.y"
+#line 396 "bison/parser.y"
                                       {
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[0].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     gencode(CODE,UOP_MOINS,(yyval.exprval).ptr,(yyvsp[0].exprval).ptr,NULL);
 
     // Type temporaire
@@ -1609,13 +1663,15 @@ yyreduce:
 
     (yyval.exprval).num = (yyvsp[0].exprval).num + 1;
 }
-#line 1613 "src/parser.c"
+#line 1667 "src/parser.c"
     break;
 
   case 36: /* expression_bin: PLUS expression_bin  */
-#line 349 "bison/parser.y"
+#line 407 "bison/parser.y"
                                      {
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[0].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     gencode(CODE,UOP_PLUS,(yyval.exprval).ptr,(yyvsp[0].exprval).ptr,NULL);
 
     // Type temporaire
@@ -1623,32 +1679,28 @@ yyreduce:
 
     (yyval.exprval).num = (yyvsp[0].exprval).num + 1;
 }
-#line 1627 "src/parser.c"
+#line 1683 "src/parser.c"
     break;
 
-  case 37: /* expression_bin: POINT_EXCLAMATION expression_bin  */
-#line 358 "bison/parser.y"
-                                                {;}
-#line 1633 "src/parser.c"
-    break;
-
-  case 38: /* expression_bin: TRANSPOSITION expression_bin  */
-#line 359 "bison/parser.y"
+  case 37: /* expression_bin: TRANSPOSITION expression_bin  */
+#line 419 "bison/parser.y"
                                             {;}
-#line 1639 "src/parser.c"
+#line 1689 "src/parser.c"
     break;
 
-  case 39: /* expression_bin: PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE  */
-#line 360 "bison/parser.y"
+  case 38: /* expression_bin: PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE  */
+#line 420 "bison/parser.y"
                                                           {(yyval.exprval).ptr = (yyvsp[-1].exprval).ptr; (yyval.exprval).type = (yyvsp[-1].exprval).type; (yyval.exprval).num = (yyvsp[-1].exprval).num;}
-#line 1645 "src/parser.c"
+#line 1695 "src/parser.c"
     break;
 
-  case 40: /* expression_bin: PLUS_PLUS operande  */
-#line 363 "bison/parser.y"
+  case 39: /* expression_bin: PLUS_PLUS operande  */
+#line 423 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[0].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_PLUS,(yyval.exprval).ptr,one,(yyvsp[0].exprval).ptr);
 
@@ -1656,14 +1708,16 @@ yyreduce:
     (yyval.exprval).type = (yyvsp[0].exprval).type;
     (yyval.exprval).num = 1;
 }
-#line 1660 "src/parser.c"
+#line 1712 "src/parser.c"
     break;
 
-  case 41: /* expression_bin: MOINS_MOINS operande  */
-#line 374 "bison/parser.y"
+  case 40: /* expression_bin: MOINS_MOINS operande  */
+#line 436 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[0].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_MOINS,(yyval.exprval).ptr,(yyvsp[0].exprval).ptr, one);
 
@@ -1671,14 +1725,16 @@ yyreduce:
     (yyval.exprval).type = (yyvsp[0].exprval).type;
     (yyval.exprval).num += 1;
 }
-#line 1675 "src/parser.c"
+#line 1729 "src/parser.c"
     break;
 
-  case 42: /* expression_bin: operande PLUS_PLUS  */
-#line 385 "bison/parser.y"
+  case 41: /* expression_bin: operande PLUS_PLUS  */
+#line 449 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-1].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_PLUS,(yyval.exprval).ptr,one,(yyvsp[-1].exprval).ptr);
 
@@ -1686,14 +1742,16 @@ yyreduce:
     (yyval.exprval).type = (yyvsp[-1].exprval).type;
     (yyval.exprval).num = 1;
 }
-#line 1690 "src/parser.c"
+#line 1746 "src/parser.c"
     break;
 
-  case 43: /* expression_bin: operande MOINS_MOINS  */
-#line 396 "bison/parser.y"
+  case 42: /* expression_bin: operande MOINS_MOINS  */
+#line 462 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval).ptr = newtemp(SYMTAB, (yyvsp[-1].exprval).type);
+    gencode(CODE, Q_DECLARE, (yyval.exprval).ptr, NULL, NULL);
+
     struct symbol * one = symbol_const_int(1);
     gencode(CODE,BOP_MOINS,(yyval.exprval).ptr, (yyvsp[-1].exprval).ptr, one);
 
@@ -1701,17 +1759,17 @@ yyreduce:
     (yyval.exprval).type = (yyvsp[-1].exprval).type;
     (yyval.exprval).num = 1;
 }
-#line 1705 "src/parser.c"
+#line 1763 "src/parser.c"
     break;
 
-  case 44: /* expression_bin: operande  */
-#line 406 "bison/parser.y"
+  case 43: /* expression_bin: operande  */
+#line 474 "bison/parser.y"
            {(yyval.exprval).type = (yyvsp[0].exprval).type; (yyval.exprval).num = 0;}
-#line 1711 "src/parser.c"
+#line 1769 "src/parser.c"
     break;
 
-  case 45: /* operande: IDENTIFICATEUR  */
-#line 410 "bison/parser.y"
+  case 44: /* operande: IDENTIFICATEUR  */
+#line 478 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[0].strval));
     if ( id == NULL )
@@ -1719,33 +1777,28 @@ yyreduce:
         fprintf(stderr,"Name '%s' undeclared\n",(yyvsp[0].strval));
         exit(1);
     }
-    if (id->type == MATRIX_TYPE)
-    {
-        printf("%s is of type MATRIX : pas encore géré\n",(yyvsp[0].strval));
-        //exit(1);
-    }
 
     struct symbol * sym_id = symbol_id(*id);
     (yyval.exprval).ptr = sym_id;
     (yyval.exprval).type = sym_id->u.id.type;
 }
-#line 1733 "src/parser.c"
+#line 1786 "src/parser.c"
     break;
 
-  case 46: /* operande: CONSTANTE_ENTIERE  */
-#line 427 "bison/parser.y"
+  case 45: /* operande: CONSTANTE_ENTIERE  */
+#line 490 "bison/parser.y"
                     {(yyval.exprval).ptr = symbol_const_int((int)(yyvsp[0].intval)); (yyval.exprval).type = ENTIER;}
-#line 1739 "src/parser.c"
+#line 1792 "src/parser.c"
     break;
 
-  case 47: /* operande: CONSTANTE_FLOTTANTE  */
-#line 428 "bison/parser.y"
+  case 46: /* operande: CONSTANTE_FLOTTANTE  */
+#line 491 "bison/parser.y"
                       {(yyval.exprval).ptr = symbol_const_float((yyvsp[0].floatval)); (yyval.exprval).type = REEL;}
-#line 1745 "src/parser.c"
+#line 1798 "src/parser.c"
     break;
 
-  case 48: /* operande: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
-#line 431 "bison/parser.y"
+  case 47: /* operande: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
+#line 494 "bison/parser.y"
 {
 
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-6].strval));
@@ -1768,12 +1821,16 @@ yyreduce:
     // Pour obtenir la valeur du tableau
     /* T3 = T1*20 */
     struct symbol * t3 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t3, NULL, NULL);
+
     struct symbol * t3_temp = symbol_const_int(((yyvsp[-4].intval) + 1) * id->col);
     struct symbol * j = symbol_const_int(((yyvsp[-1].intval) + 1));
     /*     T3 = T3+T2 */
     gencode(CODE, BOP_PLUS, t3, j, t3_temp);
     /*     T4 = adr(A) /\* adresse de base de A *\/ */
     struct symbol * t4 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t4, NULL, NULL);
+
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, ADRESSE, t4, sym_id, NULL);
     /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
@@ -1781,20 +1838,22 @@ yyreduce:
     gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
     /*     T5 = 4*T3 */
     struct symbol * t5 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t5, NULL, NULL);
     struct symbol * nbw = symbol_const_int(4);
     gencode(CODE, BOP_MULT, t5, nbw, t3);
     /*     T6 = T4[T5] /\* = T4+T5 *\/ */
     struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, symbol_composante, NULL, NULL);
     gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
 
     (yyval.exprval).ptr = symbol_composante;
     (yyval.exprval).type = REEL;
 }
-#line 1794 "src/parser.c"
+#line 1853 "src/parser.c"
     break;
 
-  case 49: /* operande: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
-#line 476 "bison/parser.y"
+  case 48: /* operande: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
+#line 545 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-3].strval));
     if ( id == NULL )
@@ -1816,12 +1875,14 @@ yyreduce:
     // Pour obtenir la valeur du tableau
     /* T3 = T1*20 */
     struct symbol * t3 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t3, NULL, NULL);
     struct symbol * t3_temp = symbol_const_int((yyvsp[-1].intval) * id->col);
     struct symbol * j = symbol_const_int(1);
     /*     T3 = T3+T2 */
     gencode(CODE, BOP_PLUS, t3, j, t3_temp);
     /*     T4 = adr(A) /\* adresse de base de A *\/ */
     struct symbol * t4 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t4, NULL, NULL);
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, ADRESSE, t4, sym_id, NULL);
     /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
@@ -1829,50 +1890,52 @@ yyreduce:
     gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
     /*     T5 = 4*T3 */
     struct symbol * t5 = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, t5, NULL, NULL);
     struct symbol * nbw = symbol_const_int(4);
     gencode(CODE, BOP_MULT, t5, nbw, t3);
     /*     T6 = T4[T5] /\* = T4+T5 *\/ */
     struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, symbol_composante, NULL, NULL);
     gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
 
     (yyval.exprval).ptr = symbol_composante;
     (yyval.exprval).type = REEL;
 }
-#line 1842 "src/parser.c"
+#line 1905 "src/parser.c"
     break;
 
-  case 50: /* expression_mat: TRANSPOSITION expression_mat  */
-#line 523 "bison/parser.y"
+  case 49: /* expression_mat: TRANSPOSITION expression_mat  */
+#line 596 "bison/parser.y"
                                            {;}
-#line 1848 "src/parser.c"
+#line 1911 "src/parser.c"
     break;
 
-  case 62: /* type: INT  */
-#line 553 "bison/parser.y"
+  case 61: /* type: INT  */
+#line 626 "bison/parser.y"
       {(yyval.typeval) = ENTIER;}
-#line 1854 "src/parser.c"
+#line 1917 "src/parser.c"
     break;
 
-  case 63: /* type: FLOAT  */
-#line 554 "bison/parser.y"
+  case 62: /* type: FLOAT  */
+#line 627 "bison/parser.y"
         {(yyval.typeval) = REEL;}
-#line 1860 "src/parser.c"
+#line 1923 "src/parser.c"
     break;
 
-  case 64: /* $@1: %empty  */
-#line 558 "bison/parser.y"
+  case 63: /* $@1: %empty  */
+#line 631 "bison/parser.y"
   { stack_id_push(SYMTAB);}
-#line 1866 "src/parser.c"
+#line 1929 "src/parser.c"
     break;
 
-  case 65: /* $@2: %empty  */
-#line 559 "bison/parser.y"
+  case 64: /* $@2: %empty  */
+#line 632 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 1872 "src/parser.c"
+#line 1935 "src/parser.c"
     break;
 
-  case 66: /* condition: IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M $@1 liste_instructions $@2 ACCOLADE_FERMANTE N condition_suite  */
-#line 561 "bison/parser.y"
+  case 65: /* condition: IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M $@1 liste_instructions $@2 ACCOLADE_FERMANTE N condition_suite  */
+#line 634 "bison/parser.y"
 {
     complete((yyvsp[-9].boolexpr).true, (yyvsp[-6].intval));
     ListLabel_free((yyvsp[-9].boolexpr).true);
@@ -1894,52 +1957,52 @@ yyreduce:
     ListLabel_print((yyval.instr_type).next);
     printf("\n");
 }
-#line 1898 "src/parser.c"
+#line 1961 "src/parser.c"
     break;
 
-  case 67: /* condition_suite: %empty  */
-#line 584 "bison/parser.y"
+  case 66: /* condition_suite: %empty  */
+#line 657 "bison/parser.y"
          {(yyval.instr_type).next = NULL;}
-#line 1904 "src/parser.c"
+#line 1967 "src/parser.c"
     break;
 
-  case 68: /* $@3: %empty  */
-#line 585 "bison/parser.y"
+  case 67: /* $@3: %empty  */
+#line 658 "bison/parser.y"
                           { stack_id_push(SYMTAB);}
-#line 1910 "src/parser.c"
+#line 1973 "src/parser.c"
     break;
 
-  case 69: /* $@4: %empty  */
-#line 586 "bison/parser.y"
+  case 68: /* $@4: %empty  */
+#line 659 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 1916 "src/parser.c"
+#line 1979 "src/parser.c"
     break;
 
-  case 70: /* condition_suite: ELSE ACCOLADE_OUVRANTE $@3 liste_instructions $@4 ACCOLADE_FERMANTE  */
-#line 587 "bison/parser.y"
+  case 69: /* condition_suite: ELSE ACCOLADE_OUVRANTE $@3 liste_instructions $@4 ACCOLADE_FERMANTE  */
+#line 660 "bison/parser.y"
 {
     (yyval.instr_type).next = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
 
     (yyval.instr_type).next = concat((yyval.instr_type).next, (yyvsp[-2].instr_type).next);
 }
-#line 1927 "src/parser.c"
+#line 1990 "src/parser.c"
     break;
 
-  case 71: /* $@5: %empty  */
-#line 596 "bison/parser.y"
+  case 70: /* $@5: %empty  */
+#line 669 "bison/parser.y"
                     {stack_id_push(SYMTAB);}
-#line 1933 "src/parser.c"
+#line 1996 "src/parser.c"
     break;
 
-  case 72: /* $@6: %empty  */
-#line 597 "bison/parser.y"
+  case 71: /* $@6: %empty  */
+#line 670 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 1939 "src/parser.c"
+#line 2002 "src/parser.c"
     break;
 
-  case 73: /* boucle_while: WHILE PARENTHESE_OUVRANTE M test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M $@5 liste_instructions $@6 ACCOLADE_FERMANTE  */
-#line 598 "bison/parser.y"
+  case 72: /* boucle_while: WHILE PARENTHESE_OUVRANTE M test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M $@5 liste_instructions $@6 ACCOLADE_FERMANTE  */
+#line 671 "bison/parser.y"
 {
     complete((yyvsp[-7].boolexpr).true, (yyvsp[-4].intval));
     ListLabel_free((yyvsp[-7].boolexpr).true);
@@ -1952,23 +2015,23 @@ yyreduce:
     CODE->quads[CODE->nextquad].sym3 = q;
     gencode(CODE, Q_GOTO, NULL, NULL, q);
 }
-#line 1956 "src/parser.c"
+#line 2019 "src/parser.c"
     break;
 
-  case 74: /* $@7: %empty  */
-#line 613 "bison/parser.y"
+  case 73: /* $@7: %empty  */
+#line 686 "bison/parser.y"
                           {stack_id_push(SYMTAB);}
-#line 1962 "src/parser.c"
+#line 2025 "src/parser.c"
     break;
 
-  case 75: /* $@8: %empty  */
-#line 617 "bison/parser.y"
+  case 74: /* $@8: %empty  */
+#line 690 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 1968 "src/parser.c"
+#line 2031 "src/parser.c"
     break;
 
-  case 76: /* boucle_for: FOR PARENTHESE_OUVRANTE $@7 for_init POINT_VIRGULE M test POINT_VIRGULE for_fin PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M liste_instructions $@8 ACCOLADE_FERMANTE  */
-#line 618 "bison/parser.y"
+  case 75: /* boucle_for: FOR PARENTHESE_OUVRANTE $@7 for_init POINT_VIRGULE M test POINT_VIRGULE for_fin PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M liste_instructions $@8 ACCOLADE_FERMANTE  */
+#line 691 "bison/parser.y"
 {
     complete((yyvsp[-8].boolexpr).true, (yyvsp[-3].intval) - (yyvsp[-6].for_fin_t).num);
     ListLabel_free((yyvsp[-8].boolexpr).true);
@@ -1986,22 +2049,22 @@ yyreduce:
     CODE->quads[CODE->nextquad].sym3 = q;
     gencode(CODE, Q_GOTO, NULL, NULL, q);
 }
-#line 1990 "src/parser.c"
+#line 2053 "src/parser.c"
     break;
 
-  case 77: /* for_init: for_fin  */
-#line 638 "bison/parser.y"
+  case 76: /* for_init: for_fin  */
+#line 711 "bison/parser.y"
 {
     if ((yyvsp[0].for_fin_t).ptr != NULL)
     {
         gencode(CODE,COPY,(yyvsp[0].for_fin_t).id,(yyvsp[0].for_fin_t).ptr,NULL);
     }
 }
-#line 2001 "src/parser.c"
+#line 2064 "src/parser.c"
     break;
 
-  case 78: /* for_init: type IDENTIFICATEUR EGAL expression_bin  */
-#line 645 "bison/parser.y"
+  case 77: /* for_init: type IDENTIFICATEUR EGAL expression_bin  */
+#line 718 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-2].strval));
     if ( id != NULL )
@@ -2015,11 +2078,11 @@ yyreduce:
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE,COPY,sym_id,(yyvsp[0].exprval).ptr,NULL);
 }
-#line 2019 "src/parser.c"
+#line 2082 "src/parser.c"
     break;
 
-  case 79: /* for_fin: IDENTIFICATEUR  */
-#line 661 "bison/parser.y"
+  case 78: /* for_fin: IDENTIFICATEUR  */
+#line 734 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[0].strval));
     if ( id == NULL )
@@ -2032,11 +2095,11 @@ yyreduce:
     (yyval.for_fin_t).id = sym_id;
     (yyval.for_fin_t).ptr = NULL;
 }
-#line 2036 "src/parser.c"
+#line 2099 "src/parser.c"
     break;
 
-  case 80: /* for_fin: IDENTIFICATEUR EGAL expression_bin  */
-#line 674 "bison/parser.y"
+  case 79: /* for_fin: IDENTIFICATEUR EGAL expression_bin  */
+#line 747 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-2].strval));
     if ( id == NULL )
@@ -2054,45 +2117,45 @@ yyreduce:
     (yyval.for_fin_t).ptr = (yyvsp[0].exprval).ptr;
     (yyval.for_fin_t).num = (yyvsp[0].exprval).num;
 }
-#line 2058 "src/parser.c"
+#line 2121 "src/parser.c"
     break;
 
-  case 81: /* test: test OR M test2  */
-#line 694 "bison/parser.y"
+  case 80: /* test: test OR M test2  */
+#line 767 "bison/parser.y"
 {
     complete((yyvsp[-3].boolexpr).false, (yyvsp[-1].intval));
     ListLabel_free((yyvsp[-3].boolexpr).false);
     (yyval.boolexpr).true = concat((yyvsp[-3].boolexpr).true, (yyvsp[0].boolexpr).true);
     (yyval.boolexpr).false = (yyvsp[0].boolexpr).false;
 }
-#line 2069 "src/parser.c"
+#line 2132 "src/parser.c"
     break;
 
-  case 82: /* test: test2  */
-#line 700 "bison/parser.y"
+  case 81: /* test: test2  */
+#line 773 "bison/parser.y"
         {(yyval.boolexpr).true = (yyvsp[0].boolexpr).true; (yyval.boolexpr).false = (yyvsp[0].boolexpr).false;}
-#line 2075 "src/parser.c"
+#line 2138 "src/parser.c"
     break;
 
-  case 83: /* test2: test2 AND M test3  */
-#line 704 "bison/parser.y"
+  case 82: /* test2: test2 AND M test3  */
+#line 777 "bison/parser.y"
 {
     complete((yyvsp[-3].boolexpr).true, (yyvsp[-1].intval));
     ListLabel_free((yyvsp[-3].boolexpr).true);
     (yyval.boolexpr).false = concat((yyvsp[-3].boolexpr).false, (yyvsp[0].boolexpr).false);
     (yyval.boolexpr).true = (yyvsp[0].boolexpr).true;
 }
-#line 2086 "src/parser.c"
+#line 2149 "src/parser.c"
     break;
 
-  case 84: /* test2: test3  */
-#line 710 "bison/parser.y"
+  case 83: /* test2: test3  */
+#line 783 "bison/parser.y"
         {(yyval.boolexpr).true = (yyvsp[0].boolexpr).true; (yyval.boolexpr).false = (yyvsp[0].boolexpr).false;}
-#line 2092 "src/parser.c"
+#line 2155 "src/parser.c"
     break;
 
-  case 85: /* test3: expression_bin op_test expression_bin  */
-#line 714 "bison/parser.y"
+  case 84: /* test3: expression_bin op_test expression_bin  */
+#line 787 "bison/parser.y"
 {
     (yyval.boolexpr).true = NULL;
     (yyval.boolexpr).false = NULL;
@@ -2127,11 +2190,11 @@ yyreduce:
     (yyval.boolexpr).false = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
 }
-#line 2131 "src/parser.c"
+#line 2194 "src/parser.c"
     break;
 
-  case 86: /* test3: expression_bin  */
-#line 749 "bison/parser.y"
+  case 85: /* test3: expression_bin  */
+#line 822 "bison/parser.y"
 {
     (yyval.boolexpr).true = NULL;
     (yyval.boolexpr).false = NULL;
@@ -2146,63 +2209,63 @@ yyreduce:
     // Generate the code associate with op_test
     gencode(CODE, Q_IF_NEQ, (yyvsp[0].exprval).ptr, q_zero, q);
 }
-#line 2150 "src/parser.c"
+#line 2213 "src/parser.c"
     break;
 
-  case 87: /* op_test: EGAL_EGAL  */
-#line 765 "bison/parser.y"
+  case 86: /* op_test: EGAL_EGAL  */
+#line 838 "bison/parser.y"
             {(yyval.typetest) = EQ;}
-#line 2156 "src/parser.c"
+#line 2219 "src/parser.c"
     break;
 
-  case 88: /* op_test: POINT_EXCLAMATION EGAL  */
-#line 766 "bison/parser.y"
+  case 87: /* op_test: POINT_EXCLAMATION EGAL  */
+#line 839 "bison/parser.y"
                          {(yyval.typetest) = NEQ;}
-#line 2162 "src/parser.c"
+#line 2225 "src/parser.c"
     break;
 
-  case 89: /* op_test: INFERIEUR  */
-#line 767 "bison/parser.y"
+  case 88: /* op_test: INFERIEUR  */
+#line 840 "bison/parser.y"
             {(yyval.typetest) = LT;}
-#line 2168 "src/parser.c"
+#line 2231 "src/parser.c"
     break;
 
-  case 90: /* op_test: INFERIEUR_EGAL  */
-#line 768 "bison/parser.y"
+  case 89: /* op_test: INFERIEUR_EGAL  */
+#line 841 "bison/parser.y"
                  {(yyval.typetest) = LE;}
-#line 2174 "src/parser.c"
+#line 2237 "src/parser.c"
     break;
 
-  case 91: /* op_test: SUPERIEUR  */
-#line 769 "bison/parser.y"
+  case 90: /* op_test: SUPERIEUR  */
+#line 842 "bison/parser.y"
             {(yyval.typetest) = GT;}
-#line 2180 "src/parser.c"
+#line 2243 "src/parser.c"
     break;
 
-  case 92: /* op_test: SUPERIEUR_EGAL  */
-#line 770 "bison/parser.y"
+  case 91: /* op_test: SUPERIEUR_EGAL  */
+#line 843 "bison/parser.y"
                  {(yyval.typetest) = GE;}
-#line 2186 "src/parser.c"
+#line 2249 "src/parser.c"
     break;
 
-  case 93: /* M: %empty  */
-#line 772 "bison/parser.y"
+  case 92: /* M: %empty  */
+#line 845 "bison/parser.y"
            {(yyval.intval) = CODE->nextquad;}
-#line 2192 "src/parser.c"
+#line 2255 "src/parser.c"
     break;
 
-  case 94: /* N: %empty  */
-#line 774 "bison/parser.y"
+  case 93: /* N: %empty  */
+#line 847 "bison/parser.y"
 {
     (yyval.N_t).next = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
     (yyval.N_t).quad = CODE->nextquad;
 }
-#line 2202 "src/parser.c"
+#line 2265 "src/parser.c"
     break;
 
 
-#line 2206 "src/parser.c"
+#line 2269 "src/parser.c"
 
       default: break;
     }
@@ -2395,7 +2458,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 779 "bison/parser.y"
+#line 852 "bison/parser.y"
 
 void yyerror(const char * msg) {
     fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
