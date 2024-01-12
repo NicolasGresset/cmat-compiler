@@ -119,6 +119,475 @@ void manage_bop_plus(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 }
+
+void subtract_floats_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  sub.s %s, %s, %s\n", registers[F0], registers[F0],
+          registers[F2]);
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
+}
+
+void subtract_ints_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  sub %s, %s, %s\n", registers[T0], registers[T0],
+          registers[T1]);
+  fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
+}
+
+void manage_bop_moins(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of BOP_MOINS is not a NAME\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a float to a non float\n");
+      exit(1);
+    }
+
+    if (!is_symbol_float(quad->sym3)) {
+      fprintf(stderr, "Error: can't subtract a label or a int to a float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym2, code, F0);
+    move_float_symbol(quad->sym3, code, F2);
+    subtract_floats_and_store(quad, code);
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a int to a non int\n");
+      exit(1);
+    }
+
+    if (!is_symbol_int(quad->sym3)) {
+      fprintf(stderr, "Error: can't subtract a label or a float to an int\n");
+      exit(1);
+    }
+
+    move_int_symbol(quad->sym2, code, T0);
+    move_int_symbol(quad->sym3, code, T1);
+    subtract_ints_and_store(quad, code);
+  } else {
+    fprintf(stderr, "Error: can't subtract a label to a label\n");
+    exit(1);
+  }
+}
+
+void multiply_floats_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  mul.s %s, %s, %s\n", registers[F0], registers[F0],
+          registers[F2]);
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
+}
+
+void multiply_ints_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  mult %s, %s, %s\n", registers[T0], registers[T0],
+          registers[T1]);
+  fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
+}
+
+void manage_bop_mult(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of BOP_MULT is not a NAME\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a float to a non float\n");
+      exit(1);
+    }
+
+    if (!is_symbol_float(quad->sym3)) {
+      fprintf(stderr, "Error: can't multiply a label or a int to a float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym2, code, F0);
+    move_float_symbol(quad->sym3, code, F2);
+    multiply_floats_and_store(quad, code);
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a int to a non int\n");
+      exit(1);
+    }
+
+    if (!is_symbol_int(quad->sym3)) {
+      fprintf(stderr, "Error: can't multiply a label or a float to an int\n");
+      exit(1);
+    }
+
+    move_int_symbol(quad->sym2, code, T0);
+    move_int_symbol(quad->sym3, code, T1);
+    multiply_ints_and_store(quad, code);
+  } else {
+    fprintf(stderr, "Error: can't multiply a label to a label\n");
+    exit(1);
+  }
+}
+
+void divide_floats_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  div.s %s, %s, %s\n", registers[F0], registers[F0],
+          registers[F2]);
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
+}
+
+void divide_ints_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  div %s, %s, %s\n", registers[T0], registers[T0],
+          registers[T1]);
+  fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
+}
+
+void manage_bop_divise(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of BOP_DIVISE is not a NAME\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a float to a non float\n");
+      exit(1);
+    }
+
+    if (!is_symbol_float(quad->sym3)) {
+      fprintf(stderr, "Error: can't divide a label or a int to a float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym2, code, F0);
+    move_float_symbol(quad->sym3, code, F2);
+    divide_floats_and_store(quad, code);
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a int to a non int\n");
+      exit(1);
+    }
+
+    if (!is_symbol_int(quad->sym3)) {
+      fprintf(stderr, "Error: can't divide a label or a float to an int\n");
+      exit(1);
+    }
+
+    move_int_symbol(quad->sym2, code, T0);
+    move_int_symbol(quad->sym3, code, T1);
+    divide_ints_and_store(quad, code);
+  } else {
+    fprintf(stderr, "Error: can't divide a label to a label\n");
+    exit(1);
+  }
+}
+
+void unary_add_float_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
+}
+
+void unary_add_int_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
+}
+
+void manage_uop_plus(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of UOP_PLUS is not a NAME\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym2, code, F0);
+    unary_add_float_and_store(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a int to a non int\n");
+      exit(1);
+    }
+
+    move_int_symbol(quad->sym2, code, T0);
+    unary_add_int_and_store(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't use unary addition with a label\n");
+    exit(1);
+  }
+}
+
+void unary_subtract_float_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  sub.s %s, %%zero, %s\n", registers[F0], registers[F0]);
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
+}
+
+void unary_subtract_int_and_store(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  sub %s, %%zero, %s\n", registers[F0], registers[F0]);
+  fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
+}
+
+void manage_uop_moins(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of UOP_MOINS is not a NAME\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym2, code, F0);
+    unary_add_float_and_store(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't affect a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym2, code, T0);
+    unary_add_int_and_store(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't use unary subtraction with a label\n");
+    exit(1);
+  }
+}
+
+void float_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  beq %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+}
+
+void int_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  beq %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+}
+
+void manage_q_if_eq(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym3->kind != LABEL) {
+    fprintf(stderr, "Error: last operand of Q_IF_EQ is not a LABEL\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F2);
+    float_equal_goto(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym1, code, T0);
+    move_int_symbol(quad->sym2, code, T1);
+    int_equal_goto(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't compare using a label\n");
+    exit(1);
+  }
+}
+
+void float_nequal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  bne %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+}
+
+void int_nequal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  bne %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+}
+
+void manage_q_if_neq(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym3->kind != LABEL) {
+    fprintf(stderr, "Error: last operand of Q_IF_NEQ is not a LABEL\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F2);
+    float_nequal_goto(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym1, code, T0);
+    move_int_symbol(quad->sym2, code, T1);
+    int_nequal_goto(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't compare using a label\n");
+    exit(1);
+  }
+}
+
+void float_lower_than_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  blt %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+}
+
+void int_lower_than_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  blt %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+}
+
+void manage_q_if_lt(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym3->kind != LABEL) {
+    fprintf(stderr, "Error: last operand of Q_IF_LT is not a LABEL\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F2);
+    float_lower_than_goto(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym1, code, T0);
+    move_int_symbol(quad->sym2, code, T1);
+    int_lower_than_goto(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't compare using a label\n");
+    exit(1);
+  }
+}
+
+void float_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  ble %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+}
+
+void int_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  ble %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+}
+
+void manage_q_if_le(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym3->kind != LABEL) {
+    fprintf(stderr, "Error: last operand of Q_IF_LE is not a LABEL\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F2);
+    float_lower_than_equal_goto(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym1, code, T0);
+    move_int_symbol(quad->sym2, code, T1);
+    int_lower_than_equal_goto(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't compare using a label\n");
+    exit(1);
+  }
+}
+
+void float_greater_than_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  bgt %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+}
+
+void int_greater_than_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  bgt %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+}
+
+void manage_q_if_gt(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym3->kind != LABEL) {
+    fprintf(stderr, "Error: last operand of Q_IF_GT is not a LABEL\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F2);
+    float_greater_than_goto(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym1, code, T0);
+    move_int_symbol(quad->sym2, code, T1);
+    int_greater_than_goto(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't compare using a label\n");
+    exit(1);
+  }
+}
+
+void float_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  bge %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+}
+
+void int_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  bge %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+}
+
+void manage_q_if_ge(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym3->kind != LABEL) {
+    fprintf(stderr, "Error: last operand of Q_IF_GE is not a LABEL\n");
+    exit(1);
+  }
+
+  if (is_symbol_float(quad->sym2)) {
+    if (!is_symbol_float(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a float to a non float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym1, code, F0);
+    move_float_symbol(quad->sym2, code, F2);
+    float_greater_than_equal_goto(quad, code);
+
+  } else if (is_symbol_int(quad->sym2)) {
+    if (!is_symbol_int(quad->sym1)) {
+      fprintf(stderr, "Error: can't compare a int to a non int\n");
+      exit(1);
+    }
+    move_int_symbol(quad->sym1, code, T0);
+    move_int_symbol(quad->sym2, code, T1);
+    int_greater_than_equal_goto(quad, code);
+
+  } else {
+    fprintf(stderr, "Error: can't compare using a label\n");
+    exit(1);
+  }
+}
+
+
 /**
  * @brief Gère un quadruplet
  *
@@ -131,6 +600,39 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   switch (quad->kind) {
   case BOP_PLUS:
     manage_bop_plus(quad, code);
+    break;
+  case BOP_MOINS:
+    manage_bop_moins(quad,code);
+    break;
+  case BOP_MULT:
+    manage_bop_mult(quad, code);
+    break;
+  case BOP_DIVISE:
+    manage_bop_divise(quad,code);
+    break;
+  case UOP_PLUS:
+    manage_uop_plus(quad, code);
+    break;
+  case UOP_MOINS:
+    manage_uop_moins(quad,code);
+    break;
+  case Q_IF_EQ:
+    manage_q_if_eq(quad,code);
+    break;
+  case Q_IF_NEQ:
+    manage_q_if_neq(quad,code);
+    break;
+  case Q_IF_LT:
+    manage_q_if_lt(quad,code);
+    break;
+  case Q_IF_LE:
+    manage_q_if_le(quad,code);
+    break;
+  case Q_IF_GT:
+    manage_q_if_gt(quad,code);
+    break;
+  case Q_IF_GE:
+    manage_q_if_ge(quad,code);
     break;
   }
 }
@@ -170,14 +672,25 @@ void generate_mips_code(struct code *code) {
   }
 }
 
+
+
 /**
  * @brief Gère un identificateur rencontré dans le code 3 adresses
  *
  * @param symbol
  * @param code
  */
-void manage_identificateur(struct symbol *symbol, struct assembly_code *code) {}
+/*
+void manage_identificateur(struct symbol *symbol, struct assembly_code *code) {
+  if (symtable_get(code->symtable, symbol->u.id.name) == NULL) {
+    // l'identificateur n'a pas encore été rencontré
+    // on doit donc lui associe un emplacement mémoire dans le segment data du code MIPS
+    // via une étiquette
 
+    symtable_put(code->symtable, symbol->u.id.name, symbol->u.id.type);
+  }
+}
+*/
 /**
  * @brief Parcourt les différents identificateurs rencontrés dans le code 3
  * adresses Si ils ont déjà étés rencontrés, on ne fait rien sinon, on leur
@@ -186,6 +699,8 @@ void manage_identificateur(struct symbol *symbol, struct assembly_code *code) {}
  *
  * @param quad
  */
+
+/*
 void manage_identificateurs(struct quad *quad, struct assembly_code *code) {
   if (quad->sym1->kind == NAME) {
     manage_identificateur(quad->sym1, code);
@@ -197,3 +712,5 @@ void manage_identificateurs(struct quad *quad, struct assembly_code *code) {
     manage_identificateur(quad->sym3, code);
   }
 }
+
+*/
