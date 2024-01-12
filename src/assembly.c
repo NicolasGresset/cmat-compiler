@@ -314,12 +314,14 @@ void manage_uop_plus(struct quad *quad, struct assembly_code *code) {
   }
 }
 
-void unary_subtract_float_and_store(struct quad *quad, struct assembly_code *code) {
+void unary_subtract_float_and_store(struct quad *quad,
+                                    struct assembly_code *code) {
   fprintf(code->out, "  sub.s %s, %%zero, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
-void unary_subtract_int_and_store(struct quad *quad, struct assembly_code *code) {
+void unary_subtract_int_and_store(struct quad *quad,
+                                  struct assembly_code *code) {
   fprintf(code->out, "  sub %s, %%zero, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  sw %s, %s\n", registers[T0], quad->sym1->u.id.name);
 }
@@ -354,11 +356,13 @@ void manage_uop_moins(struct quad *quad, struct assembly_code *code) {
 }
 
 void float_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  beq %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+  fprintf(code->out, "  beq %s, %s, %i\n", registers[F0], registers[F2],
+          quad->sym1->u.addr);
 }
 
 void int_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  beq %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+  fprintf(code->out, "  beq %s, %s, %i\n", registers[T0], registers[T1],
+          quad->sym1->u.addr);
 }
 
 void manage_q_if_eq(struct quad *quad, struct assembly_code *code) {
@@ -393,11 +397,13 @@ void manage_q_if_eq(struct quad *quad, struct assembly_code *code) {
 }
 
 void float_nequal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bne %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+  fprintf(code->out, "  bne %s, %s, %i\n", registers[F0], registers[F2],
+          quad->sym1->u.addr);
 }
 
 void int_nequal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bne %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+  fprintf(code->out, "  bne %s, %s, %i\n", registers[T0], registers[T1],
+          quad->sym1->u.addr);
 }
 
 void manage_q_if_neq(struct quad *quad, struct assembly_code *code) {
@@ -432,11 +438,13 @@ void manage_q_if_neq(struct quad *quad, struct assembly_code *code) {
 }
 
 void float_lower_than_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  blt %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+  fprintf(code->out, "  blt %s, %s, %i\n", registers[F0], registers[F2],
+          quad->sym1->u.addr);
 }
 
 void int_lower_than_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  blt %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+  fprintf(code->out, "  blt %s, %s, %i\n", registers[T0], registers[T1],
+          quad->sym1->u.addr);
 }
 
 void manage_q_if_lt(struct quad *quad, struct assembly_code *code) {
@@ -470,12 +478,15 @@ void manage_q_if_lt(struct quad *quad, struct assembly_code *code) {
   }
 }
 
-void float_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  ble %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+void float_lower_than_equal_goto(struct quad *quad,
+                                 struct assembly_code *code) {
+  fprintf(code->out, "  ble %s, %s, %i\n", registers[F0], registers[F2],
+          quad->sym1->u.addr);
 }
 
 void int_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  ble %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+  fprintf(code->out, "  ble %s, %s, %i\n", registers[T0], registers[T1],
+          quad->sym1->u.addr);
 }
 
 void manage_q_if_le(struct quad *quad, struct assembly_code *code) {
@@ -510,11 +521,13 @@ void manage_q_if_le(struct quad *quad, struct assembly_code *code) {
 }
 
 void float_greater_than_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bgt %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+  fprintf(code->out, "  bgt %s, %s, %i\n", registers[F0], registers[F2],
+          quad->sym1->u.addr);
 }
 
 void int_greater_than_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bgt %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+  fprintf(code->out, "  bgt %s, %s, %i\n", registers[T0], registers[T1],
+          quad->sym1->u.addr);
 }
 
 void manage_q_if_gt(struct quad *quad, struct assembly_code *code) {
@@ -548,12 +561,17 @@ void manage_q_if_gt(struct quad *quad, struct assembly_code *code) {
   }
 }
 
-void float_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bge %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
+// todo demander à felix si c'est bien ces noms de fonctions
+void float_greater_than_equal_goto(struct quad *quad,
+                                   struct assembly_code *code) {
+  fprintf(code->out, "  bge %s, %s, %i\n", registers[F0], registers[F2],
+          quad->sym1->u.addr);
 }
 
-void int_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bge %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
+void int_greater_than_equal_goto(struct quad *quad,
+                                 struct assembly_code *code) {
+  fprintf(code->out, "  bge %s, %s, %i\n", registers[T0], registers[T1],
+          quad->sym1->u.addr);
 }
 
 void manage_q_if_ge(struct quad *quad, struct assembly_code *code) {
@@ -587,6 +605,107 @@ void manage_q_if_ge(struct quad *quad, struct assembly_code *code) {
   }
 }
 
+/**
+ * @brief Essayes de sauvegarder la valeur entière du registre de numéro
+ * register_number à l'emplacement mémoire correspondant au nom du symbole
+ *
+ * @param quad
+ * @param code
+ * @param register_number
+ */
+void save_int_symbol(struct symbol *symbol, struct assembly_code *code,
+                     int register_number) {
+  switch (symbol->kind) {
+  case NAME:
+    fprintf(code->out, "  sw %s, %s\n", registers[register_number],
+            symbol->u.id.name);
+    break;
+  default:
+    fprintf(stderr, "Error: can't save symbol of kind %d to int location\n",
+            symbol->kind);
+    exit(1);
+  }
+}
+
+/**
+ * @brief Essaye de sauvegarder la valeur flottante du registre de numéro
+ * register_number à l'emplacement mémoire correspondant au nom du symbole
+ *
+ * @param symbol
+ * @param code
+ * @param register_number
+ */
+void save_float_symbol(struct symbol *symbol, struct assembly_code *code,
+                       int register_number) {
+  switch (symbol->kind) {
+  case NAME:
+    fprintf(code->out, "  s.s %s, %s\n", registers[register_number],
+            symbol->u.id.name);
+    break;
+  default:
+    fprintf(stderr, "Error: can't save symbol of kind %d to float location\n",
+            symbol->kind);
+    exit(1);
+  }
+}
+
+void manage_copy(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of COPY is not a NAME\n");
+    exit(1);
+  }
+
+  if (quad->sym1->u.id.type == ENTIER) {
+    if (!is_symbol_int(quad->sym2)) {
+      fprintf(stderr, "Error: can't copy a label or a float to an int\n");
+      exit(1);
+    }
+
+    move_int_symbol(quad->sym2, code, T0);
+    save_int_symbol(quad->sym1, code, T0);
+  } else if (quad->sym1->u.id.type == REEL) {
+    if (!is_symbol_float(quad->sym2)) {
+      fprintf(stderr, "Error: can't copy a label or a int to a float\n");
+      exit(1);
+    }
+
+    move_float_symbol(quad->sym2, code, F0);
+    save_float_symbol(quad->sym1, code, F0);
+  } else {
+    fprintf(stderr, "Error: can't copy a label\n");
+    exit(1);
+  }
+}
+
+void manage_default_case(struct quad *quad, struct assembly_code *code) {
+  fprintf(stderr, "Error: can't manage quad of kind %d\n", quad->kind);
+  exit(1);
+}
+
+
+/**
+ * @brief Correspond à la déclaration d'une variable : on va lui associer un
+ * emplacement mémoire dans le segment data du code MIPS via une étiquette
+ * 
+ * @param quad 
+ * @param code 
+ */
+void manage_declare(struct quad *quad, struct assembly_code *code){
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of DECLARE is not a NAME\n");
+    exit(1);
+  }
+
+  if (quad->sym1->u.id.type == ENTIER) {
+    fprintf(code->out, "%s: .word 0\n", quad->sym1->u.id.name);
+  } else if (quad->sym1->u.id.type == REEL) {
+    fprintf(code->out, "%s: .float 0.0\n", quad->sym1->u.id.name);
+  } else {
+    fprintf(stderr, "Error: can't declare a label\n");
+    exit(1);
+  }
+
+}
 
 /**
  * @brief Gère un quadruplet
@@ -602,37 +721,46 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
     manage_bop_plus(quad, code);
     break;
   case BOP_MOINS:
-    manage_bop_moins(quad,code);
+    manage_bop_moins(quad, code);
     break;
   case BOP_MULT:
     manage_bop_mult(quad, code);
     break;
   case BOP_DIVISE:
-    manage_bop_divise(quad,code);
+    manage_bop_divise(quad, code);
     break;
   case UOP_PLUS:
     manage_uop_plus(quad, code);
     break;
   case UOP_MOINS:
-    manage_uop_moins(quad,code);
+    manage_uop_moins(quad, code);
     break;
   case Q_IF_EQ:
-    manage_q_if_eq(quad,code);
+    manage_q_if_eq(quad, code);
     break;
   case Q_IF_NEQ:
-    manage_q_if_neq(quad,code);
+    manage_q_if_neq(quad, code);
     break;
   case Q_IF_LT:
-    manage_q_if_lt(quad,code);
+    manage_q_if_lt(quad, code);
     break;
   case Q_IF_LE:
-    manage_q_if_le(quad,code);
+    manage_q_if_le(quad, code);
     break;
   case Q_IF_GT:
-    manage_q_if_gt(quad,code);
+    manage_q_if_gt(quad, code);
     break;
   case Q_IF_GE:
-    manage_q_if_ge(quad,code);
+    manage_q_if_ge(quad, code);
+    break;
+  case COPY:
+    manage_copy(quad, code);
+    break;
+  case Q_DECLARE:
+    manage_declare(quad, code);
+    break;
+  default:
+    manage_default_case(quad, code);
     break;
   }
 }
@@ -654,25 +782,23 @@ FILE *open_file(const char *file_name) {
 }
 
 /**
- * @brief La fonction qui génère le code MIPS à partir du code 3 adresses passé
- * en paramètre
+ * @brief La fonction qui génère le code MIPS à partir du code 3 adresses
+ * passé en paramètre
  *
  * @param code
  */
 void generate_mips_code(struct code *code) {
-  /* On va itérer sur les quads compris dans code et transformer chacun d'eux en
-   * code MIPS*/
+  /* On va itérer sur les quads compris dans code et transformer chacun d'eux
+   * en code MIPS*/
   struct assembly_code assembly_code;
   assembly_code.symtable = symtable_new();
 
   assembly_code.out = open_file(FILE_NAME);
 
-  for (int i = 0; i < code->nextquad; i++) {
+  for (unsigned int i = 0; i < code->nextquad; i++) {
     manage_quad(&code->quads[i], &assembly_code);
   }
 }
-
-
 
 /**
  * @brief Gère un identificateur rencontré dans le code 3 adresses
@@ -681,10 +807,11 @@ void generate_mips_code(struct code *code) {
  * @param code
  */
 /*
-void manage_identificateur(struct symbol *symbol, struct assembly_code *code) {
-  if (symtable_get(code->symtable, symbol->u.id.name) == NULL) {
+void manage_identificateur(struct symbol *symbol, struct assembly_code *code)
+{ if (symtable_get(code->symtable, symbol->u.id.name) == NULL) {
     // l'identificateur n'a pas encore été rencontré
-    // on doit donc lui associe un emplacement mémoire dans le segment data du code MIPS
+    // on doit donc lui associe un emplacement mémoire dans le segment data du
+code MIPS
     // via une étiquette
 
     symtable_put(code->symtable, symbol->u.id.name, symbol->u.id.type);

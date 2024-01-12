@@ -1,4 +1,5 @@
 #include "CMat.h"
+#include "assembly.h"
 
 struct table_hachage_t *SYMTAB;
 struct code *CODE;
@@ -56,6 +57,7 @@ int main(int argc, char **argv) {
         CODE->filename = context->code_resultat;
     }
     int r = yyparse();
+    generate_mips_code(CODE);
 
     if (context->tos == 1)
         table_hachage_print(SYMTAB);
