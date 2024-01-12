@@ -548,11 +548,12 @@ void manage_q_if_gt(struct quad *quad, struct assembly_code *code) {
   }
 }
 
-void float_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+// todo demander à felix si c'est bien ces noms de fonctions
+void float_greater_than_equal_goto(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  bge %s, %s, %i\n", registers[F0], registers[F2], quad->sym1->u.addr);
 }
 
-void int_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+void int_greater_than_equal_goto(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  bge %s, %s, %i\n", registers[T0], registers[T1], quad->sym1->u.addr);
 }
 
@@ -587,6 +588,15 @@ void manage_q_if_ge(struct quad *quad, struct assembly_code *code) {
   }
 }
 
+
+void manage_copy(struct quad *quad, struct assembly_code *code){
+  // le quad copy correspond à une affectation
+}
+
+void manage_default_case(struct quad *quad, struct assembly_code *code) {
+  fprintf(stderr, "Error: can't manage quad of kind %d\n", quad->kind);
+  exit(1);
+}
 
 /**
  * @brief Gère un quadruplet
@@ -634,6 +644,10 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case Q_IF_GE:
     manage_q_if_ge(quad,code);
     break;
+  case COPY:
+    manage_copy(quad, code);
+  default:
+    manage_default_case(quad, code);
   }
 }
 
@@ -667,7 +681,7 @@ void generate_mips_code(struct code *code) {
 
   assembly_code.out = open_file(FILE_NAME);
 
-  for (int i = 0; i < code->nextquad; i++) {
+  for (unsigned int i = 0; i < code->nextquad; i++) {
     manage_quad(&code->quads[i], &assembly_code);
   }
 }
