@@ -70,6 +70,7 @@ void symtable_free(struct symtable *t);
 
 /* QUADRUPLETS ET CODE */
 
+// représente un quadruplet : représentation 3 adresses
 struct quad {
     enum quad_kind {
         Q_DECLARE,
