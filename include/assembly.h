@@ -20,6 +20,7 @@ void generate_mips_code(struct code *code);
 
 struct assembly_code {
   int next_float_constant;
+  char *float_zero; // variable réservée par le compilateur
   FILE *out; // pointeur vers le fichier de sortie où écrire le code MIPS
   char data[MAX_DATA_SIZE]; // le segment data du code MIPS
   int current_data_offset; // l'offset courant dans le segment data pour pouvoir
@@ -28,6 +29,7 @@ struct assembly_code {
 
 #define T0 0
 #define T1 1
+#define T2 2
 #define A0 8
 #define F0 16
 #define F2 17
