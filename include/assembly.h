@@ -28,9 +28,11 @@ struct assembly_code {
 
 #define T0 0
 #define T1 1
+#define A0 8
 #define F0 16
 #define F2 17
 #define F4 18
+#define F12 19
 
 #define N_REGISTERS 36
 
