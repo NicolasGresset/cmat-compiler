@@ -66,10 +66,10 @@ void manage_bop_mult_mat(struct quad *quad, struct assembly_code *code){
   char *name2 = quad->sym2->u.id.name;
   char *name3 = quad->sym3->u.id.name;
 
-  for (unsigned int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
-    for (unsigned int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
+  for (int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
+    for (int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
       fprintf(code->out, "  li %s, 0\n", registers[F0]); // F0 = 0
-      for (unsigned int k = 0; k < quad->sym2->u.id.col; k++) {
+      for (int k = 0; k < quad->sym2->u.id.col; k++) {
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F2], 
                 4 * (ligne * quad->sym2->u.id.col + k), name2); // F2 = B[ligne][k]
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F4],
@@ -95,10 +95,10 @@ void manage_bop_divise_mat(struct quad *quad, struct assembly_code *code){
   char *name2 = quad->sym2->u.id.name;
   char *name3 = quad->sym3->u.id.name;
 
-  for (unsigned int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
-    for (unsigned int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
+  for (int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
+    for (int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
       fprintf(code->out, "  li %s, 0\n", registers[F0]); // F0 = 0
-      for (unsigned int k = 0; k < quad->sym2->u.id.col; k++) {
+      for (int k = 0; k < quad->sym2->u.id.col; k++) {
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F2], 
                 4 * (ligne * quad->sym2->u.id.col + k), name2); // F2 = B[ligne][k]
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F4],
@@ -169,8 +169,8 @@ void manage_transpose_mat(struct quad *quad, struct assembly_code *code) {
   char *name1 = quad->sym1->u.id.name;
   char *name2 = quad->sym2->u.id.name;
 
-  for (unsigned int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
-    for (unsigned int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
+  for (int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
+    for (int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
       fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0],
               4 * (ligne * quad->sym1->u.id.col + colonne), name2); // F0 = B[ligne][colonne]
       fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F0],
@@ -185,7 +185,7 @@ void manage_array_affect(struct quad *quad, struct assembly_code *code) {
   // représentant l'indice et quad->sym3 est la valeur à affecter
   // quad->sym1 étant un tableau, il pointe vers un emplacement de flottants !!!
 
-  fprintf(code->out, "# array affect %s[%s] = ...\n", quad->sym1->u.id.name,
+  fprintf(code->out, "# array affect %s[%d] = ...\n", quad->sym1->u.id.name,
           quad->sym2->u.int_value);
 
   fprintf(code->out, "  la %s, %s\n", registers[T0],
