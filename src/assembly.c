@@ -1,9 +1,9 @@
 #include "../include/assembly.h"
 #include "CMat.h" // pour SYMTAB
 #include "assembly_arithmetic.h"
+#include "assembly_copy.h"
 #include "assembly_jump.h"
 #include "assembly_matrix.h"
-#include "assembly_copy.h"
 #include "assembly_print.h"
 #include "data_segment.h"
 #include "table_symboles.h"
@@ -11,7 +11,9 @@
 #include <stdlib.h>
 
 char *registers[] = {
-    [T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [A0] = "$a0", [F2] = "$f2", [F4] = "$f4", [F12] = "$f12",};
+    [T0] = "$t0", [T1] = "$t1", [T2] = "$t2", [F0] = "$f0",
+    [A0] = "$a0", [F2] = "$f2", [F4] = "$f4", [F12] = "$f12",
+};
 
 int is_symbol_float(struct symbol *symbol) {
   return symbol->kind == FLOAT_CONSTANT ||
@@ -65,7 +67,6 @@ void move_float_symbol(struct symbol *symbol, struct assembly_code *code,
     exit(1);
   }
 }
-
 
 void manage_default_case(struct quad *quad, struct assembly_code *code) {
   (void)code;
@@ -249,6 +250,16 @@ void manage_quads(struct code *code, struct assembly_code *assembly_code) {
   }
 }
 
+void initalize_assembly_code(struct assembly_code *assembly_code,
+                             struct code *code) {
+  memset(assembly_code, 0, sizeof(struct assembly_code));
+  assembly_code->out = open_file(code->filename);
+
+  append_to_data(assembly_code, ".data\n");
+  assembly_code->float_zero = "__float_zero\n";
+  append_to_data(assembly_code, "  __float_zero: .float 0.0\n");
+}
+
 /**
  * @brief La fonction qui génère le code MIPS à partir du code 3 adresses
  * passé en paramètre
@@ -257,10 +268,8 @@ void manage_quads(struct code *code, struct assembly_code *assembly_code) {
  */
 void generate_mips_code(struct code *code) {
   struct assembly_code assembly_code;
-  memset(&assembly_code, 0, sizeof(struct assembly_code));
-  assembly_code.out = open_file(code->filename);
+  initalize_assembly_code(&assembly_code, code);
 
-  append_to_data(&assembly_code, ".data\n");
   manage_quads(code, &assembly_code);
   write_data_to_file(&assembly_code);
 }
