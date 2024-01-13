@@ -41,10 +41,15 @@ void move_int_symbol(struct symbol *symbol, struct assembly_code *code,
 
 void move_float_symbol(struct symbol *symbol, struct assembly_code *code,
                        int register_number) {
+  char float_constant[MAX_DATA_SIZE];
   switch (symbol->kind) {
   case FLOAT_CONSTANT:
-    fprintf(code->out, "  li.s %s, %f\n", registers[register_number],
-            symbol->u.float_value);
+    snprintf(float_constant, MAX_DATA_SIZE, "  __float_tmp%d:  .float %f\n",
+             code->next_float_constant, symbol->u.float_value);
+    append_to_data(code, float_constant);
+    fprintf(code->out, "  l.s %s, __float_tmp%d\n", registers[register_number],
+            code->next_float_constant);
+    code->next_float_constant++;
     break;
   case NAME:
     fprintf(code->out, "  l.s %s, %s\n", registers[register_number],
@@ -255,7 +260,6 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
     exit(1);
   }
 }
-
 
 void manage_call_print(struct quad *quad, struct assembly_code *code) {
   /*

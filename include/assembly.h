@@ -19,6 +19,7 @@ du code 3 adresses intermédiaires en code machine interprétable par une archit
 void generate_mips_code(struct code *code);
 
 struct assembly_code {
+  int next_float_constant;
   FILE *out; // pointeur vers le fichier de sortie où écrire le code MIPS
   char data[MAX_DATA_SIZE]; // le segment data du code MIPS
   int current_data_offset; // l'offset courant dans le segment data pour pouvoir
