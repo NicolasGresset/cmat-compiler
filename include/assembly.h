@@ -30,6 +30,7 @@ struct assembly_code {
 #define T1 1
 #define F0 16
 #define F2 17
+#define F4 18
 
 #define N_REGISTERS 18
 

@@ -8,7 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char *registers[] = {[T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [F2] = "$f2"};
+char *registers[] = {
+    [T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [F2] = "$f2", [F4] = "$f4"};
 
 int is_symbol_float(struct symbol *symbol) {
   return symbol->kind == FLOAT_CONSTANT ||
@@ -155,9 +156,11 @@ void save_int_into_float_symbol(struct symbol *symbol,
 
   switch (symbol->kind) {
   case NAME:
-    fprintf(code->out, "  cvt.s.w %s, %s\n", registers[register_number_float],
-            registers[register_number_int]);
-    fprintf(code->out, "  sw %s, %s\n", registers[register_number_float],
+    fprintf(code->out, " mtc1 %s, %s\n", registers[register_number_int],
+            registers[register_number_float]);
+    fprintf(code->out, " cvt.s.w %s, %s\n", registers[register_number_float],
+            registers[register_number_float]);
+    fprintf(code->out, " sw %s, %s\n", registers[register_number_float],
             symbol->u.id.name);
     break;
   default:
@@ -351,8 +354,29 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case MATOP_PLUS:
     manage_bop_plus_mat(quad, code);
     break;
+  case MATOP_MOINS:
+    manage_bop_moins_mat(quad, code);
+    break;
+  case MATOP_MULT:
+    manage_bop_mult_mat(quad, code);
+    break;
+  case MATOP_DIVISE:
+    manage_bop_divise_mat(quad, code);
+    break;
+  case UMATOP_PLUS:
+    manage_uop_plus_mat(quad, code);
+    break;
+  case UMATOP_MOINS:
+    manage_uop_moins_mat(quad, code);
+    break;
+  case UMATOP_TRANSPOSE:
+    manage_transpose_mat(quad, code);
+    break;
   case CALL_PRINT:
     manage_call_print(quad, code);
+    break;
+  case ARRAY_AFFECT:
+    manage_array_affect(quad, code);
     break;
   default:
     manage_default_case(quad, code);
@@ -395,8 +419,7 @@ void manage_quads(struct code *code, struct assembly_code *assembly_code) {
 void generate_mips_code(struct code *code) {
   struct assembly_code assembly_code;
   memset(&assembly_code, 0, sizeof(struct assembly_code));
-  assembly_code.out = open_file(
-      code->filename); // todo gérer le commutateur de la ligne de commande
+  assembly_code.out = open_file(code->filename);
 
   append_to_data(&assembly_code, ".data\n");
   manage_quads(code, &assembly_code);
