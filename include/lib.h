@@ -121,7 +121,10 @@ struct quad {
 
         Q_GOTO,
         Q_GOTO_UNKNOWN,
-        CALL_PRINT
+        CALL_PRINT,
+
+        ARRAY_AFFECT, // équivaut à id[i] = a : sym1 est l'id, sym2 l'indice, sym3
+                      // la valeur
 
     } kind;
     struct symbol *sym1;
