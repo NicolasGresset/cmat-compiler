@@ -58,11 +58,12 @@ int main(int argc, char **argv) {
   set_filename(context, CODE);
 
   int r = yyparse();
-  generate_mips_code(CODE);
 
   table_hachage_print(SYMTAB);
   code_dump(CODE);
 
+  generate_mips_code(CODE);
+  
   table_hachage_free(SYMTAB);
   code_free(CODE);
 

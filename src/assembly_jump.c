@@ -7,8 +7,8 @@
 // egalite --------------------------------------------------------
 
 void float_equal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  beq %s, %s, line%i\n", registers[F0], registers[F2],
-          quad->sym3->u.addr); // ?
+  fprintf(code->out, "  c.eq.s %s, %s\n", registers[F0], registers[F2]);
+  fprintf(code->out, "  bczt %s\n", quad->sym3->u.addr);
 }
 
 void int_equal_goto(struct quad *quad, struct assembly_code *code) {
@@ -51,8 +51,8 @@ void manage_q_if_eq(struct quad *quad, struct assembly_code *code) {
 // different --------------------------------------------------------
 
 void float_nequal_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bne %s, %s, line%i\n", registers[F0], registers[F2],
-          quad->sym3->u.addr);
+  fprintf(code->out, "  c.eq.s %s, %s\n", registers[F0], registers[F2]);
+  fprintf(code->out, "  bczf %s\n", quad->sym3->u.addr);
 }
 
 void int_nequal_goto(struct quad *quad, struct assembly_code *code) {
@@ -95,8 +95,8 @@ void manage_q_if_neq(struct quad *quad, struct assembly_code *code) {
 // inf --------------------------------------------------------
 
 void float_lower_than_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  blt %s, %s, line%i\n", registers[F0], registers[F2],
-          quad->sym3->u.addr);
+  fprintf(code->out, "  c.lt.s %s, %s\n", registers[F0], registers[F2]);
+  fprintf(code->out, "  bczt %s\n", quad->sym3->u.addr);
 }
 
 void int_lower_than_goto(struct quad *quad, struct assembly_code *code) {
@@ -138,10 +138,9 @@ void manage_q_if_lt(struct quad *quad, struct assembly_code *code) {
 
 // inf ou egal --------------------------------------------------------
 
-void float_lower_than_equal_goto(struct quad *quad,
-                                 struct assembly_code *code) {
-  fprintf(code->out, "  ble %s, %s, line%i\n", registers[F0], registers[F2],
-          quad->sym3->u.addr);
+void float_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  c.le.s %s, %s\n", registers[F0], registers[F2]);
+  fprintf(code->out, "  bczt %s\n", quad->sym3->u.addr);
 }
 
 void int_lower_than_equal_goto(struct quad *quad, struct assembly_code *code) {
@@ -183,8 +182,8 @@ void manage_q_if_le(struct quad *quad, struct assembly_code *code) {
 
 // sup --------------------------------------------------------
 void float_greater_than_goto(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  bgt %s, %s, line%i\n", registers[F0], registers[F2],
-          quad->sym3->u.addr);
+  fprintf(code->out, "  c.le.s %s, %s\n", registers[F0], registers[F2]);
+  fprintf(code->out, "  bczf %s\n", quad->sym3->u.addr);
 }
 
 void int_greater_than_goto(struct quad *quad, struct assembly_code *code) {
@@ -226,11 +225,9 @@ void manage_q_if_gt(struct quad *quad, struct assembly_code *code) {
 
 // sup ou egal --------------------------------------------------------
 
-// todo demander à felix si c'est bien ces noms de fonctions
-void float_greater_than_equal_goto(struct quad *quad,
-                                   struct assembly_code *code) {
-  fprintf(code->out, "  bge %s, %s, line%i\n", registers[F0], registers[F2],
-          quad->sym3->u.addr);
+void float_greater_than_equal_goto(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "  c.lt.s %s, %s\n", registers[F0], registers[F2]);
+  fprintf(code->out, "  bczf %s\n", quad->sym3->u.addr);
 }
 
 void int_greater_than_equal_goto(struct quad *quad,

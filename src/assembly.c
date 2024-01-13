@@ -2,12 +2,14 @@
 #include "CMat.h" // pour SYMTAB
 #include "assembly_arithmetic.h"
 #include "assembly_jump.h"
+#include "assembly_matrix.h"
 #include "data_segment.h"
 #include "table_symboles.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-char *registers[] = {[T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [F2] = "$f2"};
+char *registers[] = {
+    [T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [F2] = "$f2", [F4] = "$f4"};
 
 int is_symbol_float(struct symbol *symbol) {
   return symbol->kind == FLOAT_CONSTANT ||
@@ -154,9 +156,11 @@ void save_int_into_float_symbol(struct symbol *symbol,
 
   switch (symbol->kind) {
   case NAME:
-    fprintf(code->out, "  cvt.s.w %s, %s\n", registers[register_number_float],
-            registers[register_number_int]);
-    fprintf(code->out, "  sw %s, %s\n", registers[register_number_float],
+    fprintf(code->out, " mtc1 %s, %s\n", registers[register_number_int],
+            registers[register_number_float]);
+    fprintf(code->out, " cvt.s.w %s, %s\n", registers[register_number_float],
+            registers[register_number_float]);
+    fprintf(code->out, " sw %s, %s\n", registers[register_number_float],
             symbol->u.id.name);
     break;
   default:
@@ -184,9 +188,7 @@ void manage_copy(struct quad *quad, struct assembly_code *code) {
     } else if (is_symbol_float(quad->sym2)) {
       move_float_symbol(quad->sym2, code, F0);
       save_float_into_int_symbol(quad->sym1, code, F0, T0);
-    }
-
-    else {
+    } else {
       fprintf(stderr, "Error: can't copy a label to an int\n");
       exit(1);
     }
@@ -205,6 +207,8 @@ void manage_copy(struct quad *quad, struct assembly_code *code) {
       exit(1);
     }
 
+  } else if (quad->sym2->u.id.type == MATRIX_TYPE) {
+    manage_copy_mat(quad, code);
   } else {
     fprintf(stderr, "Error: can't copy a label\n");
     exit(1);
@@ -244,16 +248,6 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
     snprintf(declaration, MAX_DATA_SIZE, "  %s: .float 0.0\n",
              quad->sym1->u.id.name);
     append_to_data(code, declaration);
-    break;
-  case MATRIX_TYPE:
-    snprintf(declaration, MAX_DATA_SIZE, "  %s: .float ",
-             quad->sym1->u.id.name);
-    append_to_data(code, declaration);
-    for (int j = 0; j < quad->sym1->u.id.row; j++) {
-      for (int k = 0; k < quad->sym1->u.id.col; k++) {
-        append_to_data(code, "0.0 ");
-      }
-    }
     break;
   default:
     fprintf(stderr, "Error: can't declare a label\n");
@@ -354,8 +348,35 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case Q_DECLARE:
     manage_declare(quad, code);
     break;
+  case Q_DECLARE_MAT:
+    manage_declare_mat(quad, code);
+    break;
+  case MATOP_PLUS:
+    manage_bop_plus_mat(quad, code);
+    break;
+  case MATOP_MOINS:
+    manage_bop_moins_mat(quad, code);
+    break;
+  case MATOP_MULT:
+    manage_bop_mult_mat(quad, code);
+    break;
+  case MATOP_DIVISE:
+    manage_bop_divise_mat(quad, code);
+    break;
+  case UMATOP_PLUS:
+    manage_uop_plus_mat(quad, code);
+    break;
+  case UMATOP_MOINS:
+    manage_uop_moins_mat(quad, code);
+    break;
+  case UMATOP_TRANSPOSE:
+    manage_transpose_mat(quad, code);
+    break;
   case CALL_PRINT:
     manage_call_print(quad, code);
+    break;
+  case ARRAY_AFFECT:
+    manage_array_affect(quad, code);
     break;
   default:
     manage_default_case(quad, code);
@@ -398,8 +419,7 @@ void manage_quads(struct code *code, struct assembly_code *assembly_code) {
 void generate_mips_code(struct code *code) {
   struct assembly_code assembly_code;
   memset(&assembly_code, 0, sizeof(struct assembly_code));
-  assembly_code.out =
-      open_file(code->filename); // todo gérer le commutateur de la ligne de commande
+  assembly_code.out = open_file(code->filename);
 
   append_to_data(&assembly_code, ".data\n");
   manage_quads(code, &assembly_code);
