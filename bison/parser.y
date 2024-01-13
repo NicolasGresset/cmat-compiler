@@ -117,6 +117,9 @@ void complete(struct ListLabel * l, unsigned int addr)
          gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
 
          gencode(CODE, k1, expr1.ptr, expr2.ptr, expr3.ptr);
+
+         expr1.type = expr2.type;
+
      }
      // Operération avec 1 matrice et 1 float
      else if (expr2.type == MATRIX_TYPE)
@@ -125,6 +128,8 @@ void complete(struct ListLabel * l, unsigned int addr)
 
          gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
          gencode(CODE, k2, expr1.ptr, expr2.ptr, expr3.ptr);
+
+         expr1.type = expr2.type;
      }
     // Opératione entre 1 float et 1 matrice
     else if (expr3.type == MATRIX_TYPE)
@@ -133,6 +138,8 @@ void complete(struct ListLabel * l, unsigned int addr)
 
         gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
         gencode(CODE, k2, expr1.ptr, expr3.ptr, expr2.ptr);
+
+        expr1.type = expr3.type;
     }
     // Operation entre 2 entiers
     else if (expr2.type == ENTIER && expr3.type == ENTIER)
@@ -142,6 +149,8 @@ void complete(struct ListLabel * l, unsigned int addr)
         gencode(CODE, Q_DECLARE, expr1.ptr, NULL, NULL);
 
         gencode(CODE, k,expr1.ptr,expr2.ptr,expr3.ptr);
+
+        expr1.type = expr2.type;
     }
     // Operation entre au moins 1 flottant (conversion gérée plus tard)
     else
@@ -150,13 +159,15 @@ void complete(struct ListLabel * l, unsigned int addr)
         gencode(CODE, Q_DECLARE, expr1.ptr, NULL, NULL);
 
         gencode(CODE, k,expr1.ptr,expr2.ptr,expr3.ptr);
+
+        expr1.type = REEL;
     }
 
     // Utile pour la boucle_for savoir où compléter test.true
     expr1.num = MAX(expr2.num, expr3.num);
     expr1.num += 1;
 
-     return expr1;
+    return expr1;
  }
 
 %}

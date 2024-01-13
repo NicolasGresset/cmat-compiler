@@ -89,4 +89,5 @@ int main()
     IA = det*IA;
 /* Calcul de X */
     X = IA*B;
+    return 0;
 }
