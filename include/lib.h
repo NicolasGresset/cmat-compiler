@@ -43,6 +43,14 @@ struct symtable {
     struct symbol *symbols;
 };
 
+// Pour le parser
+struct exprval
+{
+    struct symbol * ptr;
+    type_t type;
+    int num;
+};
+
 struct symbol *symbol_id(const struct id_t id);
 
 struct symbol *symbol_const_int(int intval);
@@ -99,11 +107,8 @@ struct quad {
         MAT_BIN_MOINS,
         MAT_BIN_MULT,
         MAT_BIN_DIVISE,
-        UMAT_BIN_PLUS,
-        UMAT_BIN_MOINS,
-        UMAT_BIN_TRANSPOSE,
-
-
+        // UMAT_BIN_PLUS, Impossible
+        // UMAT_BIN_MOINS, Impossible
 
         COPY,
 

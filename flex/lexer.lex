@@ -44,6 +44,8 @@ _COMMENTAIRE {COMMENTAIRE_SIMPLE}|{COMMENTAIRE_PLUSIEURS_LIGNES}
 
 _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\)|\[|\]|\{|\}|\&|\||<<|>>|'|"]
 
+_STRING \"([^\\\n]|(\\.))*?\"
+
 %%
 "int" return INT;
 "float" return FLOAT;
@@ -53,8 +55,13 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 "if" return IF;
 "while" return WHILE;
 "for" return FOR;
+"return" return RETURN;
 
 "main" {symtable_new();return MAIN;}
+"printf" return PRINTF;
+"print" return PRINT;
+"printmat" return PRINTMAT;
+
 
 {_CONSTANTE_ENTIERE} {
     sscanf(yytext,"%d",&(yylval.intval));
@@ -73,6 +80,8 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
     //return ecrireToken(IDENTIFICATEUR);
     return IDENTIFICATEUR;
 }
+
+{_STRING} { return STRING; }
 
 "+" return PLUS;
 "-" return MOINS;
@@ -100,6 +109,7 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 "==" return EGAL_EGAL;
 "||" return OR;
 "&&" return AND;
+"." return POINT;
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;

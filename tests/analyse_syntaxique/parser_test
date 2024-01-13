@@ -84,9 +84,9 @@ int main()
     //IA[1][0] = -IA[1][0];
 /* Calcul du déterminant de A */
     //det = 1/(A[0][0]*A[1][1]-A[0][1]*A[1][0]);
-    //IA = A + IA;
+    IA = A + IA;
+    det = 1. + A[0][0];
     //IA = det*IA;
-    int b = det + c;
 /* Calcul de X */
     //X = IA*B;
 }
