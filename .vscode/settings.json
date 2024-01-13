@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "assembly.h": "c",
+        "cmat.h": "c",
+        "table_symboles.h": "c"
+    }
+}

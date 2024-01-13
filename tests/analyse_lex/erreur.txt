@@ -1,5 +1,0 @@
-int main(){
-    matrix A;
-    float è /;
-    $
-}

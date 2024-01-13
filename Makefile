@@ -1,11 +1,10 @@
 TARGET = main
 
-
 SRCDIR   := src
 OBJDIR   := obj
 BINDIR   := bin
 TESTDIR  := test
-INCLUDE_PATH := include
+INCLUDE_PATH := ./include
 LEXDIR   := flex
 BISONDIR := bison
 
@@ -32,14 +31,16 @@ $(TESTDIR)/$(TESTSOURCE): $(OBJECTS)
 
 $(OBJECTS) : $(OBJDIR)/%.o : $(SRCDIR)/%.c $(INCLUDES)
 	mkdir -p $(OBJDIR)
-	gcc -o $@ -c $< $(CFLAGS) $(LDLIBS)
+	gcc -o $@ -c $< $(CFLAGS) $(LDLIBS) -I$(INCLUDE_PATH)/
+
 
 $(SRCDIR)/$(BISONSOURCE).c: $(BISONDIR)/$(BISONSOURCE).y
-	bison -d -o $@ $<
+	bison --header=$(INCLUDE_PATH)/$(BISONSOURCE).h -t -o $@ $< -Wcounterexamples
+	@echo "Linking complete for bison file"
 
 $(SRCDIR)/$(LEXSOURCE).c: $(LEXDIR)/$(LEXSOURCE).lex $(SRCDIR)/$(BISONSOURCE).c
-	flex -o $@ $<
-
+	flex --header-file=$(INCLUDE_PATH)/$(LEXSOURCE).h -o $@ $<
+	@echo "Linking complete for flex file"
 
 dir:
 	mkdir -p $(BINDIR)
@@ -48,6 +49,8 @@ dir:
 	mkdir -p $(INCLUDE_PATH)
 	mkdir -p $(LEXDIR)
 	mkdir -p $(BISONDIR)
+
+.PHONY: clean
 
 clean:
 	rm -rf $(OBJDIR)/*.o

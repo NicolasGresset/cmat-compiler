@@ -1,8 +1,11 @@
 %{
-#include "../include/tokens.h"
-#include <stdio.h>
+#include "CMat.h"
+#include "parser.h"
 
-char token_valeur[LONGUEUR_TOKEN_MAX];
+#define LEX_ERROR 300
+//#define LONGUEUR_TOKEN_MAX 32 // longueur max d'un token
+
+char token_valeur[TAILLE_MAX_TOKEN];
 
 /**
  * Ecrit de manière sécurisée la valeur du token dans la variable token_valeur
@@ -11,14 +14,18 @@ char token_valeur[LONGUEUR_TOKEN_MAX];
  */
 int ecrireToken(int token_code){
     int n;
-    if ((n = snprintf(token_valeur, LONGUEUR_TOKEN_MAX, "%s", yytext)) >= LONGUEUR_TOKEN_MAX){
+    if ((n = snprintf(token_valeur, TAILLE_MAX_TOKEN, "%s", yytext)) >= TAILLE_MAX_TOKEN){
         return LEX_ERROR; //error
     }
+
     return token_code; // cas normal
 }
 %}
 
-LETTRE [a-zA-Z_]
+%option nounput
+%option noinput
+
+LETTRE [a-zA-Z]
 CHIFFRE [0-9]
 
 SIGNIFICANT [0-9]+|[0-9]+\.[0-9]*|[0-9]*\.[0-9]+
@@ -27,18 +34,17 @@ SUFFIX [fFlL]
 
 _IDENTIFICATEUR {LETTRE}({LETTRE}|{CHIFFRE})*
 
-_CONSTANTE_ENTIERE [1-9]({CHIFFRE})*
+_CONSTANTE_ENTIERE [0-9]({CHIFFRE})*
 _CONSTANTE_CARACTERE '\\?{LETTRE}'
 _CONSTANTE_FLOTTANTE {SIGNIFICANT}{EXPONENT}?{SUFFIX}?
 
 COMMENTAIRE_SIMPLE \/\/(.)*
-COMMENTAIRE_PLUSIEURS_LIGNES \/\*([^\*]|\**[^\/])*\*\/
+COMMENTAIRE_PLUSIEURS_LIGNES [/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]
 _COMMENTAIRE {COMMENTAIRE_SIMPLE}|{COMMENTAIRE_PLUSIEURS_LIGNES}
 
 _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\)|\[|\]|\{|\}|\&|\||<<|>>|'|"]
 
 %%
-
 "int" return INT;
 "float" return FLOAT;
 "matrix" return MATRIX;
@@ -51,10 +57,24 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 "main" return MAIN;
 "return" return RETURN;
 
-{_CONSTANTE_ENTIERE} return ecrireToken(CONSTANTE_ENTIERE);
-{_CONSTANTE_FLOTTANTE} return ecrireToken(CONSTANTE_FLOTTANTE);
+{_CONSTANTE_ENTIERE} {
+    sscanf(yytext,"%d",&(yylval.intval));
+    return CONSTANTE_ENTIERE;
+}//return ecrireToken(CONSTANTE_ENTIERE);
+{_CONSTANTE_FLOTTANTE} {
+    sscanf(yytext,"%f",&(yylval.floatval));
+    return CONSTANTE_FLOTTANTE;
+}//return ecrireToken(CONSTANTE_FLOTTANTE);
 {_CONSTANTE_CARACTERE} return ecrireToken(CONSTANTE_CARACTERE);
-{_IDENTIFICATEUR} return ecrireToken(IDENTIFICATEUR);
+{_IDENTIFICATEUR} {
+    if ( yyleng > TAILLE_MAX_TOKEN )
+        fprintf(stderr,"Identifier '%s' too long, truncated\n",yytext);
+    strncpy(yylval.strval,yytext, TAILLE_MAX_TOKEN);
+    yylval.strval[TAILLE_MAX_TOKEN] = '\0';
+    //return ecrireToken(IDENTIFICATEUR);
+    return IDENTIFICATEUR;
+}
+
 "+" return PLUS;
 "-" return MOINS;
 "*" return FOIS;
@@ -79,9 +99,10 @@ _SYMBOLE_NON_ALPHANUMERIQUE [\+|\-|\*|\/|\%|!|\|\||&&|==|!=|<=|>=|<|>|=|;|,|\(|\
 ">=" return SUPERIEUR_EGAL;
 "!" return POINT_EXCLAMATION;
 "==" return EGAL_EGAL;
-
+"||" return OR;
+"&&" return AND;
 
 {_COMMENTAIRE} ;
 [[:space:]]+ ;
-. return LEX_ERROR;
+. { fprintf (stderr, "caractère illégal (%c) ignoré\n", yytext[0]); return LEX_ERROR;}
 %%
