@@ -87,13 +87,14 @@ extern int yydebug;
     APOSTROPHE = 288,              /* APOSTROPHE  */
     GUILLEMET = 289,               /* GUILLEMET  */
     MAIN = 290,                    /* MAIN  */
-    POINT_EXCLAMATION = 291,       /* POINT_EXCLAMATION  */
-    INFERIEUR = 292,               /* INFERIEUR  */
-    INFERIEUR_EGAL = 293,          /* INFERIEUR_EGAL  */
-    SUPERIEUR = 294,               /* SUPERIEUR  */
-    SUPERIEUR_EGAL = 295,          /* SUPERIEUR_EGAL  */
-    EGAL_EGAL = 296,               /* EGAL_EGAL  */
-    UEXPR = 297                    /* UEXPR  */
+    RETURN = 291,                  /* RETURN  */
+    POINT_EXCLAMATION = 292,       /* POINT_EXCLAMATION  */
+    INFERIEUR = 293,               /* INFERIEUR  */
+    INFERIEUR_EGAL = 294,          /* INFERIEUR_EGAL  */
+    SUPERIEUR = 295,               /* SUPERIEUR  */
+    SUPERIEUR_EGAL = 296,          /* SUPERIEUR_EGAL  */
+    EGAL_EGAL = 297,               /* EGAL_EGAL  */
+    UEXPR = 298                    /* UEXPR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -140,7 +141,7 @@ union YYSTYPE
          int col;
      } taille_mat_t;
 
-#line 144 "./include/parser.h"
+#line 145 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

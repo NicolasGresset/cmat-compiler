@@ -399,7 +399,7 @@ void generate_mips_code(struct code *code) {
   struct assembly_code assembly_code;
   memset(&assembly_code, 0, sizeof(struct assembly_code));
   assembly_code.out =
-      open_file(FILE_NAME); // todo gérer le commutateur de la ligne de commande
+      open_file(code->filename); // todo gérer le commutateur de la ligne de commande
 
   append_to_data(&assembly_code, ".data\n");
   manage_quads(code, &assembly_code);

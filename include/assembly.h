@@ -9,7 +9,7 @@ du code 3 adresses intermédiaires en code machine interprétable par une archit
 #define MAX_DATA_SIZE 2048
 
 // nom du fichier contenant le code MIPS
-#define FILE_NAME "mips_code.s"
+#define FILE_NAME "out/mips_code.s"
 
 /**
  * @brief Convertit le code 3 adresses en code MIPS

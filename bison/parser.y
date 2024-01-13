@@ -164,14 +164,6 @@ void complete(struct ListLabel * l, unsigned int addr)
  {
      struct exprval exprval_t;
 
-%union
- {
-     struct
-     {
-         struct symbol * ptr;
-         type_t type;
-     } exprval;
-
      name_t strval;
      type_t typeval;
      int intval;
@@ -219,7 +211,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     CROCHET_OUVRANT CROCHET_FERMANT
     ACCOLADE_OUVRANTE ACCOLADE_FERMANTE
     VIRGULE POINT_VIRGULE APOSTROPHE
-    GUILLEMET MAIN POINT_EXCLAMATION
+    GUILLEMET MAIN RETURN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
 
 %type <exprval_t> declaration_bin operande expression_bin id_matrix
@@ -900,12 +892,4 @@ N : %empty
 %%
 void yyerror(const char * msg) {
     fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
-
 }
-%%
-void yyerror(const char * msg) {
-    fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
-
-}
-
-
