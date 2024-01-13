@@ -57,7 +57,7 @@ void manage_bop_moins_mat(struct quad *quad, struct assembly_code *code) {
   }
 }
 
-void manage_bop_mult_mat(struct quad *quad, struct assembly_code *code){
+void manage_bop_mult_mat(struct quad *quad, struct assembly_code *code) {
   // A = B * C
   fprintf(code->out, "# matop mult %s = %s * %s\n", quad->sym1->u.id.name,
           quad->sym2->u.id.name, quad->sym3->u.id.name);
@@ -70,23 +70,26 @@ void manage_bop_mult_mat(struct quad *quad, struct assembly_code *code){
     for (int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
       fprintf(code->out, "  li %s, 0\n", registers[F0]); // F0 = 0
       for (int k = 0; k < quad->sym2->u.id.col; k++) {
-        fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F2], 
-                4 * (ligne * quad->sym2->u.id.col + k), name2); // F2 = B[ligne][k]
+        fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F2],
+                4 * (ligne * quad->sym2->u.id.col + k),
+                name2); // F2 = B[ligne][k]
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F4],
-                4 * (k * quad->sym3->u.id.col + colonne), name3); // F4 = C[k][colonne]
+                4 * (k * quad->sym3->u.id.col + colonne),
+                name3); // F4 = C[k][colonne]
         fprintf(code->out, "  mul.s %s, %s, %s\n", registers[F2], registers[F2],
                 registers[F4]); // F2 = B[ligne][k] * C[k][colonne]
         fprintf(code->out, "  add.s %s, %s, %s\n", registers[F0], registers[F0],
                 registers[F2]); // F0 += B[ligne][k] * C[k][colonne]
       }
       fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F0],
-              4 * (ligne * quad->sym1->u.id.col + colonne), name1); // A[ligne][colonne] = F0
+              4 * (ligne * quad->sym1->u.id.col + colonne),
+              name1); // A[ligne][colonne] = F0
     }
   }
 }
 
 // todo tester
-void manage_bop_divise_mat(struct quad *quad, struct assembly_code *code){
+void manage_bop_divise_mat(struct quad *quad, struct assembly_code *code) {
   // A = B / C
   fprintf(code->out, "# matop div %s = %s / %s\n", quad->sym1->u.id.name,
           quad->sym2->u.id.name, quad->sym3->u.id.name);
@@ -99,21 +102,23 @@ void manage_bop_divise_mat(struct quad *quad, struct assembly_code *code){
     for (int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
       fprintf(code->out, "  li %s, 0\n", registers[F0]); // F0 = 0
       for (int k = 0; k < quad->sym2->u.id.col; k++) {
-        fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F2], 
-                4 * (ligne * quad->sym2->u.id.col + k), name2); // F2 = B[ligne][k]
+        fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F2],
+                4 * (ligne * quad->sym2->u.id.col + k),
+                name2); // F2 = B[ligne][k]
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F4],
-                4 * (k * quad->sym3->u.id.col + colonne), name3); // F4 = C[k][colonne]
+                4 * (k * quad->sym3->u.id.col + colonne),
+                name3); // F4 = C[k][colonne]
         fprintf(code->out, "  div.s %s, %s, %s\n", registers[F2], registers[F2],
                 registers[F4]); // F2 = B[ligne][k] * C[k][colonne]
         fprintf(code->out, "  add.s %s, %s, %s\n", registers[F0], registers[F0],
                 registers[F2]); // F0 += B[ligne][k] * C[k][colonne]
       }
       fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F0],
-              4 * (ligne * quad->sym1->u.id.col + colonne), name1); // A[ligne][colonne] = F0
+              4 * (ligne * quad->sym1->u.id.col + colonne),
+              name1); // A[ligne][colonne] = F0
     }
   }
 }
-
 
 void manage_uop_plus_mat(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "# uop plus %s = + %s\n", quad->sym1->u.id.name,
@@ -172,9 +177,11 @@ void manage_transpose_mat(struct quad *quad, struct assembly_code *code) {
   for (int ligne = 0; ligne < quad->sym1->u.id.row; ligne++) {
     for (int colonne = 0; colonne < quad->sym1->u.id.col; colonne++) {
       fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0],
-              4 * (ligne * quad->sym1->u.id.col + colonne), name2); // F0 = B[ligne][colonne]
+              4 * (ligne * quad->sym1->u.id.col + colonne),
+              name2); // F0 = B[ligne][colonne]
       fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F0],
-              4 * (colonne * quad->sym1->u.id.row + ligne), name1); // A[colonne][ligne] = F0
+              4 * (colonne * quad->sym1->u.id.row + ligne),
+              name1); // A[colonne][ligne] = F0
     }
   }
 }
@@ -198,6 +205,6 @@ void manage_array_affect(struct quad *quad, struct assembly_code *code) {
     fprintf(stderr, "Error: array affect: sym3 is not a float or int\n");
   }
 
-  fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0],
+  fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F0],
           4 * quad->sym2->u.int_value, registers[T0]); // *id = F0
 }
