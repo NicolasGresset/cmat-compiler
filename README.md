@@ -31,3 +31,30 @@ Au moins le git est créé.
  * variables int non déclarées, valeur mise à 0
  */
     
+
+// pour les float
+
+/** ce qui marche
+ * addition, soustraction de deux float
+ * division de deux float
+ * multiplication de deux float
+ * float b = a + * - / int avec a float
+ * () autour d'une expression pour la priorité
+ * priorité des opérations
+ */
+
+/** ce qui marche pas
+ * float a, b; erreur de syntaxe
+ * float a = int => code assembleur mais pb de type dans le simulateur
+ * == entre deux floats, simulateur aime pas beq $f0, $f2 type incorrect
+ * pareil pour != et bne $f0, $f2, < et >
+ */
+
+/** trucs bizarres (jsp si c'est normal)
+ * float a = 5; pb dans le simulateur de type => est-ce qu'on détecte l'erreur
+ * avant ?
+ * int a = 5.5; pas de pb, valeur 5 stockée dans a
+ * if (a == b ) avec a et b types différents, pas de code assembleur
+ * if (a) si a est un float donne une erreur, pas de code assembleur
+ *
+ */
