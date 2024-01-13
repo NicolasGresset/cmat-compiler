@@ -3,13 +3,14 @@
 #include "assembly_arithmetic.h"
 #include "assembly_jump.h"
 #include "assembly_matrix.h"
+#include "assembly_print.h"
 #include "data_segment.h"
 #include "table_symboles.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 char *registers[] = {
-    [T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [F2] = "$f2", [F4] = "$f4"};
+    [T0] = "$t0", [T1] = "$t1", [F0] = "$f0", [A0] = "$a0", [F2] = "$f2", [F4] = "$f4", [F12] = "$f12",};
 
 int is_symbol_float(struct symbol *symbol) {
   return symbol->kind == FLOAT_CONSTANT ||
@@ -253,41 +254,6 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
     fprintf(stderr, "Error: can't declare a label\n");
     exit(1);
   }
-}
-
-void manage_call_print(struct quad *quad, struct assembly_code *code) {
-  (void)code;
-  (void)quad;
-  fprintf(code->out, "TODO: manage_call_print\n");
-  /*
-  if (quad->sym1->kind != NAME) {
-    fprintf(stderr, "Error: first operand of CALL_PRINT is not a NAME\n");
-    exit(1);
-  }
-
-  fprintf(code->out, "# call print\n");
-
-  switch (quad->sym1->u.id.type) {
-  case ENTIER:
-    fprintf(code->out, "  li $v0, 1\n");
-    fprintf(code->out, "  lw $a0, %s\n", quad->sym1->u.id.name);
-    fprintf(code->out, "  syscall\n");
-    break;
-  case REEL:
-    fprintf(code->out, "  li $v0, 2\n");
-    fprintf(code->out, "  l.s $f12, %s\n", quad->sym1->u.id.name);
-    fprintf(code->out, "  syscall\n");
-    break;
-  case MATRIX_TYPE:
-    fprintf(code->out, "  li $v0, 4\n");
-    fprintf(code->out, "  la $a0, %s\n", quad->sym1->u.id.name);
-    fprintf(code->out, "  syscall\n");
-    break;
-  default:
-    fprintf(stderr, "Error: can't print a label\n");
-    exit(1);
-  }
-  */
 }
 
 /**

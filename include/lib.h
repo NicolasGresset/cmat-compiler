@@ -121,7 +121,8 @@ struct quad {
 
         Q_GOTO,
         Q_GOTO_UNKNOWN,
-        CALL_PRINT,
+        CALL_PRINT, // sym1 : id à afficher, NULL, NULL 
+        CALL_PRINT_MAT, // sym1 : id de la matrice à afficher, NULL, NULL
 
         ARRAY_AFFECT, // équivaut à id[i] = a : sym1 est l'id, sym2 l'indice, sym3
                       // la valeur
