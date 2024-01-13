@@ -256,6 +256,22 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
   }
 }
 
+// todo tester
+void manage_declare_string(struct quad *quad, struct assembly_code *code) {
+  if (quad->sym1->kind != NAME) {
+    fprintf(stderr, "Error: first operand of DECLARE is not a NAME\n");
+    exit(1);
+  }
+
+  fprintf(code->out, "# declare %s\n", quad->sym1->u.id.name);
+
+  char declaration[MAX_DATA_SIZE];
+
+  snprintf(declaration, MAX_DATA_SIZE, "  %s: .asciiz %s\n",
+           quad->sym1->u.id.name, quad->sym2->u.string);
+  append_to_data(code, declaration);
+}
+
 /**
  * @brief Gère un quadruplet
  *
@@ -343,6 +359,9 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
     break;
   case ARRAY_AFFECT:
     manage_array_affect(quad, code);
+    break;
+  case Q_DECLARE_STRING:
+    manage_declare_string(quad, code);
     break;
   default:
     manage_default_case(quad, code);

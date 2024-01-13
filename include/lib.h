@@ -1,9 +1,10 @@
 #pragma once
 /* TABLE DES SYMBOLES */
 #define TAILLE_MAX_TOKEN 32
+#define TAILLE_MAX_STRING 64
 
 typedef char name_t[TAILLE_MAX_TOKEN];
-typedef enum { ENTIER, REEL, MATRIX_TYPE } type_t;
+typedef enum { ENTIER, REEL, MATRIX_TYPE, STRING } type_t;
 typedef union {
     int int_value;
     float float_value;
@@ -26,6 +27,7 @@ struct symbol {
         NAME, // Pour les identificateurs
         INT_CONSTANT,
         FLOAT_CONSTANT,
+        STRING_CONSTANT,
         LABEL /// Pour les addresses
     } kind;   /// To know the kind of symbol
     union {
@@ -33,6 +35,7 @@ struct symbol {
         int int_value;     // CONSTANTE ENTIERE
         float float_value; // CONSTANTE REELLE
         unsigned int addr; // ADRESSE
+        char string[TAILLE_MAX_STRING];
     } u;
 };
 
@@ -83,6 +86,7 @@ struct quad {
     enum quad_kind {
         Q_DECLARE,
         Q_DECLARE_MAT,
+        Q_DECLARE_STRING, // sym1 : id, sym2 : string, NULL
         // Q_SET, = COPY
         Q_SET_MAT,
 
@@ -123,6 +127,7 @@ struct quad {
         Q_GOTO_UNKNOWN,
         CALL_PRINT, // sym1 : id à afficher, NULL, NULL 
         CALL_PRINT_MAT, // sym1 : id de la matrice à afficher, NULL, NULL
+        CALL_PRINTF, // sym1 : id de la chaine de caractère à afficher, NULL, NULL
 
         ARRAY_AFFECT, // équivaut à id[i] = a : sym1 est l'id, sym2 l'indice, sym3
                       // la valeur
