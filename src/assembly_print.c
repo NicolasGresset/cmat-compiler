@@ -3,6 +3,7 @@
 
 #define PRINT_INT_SYSCALL_NUMBER 1
 #define PRINT_FLOAT_SYSCALL_NUMBER 2
+#define PRINT_STRING_SYSCALL_NUMBER 4
 
 void manage_call_print(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "#print %s\n", quad->sym1->u.id.name);
@@ -23,3 +24,10 @@ void manage_call_print(struct quad *quad, struct assembly_code *code) {
   }
 }
 
+
+void manage_call_printf(struct quad *quad, struct assembly_code *code){
+  fprintf(code->out, "#printf %s\n", quad->sym1->u.id.name);
+
+  fprintf(code->out, "la $a0, %s\n", quad->sym1->u.id.name);
+  fprintf(code->out, "li $v0, %d\n", PRINT_STRING_SYSCALL_NUMBER);
+}

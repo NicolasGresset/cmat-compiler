@@ -357,6 +357,9 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case CALL_PRINT:
     manage_call_print(quad, code);
     break;
+  case CALL_PRINTF:
+    manage_call_printf(quad, code);
+    break;
   case ARRAY_AFFECT:
     manage_array_affect(quad, code);
     break;

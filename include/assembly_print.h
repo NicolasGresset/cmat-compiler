@@ -6,3 +6,6 @@ de la bibliothèque standard */
 #include "assembly.h"
 
 void manage_call_print(struct quad *quad, struct assembly_code *code);
+
+
+void manage_call_printf(struct quad *quad, struct assembly_code *code);
