@@ -14,7 +14,8 @@ void add_floats_into_float_and_store(struct quad *quad, struct assembly_code *co
 }
 
 void add_int_float_into_float_and_store(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F2]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
   fprintf(code->out, "  add.s %s, %s, %s\n", registers[F0], registers[F0],
           registers[F2]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
@@ -23,7 +24,8 @@ void add_int_float_into_float_and_store(struct quad *quad, struct assembly_code 
 void add_ints_into_float_and_store(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  add %s, %s, %s\n", registers[T0], registers[T0],
           registers[T1]);
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F0]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
@@ -165,7 +167,8 @@ void subtract_floats_into_float_and_store(struct quad *quad, struct assembly_cod
 }
 
 void subtract_int_float_into_float_and_store(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F2]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
   fprintf(code->out, "  sub.s %s, %s, %s\n", registers[F0], registers[F0],
           registers[F2]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
@@ -174,7 +177,8 @@ void subtract_int_float_into_float_and_store(struct quad *quad, struct assembly_
 void subtract_ints_into_float_and_store(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  sub %s, %s, %s\n", registers[T0], registers[T0],
           registers[T1]);
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F0]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
@@ -302,7 +306,8 @@ void multiply_floats_into_float_and_store(struct quad *quad, struct assembly_cod
 }
 
 void multiply_int_float_into_float_and_store(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F2]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
   fprintf(code->out, "  mul.s %s, %s, %s\n", registers[F0], registers[F0],
           registers[F2]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
@@ -311,7 +316,8 @@ void multiply_int_float_into_float_and_store(struct quad *quad, struct assembly_
 void multiply_ints_into_float_and_store(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  mult %s, %s, %s\n", registers[T0], registers[T0],
           registers[T1]);
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F0]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
@@ -439,7 +445,8 @@ void divide_floats_into_float_and_store(struct quad *quad, struct assembly_code 
 }
 
 void divide_int_float_into_float_and_store(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F2]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
   fprintf(code->out, "  div.s %s, %s, %s\n", registers[F0], registers[F0],
           registers[F2]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
@@ -448,7 +455,8 @@ void divide_int_float_into_float_and_store(struct quad *quad, struct assembly_co
 void divide_ints_into_float_and_store(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  div %s, %s, %s\n", registers[T0], registers[T0],
           registers[T1]);
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F0]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
@@ -574,7 +582,8 @@ void unary_add_float_into_float_and_store(struct quad *quad, struct assembly_cod
 }
 
 void unary_add_int_into_float_and_store(struct quad *quad, struct assembly_code *code) {
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F0]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
@@ -628,7 +637,8 @@ void unary_subtract_float_into_float_and_store(struct quad *quad, struct assembl
 
 void unary_subtract_int_into_float_and_store(struct quad *quad, struct assembly_code *code) {
   fprintf(code->out, "  sub %s, $zero, %s\n", registers[T0], registers[T0]);
-  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[T0]);
+  fprintf(code->out, "  mtc1 %s, %s\n", registers[T0], registers[F0]);
+  fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F0], registers[F0]);
   fprintf(code->out, "  s.s %s, %s\n", registers[F0], quad->sym1->u.id.name);
 }
 
