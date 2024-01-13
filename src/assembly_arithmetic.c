@@ -492,12 +492,22 @@ void manage_bop_divise(struct quad *quad, struct assembly_code *code) {
 
     if (is_symbol_float(quad->sym2)) {
       if (is_symbol_float(quad->sym3)) {
+        if (quad->sym3->u.float_value==0) {
+          fprintf(stderr, "Error : division using zero is impossible\n");
+          exit(1);
+        } 
+
         move_float_symbol(quad->sym2, code, F0);
         move_float_symbol(quad->sym3, code, F2);
         divide_floats_into_float_and_store(quad, code);
       }
 
       else if (is_symbol_int(quad->sym3)) {
+        if (quad->sym3->u.int_value==0) {
+          fprintf(stderr, "Error : division using zero is impossible\n");
+          exit(1);
+        } 
+        
         move_float_symbol(quad->sym2, code, F0);
         move_int_symbol(quad->sym3, code, T0);
         divide_int_float_into_float_and_store(quad, code);
@@ -510,11 +520,21 @@ void manage_bop_divise(struct quad *quad, struct assembly_code *code) {
       
     } else if (is_symbol_int(quad->sym2)) {
       if (is_symbol_int(quad->sym3)) {
+        if (quad->sym3->u.int_value==0) {
+          fprintf(stderr, "Error : division using zero is impossible\n");
+          exit(1);
+        } 
+
         move_int_symbol(quad->sym2, code, T0);
         move_int_symbol(quad->sym3, code, T1);
         divide_ints_into_float_and_store(quad, code);
       }
       else if (is_symbol_float(quad->sym3)) {
+        if (quad->sym3->u.float_value==0) {
+          fprintf(stderr, "Error : division using zero is impossible\n");
+          exit(1);
+        } 
+
         move_int_symbol(quad->sym2, code, T0);
         move_float_symbol(quad->sym3, code, F0);
         divide_int_float_into_float_and_store(quad, code);
