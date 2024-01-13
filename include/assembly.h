@@ -40,9 +40,7 @@ extern char *registers[N_REGISTERS];
 
 
 /**
- * @brief Met la valeur correspondante au symbole symbol dans le registre entier register_number
- * Si symbol est un entier, on utilise l'instruction li
- * Sinon, (symbol est un identificateur), on va récupérer la valeur dans le segment data
+ * @brief $register_number = valeur de symbol
  * 
  * @param symbol 
  * @param code 
@@ -53,8 +51,7 @@ void move_int_symbol(struct symbol *symbol, struct assembly_code *code,
 
 
 /**
- * @brief Met la valeur correspondante au symbole symbol dans le registre
- * flottant de numéro register_number
+ * @brief $register_number = valeur de symbol
  *
  * @param symbol
  * @param code
