@@ -25,6 +25,14 @@ void manage_call_print(struct quad *quad, struct assembly_code *code) {
 }
 
 
+void manage_call_print_mat(struct quad *quad, struct assembly_code *code) {
+  // bof bof
+  fprintf(code->out, "#print_mat %s\n", quad->sym1->u.id.name);
+  fprintf(code->out, "la $a0, %s\n", quad->sym1->u.id.name);
+  fprintf(code->out, "li $v0, %d\n", PRINT_STRING_SYSCALL_NUMBER);
+  fprintf(code->out, "syscall\n");
+}
+
 void manage_call_printf(struct quad *quad, struct assembly_code *code){
   fprintf(code->out, "#printf %s\n", quad->sym1->u.id.name);
 

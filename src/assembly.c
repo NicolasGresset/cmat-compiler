@@ -208,6 +208,9 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case CALL_PRINT:
     manage_call_print(quad, code);
     break;
+  case CALL_PRINT_MAT:
+    manage_call_print_mat(quad, code);
+    break;
   case CALL_PRINTF:
     manage_call_printf(quad, code);
     break;

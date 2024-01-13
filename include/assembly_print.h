@@ -7,5 +7,6 @@ de la bibliothèque standard */
 
 void manage_call_print(struct quad *quad, struct assembly_code *code);
 
+void manage_call_print_mat(struct quad *quad, struct assembly_code *code);
 
 void manage_call_printf(struct quad *quad, struct assembly_code *code);
