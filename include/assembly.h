@@ -32,7 +32,7 @@ struct assembly_code {
 #define F2 17
 #define F4 18
 
-#define N_REGISTERS 18
+#define N_REGISTERS 36
 
 extern char *registers[N_REGISTERS];
 
