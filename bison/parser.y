@@ -196,7 +196,7 @@ void complete(struct ListLabel * l, unsigned int addr)
      struct {
          int row;
          int col;
-     } taille_mat_t;
+     } crea_mat_t;
 }
 
 %token <strval> IDENTIFICATEUR
@@ -215,9 +215,9 @@ void complete(struct ListLabel * l, unsigned int addr)
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
     POINT PRINT PRINTF PRINTMAT STRING
 
-%type <exprval_t> declaration_bin operande expression_bin id_matrix
+%type <exprval_t> declaration_bin operande expression_bin id_matrix id_vector
 %type <typeval> type
-%type <taille_mat_t> creation_matrix creation_matrix_prime creation_vector creation_vector_prime
+%type <crea_mat_t> creation_matrix creation_matrix_prime creation_vector creation_vector_prime
 %type <intval> M
 %type <N_t> N
 %type <for_fin_t> for_fin
@@ -249,12 +249,10 @@ instruction
 | boucle_while {$$.next = $1.next;}
 | boucle_for {$$.next = $1.next;}
 | affectation_bin {$$.next = NULL;}
-// Ajout affectation_mat (on a vraiment oublié de faire ça ? *oups* )
-//| affectation_mat
-// Fonctions toutes faites
 | PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE
 | PRINT PARENTHESE_OUVRANTE operande PARENTHESE_FERMANTE POINT_VIRGULE
 | PRINTMAT PARENTHESE_OUVRANTE IDENTIFICATEUR PARENTHESE_FERMANTE POINT_VIRGULE
+
 
 
 declaration
@@ -300,7 +298,10 @@ declaration_mat
  // Si tu veux on peut separer encore plus matrice et vecteurs
 : id_matrix fin_crea_mat
 | id_vector fin_crea_mat
-| id_matrix EGAL creation_matrix fin_crea_mat
+| id_matrix  EGAL creation_matrix fin_crea_mat
+{
+    ;// Ici gérer si les valeurs entre {} respectent la taille de id_matrix
+}
 | id_vector EGAL creation_vector fin_crea_mat
 | MATRIX id_matrix EGAL expression_bin fin_crea_mat
 {
@@ -341,6 +342,11 @@ id_matrix
 
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, Q_DECLARE_MAT, sym_id,NULL,NULL);
+
+    $$.ptr = sym_id;
+    $$.num = 0;
+    $$.type = MATRIX_TYPE;
+
 };
 
 id_vector
@@ -392,6 +398,8 @@ creation_matrix_prime
     $$.col = 0;
 };
 
+// tableau de float dans mon symbole -> array et u devient float * values.
+
 creation_vector
 //: expression_vector
 : ACCOLADE_OUVRANTE creation_vector_prime operande ACCOLADE_FERMANTE
@@ -439,8 +447,66 @@ affectation_bin
     gencode(CODE,COPY,sym_id,$3.ptr,NULL);
 
  }
+| IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT EGAL expression_bin POINT_VIRGULE
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr, "error: ‘%s’ undeclared\n", $1);
+        exit(1);
+    }
+    if (id->type != MATRIX_TYPE)
+    {
+        fprintf(stderr, "error: incompatible types, it should be a matrix\n");
+        exit(1);
+    }
+    // Vérifier que le type de expression_bin n'est pas unr matrix
+    if ($9.type == MATRIX_TYPE)
+    {
+        fprintf(stderr, "error : incompatible types, cannot be a matrix\n");
+        exit(1);
+    }
+    if (id->row <= $3 || id->col <= $6)
+    {
+        fprintf(stderr, "error : incorrect dimensions");
+        exit(1);
+    }
 
+    struct symbol *  sym_id = symbol_id(*id);
+    struct symbol * sym_idx = symbol_const_int(($3)*id->col + $6);
+    gencode(CODE, ARRAY_AFFECT, sym_id, sym_idx, $9.ptr);
+}
+| IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT EGAL expression_bin POINT_VIRGULE
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr, "error: ‘%s’ undeclared\n", $1);
+        exit(1);
+    }
+    if (id->type != MATRIX_TYPE)
+    {
+        fprintf(stderr, "error: incompatible types, it should be a matrix\n");
+        exit(1);
+    }
+    // Vérifier que le type de expression_bin n'est pas unr matrix
+    if ($6.type == MATRIX_TYPE)
+    {
+        fprintf(stderr, "error : incompatible types, cannot be a matrix\n");
+        exit(1);
+    }
+    // Pas le bon nombre de colonnes ou pas un vecteur
+    if (id->row <= $3 || id->col > 1)
+    {
+        fprintf(stderr, "error : incorrect dimensions");
+        exit(1);
+    }
 
+    struct symbol *  sym_id = symbol_id(*id);
+    struct symbol * sym_idx = symbol_const_int(($3));
+    gencode(CODE, ARRAY_AFFECT, sym_id, sym_idx, $6.ptr);
+}
+;
 expression_bin
 : expression_bin PLUS expression_bin {
     $$ = expression_gestion(CODE, SYMTAB, BOP_PLUS, $$, $1, $3);
@@ -637,14 +703,7 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     $$.type = REEL;
 };
 
-
-// Ici affectation_mat
-
-/*
-affectation_mat
-: IDENTIFICATEUR EGAL expression_mat POINT_VIRGULE
-| IDENTIFICATEUR PLUS EGAL expression_mat POINT_VIRGULE
-*/
+// Ici expression_mat
 
 /* expression_mat */
 /* : TRANSPOSITION expression_mat %prec UEXPR {;} */
@@ -675,18 +734,6 @@ affectation_mat
 //possible pour toi de regarder les conditions sur les dimensions pour l'extraction
   //| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
 
-/*
-intervalle
-: CONSTANTE_ENTIERE intervalle_prime
-| CONSTANTE_ENTIERE POINT POINT CONSTANTE_ENTIERE intervalle_prime
-| FOIS intervalle_prime
-
-intervalle_prime
-: POINT_VIRGULE CONSTANTE_ENTIERE intervalle_prime
-| POINT_VIRGULE CONSTANTE_ENTIERE POINT POINT CONSTANTE_ENTIERE intervalle_prime
-| POINT_VIRGULE FOIS intervalle_prime
-| %empty
-*/
 
 type
 : INT {$$ = ENTIER;}

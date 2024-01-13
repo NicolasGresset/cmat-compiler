@@ -144,7 +144,7 @@ union YYSTYPE
      struct {
          int row;
          int col;
-     } taille_mat_t;
+     } crea_mat_t;
 
 #line 150 "./include/parser.h"
 
