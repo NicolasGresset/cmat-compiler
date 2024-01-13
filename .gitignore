@@ -1,6 +1,11 @@
-./bin/main
+bin/main
 .*.*
 *.o
+*.s
+obj/*.o
+src/parser.c
+data/main.c
+mips_code.s
 ./obj
 .gitignore
 TAGS
