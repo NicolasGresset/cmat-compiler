@@ -4,7 +4,7 @@
 #define TAILLE_MAX_STRING 64
 
 typedef char name_t[TAILLE_MAX_TOKEN];
-typedef enum { ENTIER, REEL, MATRIX_TYPE, STRING } type_t;
+typedef enum { ENTIER, REEL, MATRIX_TYPE, STRING_TYPE } type_t;
 typedef union {
     int int_value;
     float float_value;
