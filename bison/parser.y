@@ -859,7 +859,7 @@ type
 condition
 : IF  PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE
 M { stack_id_push(SYMTAB);} liste_instructions
-{table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
+{stack_id_pop(SYMTAB);}
 ACCOLADE_FERMANTE N condition_suite
 {
     complete($3.true, $6);
@@ -886,7 +886,7 @@ ACCOLADE_FERMANTE N condition_suite
 condition_suite
 : %empty {$$.next = NULL;}
 | ELSE ACCOLADE_OUVRANTE  { stack_id_push(SYMTAB);} liste_instructions
-{table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}ACCOLADE_FERMANTE
+{stack_id_pop(SYMTAB);}ACCOLADE_FERMANTE
 {
     $$.next = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
@@ -897,7 +897,7 @@ condition_suite
 boucle_while :
 WHILE PARENTHESE_OUVRANTE M test PARENTHESE_FERMANTE
 ACCOLADE_OUVRANTE M {stack_id_push(SYMTAB);} liste_instructions
-{table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);} ACCOLADE_FERMANTE
+{stack_id_pop(SYMTAB);} ACCOLADE_FERMANTE
 {
     complete($4.true, $7);
     ListLabel_free($4.true);
@@ -917,7 +917,7 @@ boucle_for
 M test POINT_VIRGULE
 for_fin PARENTHESE_FERMANTE
 ACCOLADE_OUVRANTE M liste_instructions
-{table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);} ACCOLADE_FERMANTE
+{stack_id_pop(SYMTAB);} ACCOLADE_FERMANTE
 {
     complete($7.true, $12 - $9.num);
     ListLabel_free($7.true);
