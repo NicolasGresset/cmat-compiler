@@ -345,9 +345,8 @@ void code_dump(struct code *c) {
 }
 
 void safe_free(struct symbol *s) {
-  if (s != NULL) {
+  if (s != NULL && s->kind != NAME)
     free(s);
-  }
 }
 
 void code_free(struct code *c) {
