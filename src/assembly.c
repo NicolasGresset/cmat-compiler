@@ -108,6 +108,12 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
   }
 }
 
+void manage_q_return(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "# return %d\n", quad->sym1->u.int_value);
+  fprintf(code->out, "  li $v0, 10\n");
+  fprintf(code->out, "  syscall\n");
+}
+
 // // todo tester
 // void manage_declare_string(struct quad *quad, struct assembly_code *code) {
 //   if (quad->sym1->kind != NAME) {
@@ -232,6 +238,9 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
     break;
   case MAT_BIN_DIVISE:
     manage_bop_divise_mat_bin(quad, code);
+    break;
+  case Q_RETURN:
+    manage_q_return(quad, code);
     break;
   default:
     manage_default_case(quad, code);
