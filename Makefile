@@ -1,4 +1,4 @@
-TARGET = main
+TARGET = cmat
 
 SRCDIR   := src
 OBJDIR   := obj
