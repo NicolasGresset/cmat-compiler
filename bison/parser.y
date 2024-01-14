@@ -275,7 +275,7 @@ instruction
 | PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE
 {
     struct symbol * sym_str = symbol_string($3);
-    gencode(CODE, Q_DECLARE_STRING, sym_str, NULL, NULL);
+    gencode(CODE, CALL_PRINTF, sym_str, NULL, NULL);
     $$.next = NULL;
 }
 | PRINT PARENTHESE_OUVRANTE operande PARENTHESE_FERMANTE POINT_VIRGULE {
@@ -641,6 +641,8 @@ expression_bin
     }
     // Inverser nombre colonnes et lignes
     struct symbol * sym_temp = newtemp_mat(SYMTAB, MATRIX_TYPE, $2.ptr->u.id.row, $2.ptr->u.id.col);
+    gencode(CODE, Q_DECLARE_MAT, sym_temp, NULL, NULL);
+
     gencode(CODE, UMATOP_TRANSPOSE, sym_temp, $2.ptr, NULL);
 
     $$.ptr = sym_temp;
@@ -743,6 +745,7 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     }
 
     struct symbol * sym_float = newtemp(SYMTAB, REEL);
+    gencode(CODE, Q_DECLARE, sym_float, NULL, NULL);
     struct symbol *  sym_id = symbol_id(*id);
     struct symbol * sym_idx = symbol_const_int(($3)*id->col + $6);
     gencode(CODE, DEREF, sym_float, sym_id, sym_idx);

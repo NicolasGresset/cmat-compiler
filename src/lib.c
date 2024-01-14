@@ -443,7 +443,7 @@ static void quad_dump(struct quad *q) {
         symbol_dump(q->sym1);
         printf("\n");
         break;
-    case Q_DECLARE_STRING:
+    case CALL_PRINTF:
         symbol_dump(q->sym1);
         break;
     default:

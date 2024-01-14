@@ -750,11 +750,11 @@ static const yytype_int16 yyrline[] =
      275,   281,   285,   307,   308,   311,   325,   346,   347,   348,
      369,   384,   395,   408,   431,   454,   455,   460,   477,   492,
      500,   514,   528,   536,   553,   582,   614,   617,   620,   623,
-     626,   630,   635,   651,   653,   666,   679,   692,   705,   708,
-     721,   722,   723,   753,   814,   815,   819,   820,   818,   845,
-     846,   847,   846,   857,   858,   856,   874,   878,   874,   898,
-     905,   922,   935,   955,   962,   965,   972,   975,  1010,  1027,
-    1028,  1029,  1030,  1031,  1032,  1034,  1035
+     626,   630,   635,   653,   655,   668,   681,   694,   707,   710,
+     723,   724,   725,   756,   817,   818,   822,   823,   821,   848,
+     849,   850,   849,   860,   861,   859,   877,   881,   877,   901,
+     908,   925,   938,   958,   965,   968,   975,   978,  1013,  1030,
+    1031,  1032,  1033,  1034,  1035,  1037,  1038
 };
 #endif
 
@@ -1519,7 +1519,7 @@ yyreduce:
 #line 276 "bison/parser.y"
 {
     struct symbol * sym_str = symbol_string((yyvsp[-2].string));
-    gencode(CODE, Q_DECLARE_STRING, sym_str, NULL, NULL);
+    gencode(CODE, CALL_PRINTF, sym_str, NULL, NULL);
     (yyval.instr_type).next = NULL;
 }
 #line 1526 "src/parser.c"
@@ -1966,6 +1966,8 @@ yyreduce:
     }
     // Inverser nombre colonnes et lignes
     struct symbol * sym_temp = newtemp_mat(SYMTAB, MATRIX_TYPE, (yyvsp[0].exprval_t).ptr->u.id.row, (yyvsp[0].exprval_t).ptr->u.id.col);
+    gencode(CODE, Q_DECLARE_MAT, sym_temp, NULL, NULL);
+
     gencode(CODE, UMATOP_TRANSPOSE, sym_temp, (yyvsp[0].exprval_t).ptr, NULL);
 
     (yyval.exprval_t).ptr = sym_temp;
@@ -1973,17 +1975,17 @@ yyreduce:
 
     (yyval.exprval_t).num = 1 + (yyvsp[0].exprval_t).num;
 }
-#line 1977 "src/parser.c"
+#line 1979 "src/parser.c"
     break;
 
   case 43: /* expression_bin: PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE  */
-#line 651 "bison/parser.y"
+#line 653 "bison/parser.y"
                                                           {(yyval.exprval_t).ptr = (yyvsp[-1].exprval_t).ptr; (yyval.exprval_t).type = (yyvsp[-1].exprval_t).type; (yyval.exprval_t).num = (yyvsp[-1].exprval_t).num;}
-#line 1983 "src/parser.c"
+#line 1985 "src/parser.c"
     break;
 
   case 44: /* expression_bin: PLUS_PLUS operande  */
-#line 654 "bison/parser.y"
+#line 656 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval_t).ptr = newtemp(SYMTAB, (yyvsp[0].exprval_t).type);
@@ -1996,11 +1998,11 @@ yyreduce:
     (yyval.exprval_t).type = (yyvsp[0].exprval_t).type;
     (yyval.exprval_t).num = 1;
 }
-#line 2000 "src/parser.c"
+#line 2002 "src/parser.c"
     break;
 
   case 45: /* expression_bin: MOINS_MOINS operande  */
-#line 667 "bison/parser.y"
+#line 669 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval_t).ptr = newtemp(SYMTAB, (yyvsp[0].exprval_t).type);
@@ -2013,11 +2015,11 @@ yyreduce:
     (yyval.exprval_t).type = (yyvsp[0].exprval_t).type;
     (yyval.exprval_t).num += 1;
 }
-#line 2017 "src/parser.c"
+#line 2019 "src/parser.c"
     break;
 
   case 46: /* expression_bin: operande PLUS_PLUS  */
-#line 680 "bison/parser.y"
+#line 682 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval_t).ptr = newtemp(SYMTAB, (yyvsp[-1].exprval_t).type);
@@ -2030,11 +2032,11 @@ yyreduce:
     (yyval.exprval_t).type = (yyvsp[-1].exprval_t).type;
     (yyval.exprval_t).num = 1;
 }
-#line 2034 "src/parser.c"
+#line 2036 "src/parser.c"
     break;
 
   case 47: /* expression_bin: operande MOINS_MOINS  */
-#line 693 "bison/parser.y"
+#line 695 "bison/parser.y"
 {
     // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
     (yyval.exprval_t).ptr = newtemp(SYMTAB, (yyvsp[-1].exprval_t).type);
@@ -2047,17 +2049,17 @@ yyreduce:
     (yyval.exprval_t).type = (yyvsp[-1].exprval_t).type;
     (yyval.exprval_t).num = 1;
 }
-#line 2051 "src/parser.c"
+#line 2053 "src/parser.c"
     break;
 
   case 48: /* expression_bin: operande  */
-#line 705 "bison/parser.y"
+#line 707 "bison/parser.y"
            {(yyval.exprval_t).type = (yyvsp[0].exprval_t).type; (yyval.exprval_t).num = 0;}
-#line 2057 "src/parser.c"
+#line 2059 "src/parser.c"
     break;
 
   case 49: /* operande: IDENTIFICATEUR  */
-#line 709 "bison/parser.y"
+#line 711 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[0].strval));
     if ( id == NULL )
@@ -2070,23 +2072,23 @@ yyreduce:
     (yyval.exprval_t).ptr = sym_id;
     (yyval.exprval_t).type = sym_id->u.id.type;
 }
-#line 2074 "src/parser.c"
+#line 2076 "src/parser.c"
     break;
 
   case 50: /* operande: CONSTANTE_ENTIERE  */
-#line 721 "bison/parser.y"
+#line 723 "bison/parser.y"
                     {(yyval.exprval_t).ptr = symbol_const_int((yyvsp[0].intval)); (yyval.exprval_t).type = ENTIER;}
-#line 2080 "src/parser.c"
+#line 2082 "src/parser.c"
     break;
 
   case 51: /* operande: CONSTANTE_FLOTTANTE  */
-#line 722 "bison/parser.y"
+#line 724 "bison/parser.y"
                       {(yyval.exprval_t).ptr = symbol_const_float((yyvsp[0].floatval)); (yyval.exprval_t).type = REEL;}
-#line 2086 "src/parser.c"
+#line 2088 "src/parser.c"
     break;
 
   case 52: /* operande: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
-#line 725 "bison/parser.y"
+#line 727 "bison/parser.y"
 {
 
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-6].strval));
@@ -2108,6 +2110,7 @@ yyreduce:
     }
 
     struct symbol * sym_float = newtemp(SYMTAB, REEL);
+    gencode(CODE, Q_DECLARE, sym_float, NULL, NULL);
     struct symbol *  sym_id = symbol_id(*id);
     struct symbol * sym_idx = symbol_const_int(((yyvsp[-4].intval))*id->col + (yyvsp[-1].intval));
     gencode(CODE, DEREF, sym_float, sym_id, sym_idx);
@@ -2115,11 +2118,11 @@ yyreduce:
     (yyval.exprval_t).ptr = sym_float;
     (yyval.exprval_t).type = REEL;
 }
-#line 2119 "src/parser.c"
+#line 2122 "src/parser.c"
     break;
 
   case 53: /* operande: IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT  */
-#line 754 "bison/parser.y"
+#line 757 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-3].strval));
     if ( id == NULL )
@@ -2146,35 +2149,35 @@ yyreduce:
     (yyval.exprval_t).ptr = sym_float;
     (yyval.exprval_t).type = REEL;
 }
-#line 2150 "src/parser.c"
+#line 2153 "src/parser.c"
     break;
 
   case 54: /* type: INT  */
-#line 814 "bison/parser.y"
+#line 817 "bison/parser.y"
       {(yyval.typeval) = ENTIER;}
-#line 2156 "src/parser.c"
+#line 2159 "src/parser.c"
     break;
 
   case 55: /* type: FLOAT  */
-#line 815 "bison/parser.y"
+#line 818 "bison/parser.y"
         {(yyval.typeval) = REEL;}
-#line 2162 "src/parser.c"
+#line 2165 "src/parser.c"
     break;
 
   case 56: /* $@1: %empty  */
-#line 819 "bison/parser.y"
+#line 822 "bison/parser.y"
   { stack_id_push(SYMTAB);}
-#line 2168 "src/parser.c"
+#line 2171 "src/parser.c"
     break;
 
   case 57: /* $@2: %empty  */
-#line 820 "bison/parser.y"
+#line 823 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 2174 "src/parser.c"
+#line 2177 "src/parser.c"
     break;
 
   case 58: /* condition: IF PARENTHESE_OUVRANTE test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M $@1 liste_instructions $@2 ACCOLADE_FERMANTE N condition_suite  */
-#line 822 "bison/parser.y"
+#line 825 "bison/parser.y"
 {
     complete((yyvsp[-9].boolexpr).true, (yyvsp[-6].intval));
     ListLabel_free((yyvsp[-9].boolexpr).true);
@@ -2196,52 +2199,52 @@ yyreduce:
     ListLabel_print((yyval.instr_type).next);
     printf("\n");
 }
-#line 2200 "src/parser.c"
+#line 2203 "src/parser.c"
     break;
 
   case 59: /* condition_suite: %empty  */
-#line 845 "bison/parser.y"
+#line 848 "bison/parser.y"
          {(yyval.instr_type).next = NULL;}
-#line 2206 "src/parser.c"
+#line 2209 "src/parser.c"
     break;
 
   case 60: /* $@3: %empty  */
-#line 846 "bison/parser.y"
+#line 849 "bison/parser.y"
                           { stack_id_push(SYMTAB);}
-#line 2212 "src/parser.c"
+#line 2215 "src/parser.c"
     break;
 
   case 61: /* $@4: %empty  */
-#line 847 "bison/parser.y"
+#line 850 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 2218 "src/parser.c"
+#line 2221 "src/parser.c"
     break;
 
   case 62: /* condition_suite: ELSE ACCOLADE_OUVRANTE $@3 liste_instructions $@4 ACCOLADE_FERMANTE  */
-#line 848 "bison/parser.y"
+#line 851 "bison/parser.y"
 {
     (yyval.instr_type).next = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
 
     (yyval.instr_type).next = concat((yyval.instr_type).next, (yyvsp[-2].instr_type).next);
 }
-#line 2229 "src/parser.c"
+#line 2232 "src/parser.c"
     break;
 
   case 63: /* $@5: %empty  */
-#line 857 "bison/parser.y"
+#line 860 "bison/parser.y"
                     {stack_id_push(SYMTAB);}
-#line 2235 "src/parser.c"
+#line 2238 "src/parser.c"
     break;
 
   case 64: /* $@6: %empty  */
-#line 858 "bison/parser.y"
+#line 861 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 2241 "src/parser.c"
+#line 2244 "src/parser.c"
     break;
 
   case 65: /* boucle_while: WHILE PARENTHESE_OUVRANTE M test PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M $@5 liste_instructions $@6 ACCOLADE_FERMANTE  */
-#line 859 "bison/parser.y"
+#line 862 "bison/parser.y"
 {
     complete((yyvsp[-7].boolexpr).true, (yyvsp[-4].intval));
     ListLabel_free((yyvsp[-7].boolexpr).true);
@@ -2254,23 +2257,23 @@ yyreduce:
     CODE->quads[CODE->nextquad].sym3 = q;
     gencode(CODE, Q_GOTO, NULL, NULL, q);
 }
-#line 2258 "src/parser.c"
+#line 2261 "src/parser.c"
     break;
 
   case 66: /* $@7: %empty  */
-#line 874 "bison/parser.y"
+#line 877 "bison/parser.y"
                           {stack_id_push(SYMTAB);}
-#line 2264 "src/parser.c"
+#line 2267 "src/parser.c"
     break;
 
   case 67: /* $@8: %empty  */
-#line 878 "bison/parser.y"
+#line 881 "bison/parser.y"
 {table_hachage_print(SYMTAB); stack_id_pop(SYMTAB);}
-#line 2270 "src/parser.c"
+#line 2273 "src/parser.c"
     break;
 
   case 68: /* boucle_for: FOR PARENTHESE_OUVRANTE $@7 for_init POINT_VIRGULE M test POINT_VIRGULE for_fin PARENTHESE_FERMANTE ACCOLADE_OUVRANTE M liste_instructions $@8 ACCOLADE_FERMANTE  */
-#line 879 "bison/parser.y"
+#line 882 "bison/parser.y"
 {
     complete((yyvsp[-8].boolexpr).true, (yyvsp[-3].intval) - (yyvsp[-6].for_fin_t).num);
     ListLabel_free((yyvsp[-8].boolexpr).true);
@@ -2288,22 +2291,22 @@ yyreduce:
     CODE->quads[CODE->nextquad].sym3 = q;
     gencode(CODE, Q_GOTO, NULL, NULL, q);
 }
-#line 2292 "src/parser.c"
+#line 2295 "src/parser.c"
     break;
 
   case 69: /* for_init: for_fin  */
-#line 899 "bison/parser.y"
+#line 902 "bison/parser.y"
 {
     if ((yyvsp[0].for_fin_t).ptr != NULL)
     {
         gencode(CODE,COPY,(yyvsp[0].for_fin_t).id,(yyvsp[0].for_fin_t).ptr,NULL);
     }
 }
-#line 2303 "src/parser.c"
+#line 2306 "src/parser.c"
     break;
 
   case 70: /* for_init: type IDENTIFICATEUR EGAL expression_bin  */
-#line 906 "bison/parser.y"
+#line 909 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-2].strval));
     if ( id != NULL )
@@ -2319,11 +2322,11 @@ yyreduce:
     gencode(CODE,COPY,sym_id,(yyvsp[0].exprval_t).ptr,NULL);
 
 }
-#line 2323 "src/parser.c"
+#line 2326 "src/parser.c"
     break;
 
   case 71: /* for_fin: IDENTIFICATEUR  */
-#line 923 "bison/parser.y"
+#line 926 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[0].strval));
     if ( id == NULL )
@@ -2336,11 +2339,11 @@ yyreduce:
     (yyval.for_fin_t).id = sym_id;
     (yyval.for_fin_t).ptr = NULL;
 }
-#line 2340 "src/parser.c"
+#line 2343 "src/parser.c"
     break;
 
   case 72: /* for_fin: IDENTIFICATEUR EGAL expression_bin  */
-#line 936 "bison/parser.y"
+#line 939 "bison/parser.y"
 {
     struct id_t * id = table_hachage_get(SYMTAB,(yyvsp[-2].strval));
     if ( id == NULL )
@@ -2358,45 +2361,45 @@ yyreduce:
     (yyval.for_fin_t).ptr = (yyvsp[0].exprval_t).ptr;
     (yyval.for_fin_t).num = (yyvsp[0].exprval_t).num;
 }
-#line 2362 "src/parser.c"
+#line 2365 "src/parser.c"
     break;
 
   case 73: /* test: test OR M test2  */
-#line 956 "bison/parser.y"
+#line 959 "bison/parser.y"
 {
     complete((yyvsp[-3].boolexpr).false, (yyvsp[-1].intval));
     ListLabel_free((yyvsp[-3].boolexpr).false);
     (yyval.boolexpr).true = concat((yyvsp[-3].boolexpr).true, (yyvsp[0].boolexpr).true);
     (yyval.boolexpr).false = (yyvsp[0].boolexpr).false;
 }
-#line 2373 "src/parser.c"
+#line 2376 "src/parser.c"
     break;
 
   case 74: /* test: test2  */
-#line 962 "bison/parser.y"
+#line 965 "bison/parser.y"
         {(yyval.boolexpr).true = (yyvsp[0].boolexpr).true; (yyval.boolexpr).false = (yyvsp[0].boolexpr).false;}
-#line 2379 "src/parser.c"
+#line 2382 "src/parser.c"
     break;
 
   case 75: /* test2: test2 AND M test3  */
-#line 966 "bison/parser.y"
+#line 969 "bison/parser.y"
 {
     complete((yyvsp[-3].boolexpr).true, (yyvsp[-1].intval));
     ListLabel_free((yyvsp[-3].boolexpr).true);
     (yyval.boolexpr).false = concat((yyvsp[-3].boolexpr).false, (yyvsp[0].boolexpr).false);
     (yyval.boolexpr).true = (yyvsp[0].boolexpr).true;
 }
-#line 2390 "src/parser.c"
+#line 2393 "src/parser.c"
     break;
 
   case 76: /* test2: test3  */
-#line 972 "bison/parser.y"
+#line 975 "bison/parser.y"
         {(yyval.boolexpr).true = (yyvsp[0].boolexpr).true; (yyval.boolexpr).false = (yyvsp[0].boolexpr).false;}
-#line 2396 "src/parser.c"
+#line 2399 "src/parser.c"
     break;
 
   case 77: /* test3: expression_bin op_test expression_bin  */
-#line 976 "bison/parser.y"
+#line 979 "bison/parser.y"
 {
     (yyval.boolexpr).true = NULL;
     (yyval.boolexpr).false = NULL;
@@ -2431,11 +2434,11 @@ yyreduce:
     (yyval.boolexpr).false = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
 }
-#line 2435 "src/parser.c"
+#line 2438 "src/parser.c"
     break;
 
   case 78: /* test3: expression_bin  */
-#line 1011 "bison/parser.y"
+#line 1014 "bison/parser.y"
 {
     (yyval.boolexpr).true = NULL;
     (yyval.boolexpr).false = NULL;
@@ -2450,63 +2453,63 @@ yyreduce:
     // Generate the code associate with op_test
     gencode(CODE, Q_IF_NEQ, (yyvsp[0].exprval_t).ptr, q_zero, q);
 }
-#line 2454 "src/parser.c"
+#line 2457 "src/parser.c"
     break;
 
   case 79: /* op_test: EGAL_EGAL  */
-#line 1027 "bison/parser.y"
+#line 1030 "bison/parser.y"
             {(yyval.typetest) = EQ;}
-#line 2460 "src/parser.c"
+#line 2463 "src/parser.c"
     break;
 
   case 80: /* op_test: POINT_EXCLAMATION EGAL  */
-#line 1028 "bison/parser.y"
+#line 1031 "bison/parser.y"
                          {(yyval.typetest) = NEQ;}
-#line 2466 "src/parser.c"
+#line 2469 "src/parser.c"
     break;
 
   case 81: /* op_test: INFERIEUR  */
-#line 1029 "bison/parser.y"
+#line 1032 "bison/parser.y"
             {(yyval.typetest) = LT;}
-#line 2472 "src/parser.c"
+#line 2475 "src/parser.c"
     break;
 
   case 82: /* op_test: INFERIEUR_EGAL  */
-#line 1030 "bison/parser.y"
+#line 1033 "bison/parser.y"
                  {(yyval.typetest) = LE;}
-#line 2478 "src/parser.c"
+#line 2481 "src/parser.c"
     break;
 
   case 83: /* op_test: SUPERIEUR  */
-#line 1031 "bison/parser.y"
+#line 1034 "bison/parser.y"
             {(yyval.typetest) = GT;}
-#line 2484 "src/parser.c"
+#line 2487 "src/parser.c"
     break;
 
   case 84: /* op_test: SUPERIEUR_EGAL  */
-#line 1032 "bison/parser.y"
+#line 1035 "bison/parser.y"
                  {(yyval.typetest) = GE;}
-#line 2490 "src/parser.c"
+#line 2493 "src/parser.c"
     break;
 
   case 85: /* M: %empty  */
-#line 1034 "bison/parser.y"
+#line 1037 "bison/parser.y"
            {(yyval.intval) = CODE->nextquad;}
-#line 2496 "src/parser.c"
+#line 2499 "src/parser.c"
     break;
 
   case 86: /* N: %empty  */
-#line 1036 "bison/parser.y"
+#line 1039 "bison/parser.y"
 {
     (yyval.N_t).next = creerListe(CODE->nextquad);
     gencode(CODE, Q_GOTO_UNKNOWN, NULL, NULL, quad_label());
     (yyval.N_t).quad = CODE->nextquad;
 }
-#line 2506 "src/parser.c"
+#line 2509 "src/parser.c"
     break;
 
 
-#line 2510 "src/parser.c"
+#line 2513 "src/parser.c"
 
       default: break;
     }
@@ -2699,7 +2702,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 1041 "bison/parser.y"
+#line 1044 "bison/parser.y"
 
 void yyerror(const char * msg) {
     fprintf(stderr, "Erreur de syntaxe : %s\n", msg);
