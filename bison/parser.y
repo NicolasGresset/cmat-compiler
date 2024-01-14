@@ -93,7 +93,8 @@ void complete(struct ListLabel * l, unsigned int addr)
          }
          expr1.type = expr2.type;
 
-         expr1.num = expr2.num + 1;
+         // 2 car 2 gencode
+         expr1.num = expr2.num + 2;
          return expr1;
      }
 
@@ -170,7 +171,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 
     // Utile pour la boucle_for savoir où compléter test.true
     expr1.num = MAX(expr2.num, expr3.num);
-    expr1.num += 1;
+    expr1.num += 2;
 
     return expr1;
  }
@@ -1000,10 +1001,16 @@ for_fin
         exit(1);
     }
 
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+    $$.ptr = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
+
+    struct symbol * one = symbol_const_int(1);
     struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE,BOP_PLUS,$$.ptr,one,sym_id);
+
     $$.id = sym_id;
-    $$.ptr = sym_id;
-    $$.num = 1;
+    $$.num = 2;
 }
 | PLUS_PLUS IDENTIFICATEUR
 {
@@ -1013,11 +1020,16 @@ for_fin
         fprintf(stderr, "error: ‘%s’ undeclared\n", $2);
         exit(1);
     }
+    // Le cas où les 2 expressions  n'ont pas le même type n'est pas géré
+    $$.ptr = newtemp(SYMTAB, ENTIER);
+    gencode(CODE, Q_DECLARE, $$.ptr, NULL, NULL);
 
+    struct symbol * one = symbol_const_int(1);
     struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE,BOP_PLUS,$$.ptr,one,sym_id);
+
     $$.id = sym_id;
-    $$.ptr = sym_id;
-    $$.num = 1;
+    $$.num = 2;
 }
 
 test
