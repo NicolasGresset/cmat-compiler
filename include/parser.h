@@ -143,8 +143,8 @@ union YYSTYPE
 
      struct {
          union {
-             float  matval[20][20];
-             float  vectval[20];
+             float  matval[100][100];
+             float  vectval[100];
          } u;
          int row;
          int col;

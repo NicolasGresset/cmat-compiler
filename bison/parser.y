@@ -206,8 +206,8 @@ void complete(struct ListLabel * l, unsigned int addr)
 
      struct {
          union {
-             float  matval[20][20];
-             float  vectval[20];
+             float  matval[100][100];
+             float  vectval[100];
          } u;
          int row;
          int col;
@@ -233,7 +233,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
     POINT PRINT PRINTF PRINTMAT
 
-%type <exprval_t> declaration_bin operande expression_bin id_matrix id_vector
+%type <exprval_t> declaration_bin_int declaration_bin_float operande expression_bin id_matrix id_vector
 %type <typeval> type
 %type <crea_mat_t> creation_matrix creation_matrix_prime creation_vector creation_vector_prime
 %type <intval> M
@@ -304,40 +304,79 @@ instruction
 
 
 declaration
-: declaration_bin {$$.next = NULL;}
+: INT declaration_bin_int {$$.next = NULL;}
+| FLOAT declaration_bin_float {$$.next = NULL;}
 | MATRIX declaration_mat {$$.next = NULL;}
 
-declaration_bin
-: type IDENTIFICATEUR POINT_VIRGULE {
-    struct id_t * id = table_hachage_get(SYMTAB,$2);
+declaration_bin_int
+:  IDENTIFICATEUR fin_decla_int {
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
      if ( id != NULL )
      {
-         fprintf(stderr, "error: redeclaration of ‘%s’ with no linkage\n", $2);
+         fprintf(stderr, "error: redeclaration of ‘%s’ with no linkage\n", $1);
          exit(1);
      }
-     id = id_init($2, $1);
+     id = id_init($1, ENTIER);
      table_hachage_put(SYMTAB,id);
 
 
      struct symbol * sym_id = symbol_id(*id);
-     gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
+     gencode(CODE, Q_DECLARE, sym_id, NULL, NULL);
  }
-| type IDENTIFICATEUR EGAL expression_bin POINT_VIRGULE  {
-    struct id_t * id = table_hachage_get(SYMTAB, $2);
+| IDENTIFICATEUR EGAL expression_bin fin_decla_int {
+    struct id_t * id = table_hachage_get(SYMTAB, $1);
     if ( id != NULL )
     {
-        fprintf(stderr, "error: redefinition of ‘%s’\n", $2);
+        fprintf(stderr, "error: redefinition of ‘%s’\n", $1);
         exit(1);
     }
 
-    id = id_init($2, $1);
+    id = id_init($1, ENTIER);
     table_hachage_put(SYMTAB,id);
 
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
-    gencode(CODE,COPY,sym_id,$4.ptr,NULL);
+    gencode(CODE,COPY,sym_id,$3.ptr,NULL);
  }
 ;
+
+fin_decla_int
+: VIRGULE declaration_bin_int| POINT_VIRGULE
+
+declaration_bin_float
+:  IDENTIFICATEUR fin_decla_float {
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id != NULL )
+    {
+        fprintf(stderr, "error: redeclaration of ‘%s’ with no linkage\n", $1);
+        exit(1);
+    }
+    id = id_init($1, REEL);
+    table_hachage_put(SYMTAB,id);
+
+
+    struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
+  }
+| IDENTIFICATEUR EGAL expression_bin fin_decla_float  {
+    struct id_t * id = table_hachage_get(SYMTAB, $1);
+    if ( id != NULL )
+    {
+        fprintf(stderr, "error: redefinition of ‘%s’\n", $1);
+        exit(1);
+    }
+
+    id = id_init($1, REEL);
+    table_hachage_put(SYMTAB,id);
+
+    struct symbol * sym_id = symbol_id(*id);
+    gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
+    gencode(CODE,COPY,sym_id,$3.ptr,NULL);
+  }
+;
+
+fin_decla_float
+: VIRGULE declaration_bin_float | POINT_VIRGULE
 
 // Ici déclaration matrix.
 
