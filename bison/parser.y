@@ -371,6 +371,7 @@ declaration_mat
         fprintf(stderr, "error : incorrect type in declaration matrix\n");
         exit(1);
     }
+
 };
 
 
@@ -603,7 +604,20 @@ expression_bin
 //|  POINT_EXCLAMATION expression_bin %prec UEXPR {;} // A completer
 |  TRANSPOSITION expression_bin %prec UEXPR
 {
-    ;}
+    if ($2.type != MATRIX_TYPE)
+    {
+        fprintf(stderr, "error: impossible to transpose a non matrix type\n");
+        exit(1);
+    }
+    // Inverser nombre colonnes et lignes
+    struct symbol * sym_temp = newtemp_mat(SYMTAB, MATRIX_TYPE, $2.ptr->u.id.row, $2.ptr->u.id.col);
+    gencode(CODE, UMATOP_TRANSPOSE, sym_temp, $2.ptr, NULL);
+
+    $$.ptr = sym_temp;
+    $$.type = MATRIX_TYPE;
+
+    $$.num = 1 + $2.num;
+}
 |  PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE {$$.ptr = $2.ptr; $$.type = $2.type; $$.num = $2.num;}
 //| operateur2 IDENTIFICATEUR expression_bin %prec UEXPR {;}
 | PLUS_PLUS operande
@@ -695,37 +709,15 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     if (id->row <= $3 || id->col <= $6)
     {
         fprintf(stderr, "Erreur de dimension pour %s\n", $1);
+        exit(1);
     }
 
-    // Pour obtenir la valeur du tableau
-    /* T3 = T1*20 */
-    struct symbol * t3 = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, t3, NULL, NULL);
+    struct symbol * sym_float = newtemp(SYMTAB, REEL);
+    struct symbol *  sym_id = symbol_id(*id);
+    struct symbol * sym_idx = symbol_const_int(($3)*id->col + $6);
+    gencode(CODE, DEREF, sym_float, sym_id, sym_idx);
 
-    struct symbol * t3_temp = symbol_const_int(($3 + 1) * id->col);
-    struct symbol * j = symbol_const_int(($6 + 1));
-    /*     T3 = T3+T2 */
-    gencode(CODE, BOP_PLUS, t3, j, t3_temp);
-    /*     T4 = adr(A) /\* adresse de base de A *\/ */
-    struct symbol * t4 = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, t4, NULL, NULL);
-
-    struct symbol * sym_id = symbol_id(*id);
-    gencode(CODE, ADRESSE, t4, sym_id, NULL);
-    /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
-    struct symbol * nbw_row = symbol_const_int(4 * (id->col + 1));
-    gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
-    /*     T5 = 4*T3 */
-    struct symbol * t5 = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, t5, NULL, NULL);
-    struct symbol * nbw = symbol_const_int(4);
-    gencode(CODE, BOP_MULT, t5, nbw, t3);
-    /*     T6 = T4[T5] /\* = T4+T5 *\/ */
-    struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, symbol_composante, NULL, NULL);
-    gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
-
-    $$.ptr = symbol_composante;
+    $$.ptr = sym_float;
     $$.type = REEL;
 }
 | IDENTIFICATEUR CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
@@ -747,33 +739,12 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
         fprintf(stderr, "Erreur de dimension pour %s\n", $1);
     }
 
-    // Pour obtenir la valeur du tableau
-    /* T3 = T1*20 */
-    struct symbol * t3 = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, t3, NULL, NULL);
-    struct symbol * t3_temp = symbol_const_int($3 * id->col);
-    struct symbol * j = symbol_const_int(1);
-    /*     T3 = T3+T2 */
-    gencode(CODE, BOP_PLUS, t3, j, t3_temp);
-    /*     T4 = adr(A) /\* adresse de base de A *\/ */
-    struct symbol * t4 = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, t4, NULL, NULL);
-    struct symbol * sym_id = symbol_id(*id);
-    gencode(CODE, ADRESSE, t4, sym_id, NULL);
-    /*     T4 = T4-84 /\* 84 = nbw*21 *\/ */
-    struct symbol * nbw_row = symbol_const_int(4 * (id->col + 1));
-    gencode(CODE, BOP_MOINS, t4, t4, nbw_row);
-    /*     T5 = 4*T3 */
-    struct symbol * t5 = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, t5, NULL, NULL);
-    struct symbol * nbw = symbol_const_int(4);
-    gencode(CODE, BOP_MULT, t5, nbw, t3);
-    /*     T6 = T4[T5] /\* = T4+T5 *\/ */
-    struct symbol * symbol_composante = newtemp(SYMTAB, ENTIER);
-    gencode(CODE, Q_DECLARE, symbol_composante, NULL, NULL);
-    gencode(CODE, BOP_PLUS, symbol_composante, t4, t5);
+    struct symbol * sym_float = newtemp(SYMTAB, REEL);
+    struct symbol *  sym_id = symbol_id(*id);
+    struct symbol * sym_idx = symbol_const_int($3);
+    gencode(CODE, DEREF, sym_float, sym_id, sym_idx);
 
-    $$.ptr = symbol_composante;
+    $$.ptr = sym_float;
     $$.type = REEL;
 };
 
