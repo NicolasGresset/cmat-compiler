@@ -446,6 +446,13 @@ static void quad_dump(struct quad *q) {
     case CALL_PRINTF:
         symbol_dump(q->sym1);
         break;
+
+    case CALL_PRINT_MAT:
+        printf("printmat(");
+        symbol_dump(q->sym1);
+        printf(")");
+        break;
+
     default:
         printf("BUG\n");
         break;

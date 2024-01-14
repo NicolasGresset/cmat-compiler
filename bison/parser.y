@@ -112,7 +112,12 @@ void complete(struct ListLabel * l, unsigned int addr)
              printf("col : %d %d row : %d %d", expr2.ptr->u.id.row, expr2.ptr->u.id.col, expr3.ptr->u.id.row, expr3.ptr->u.id.col);
              exit(1);
          }
-         expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+
+         // Nouvelle matrice avec les dimensions correspondantes
+         if  (k == BOP_PLUS || k == BOP_MOINS)
+             expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr2.ptr->u.id.col, expr2.ptr->u.id.row);
+         if  (k == BOP_MULT || k == BOP_DIVISE)
+             expr1.ptr = newtemp_mat(SYMTAB, MATRIX_TYPE, expr3.ptr->u.id.col, expr2.ptr->u.id.row);
 
          gencode(CODE, Q_DECLARE_MAT, expr1.ptr, NULL, NULL);
 
@@ -242,6 +247,7 @@ void complete(struct ListLabel * l, unsigned int addr)
 %type <typetest> op_test
 %type <boolexpr> test test2 test3
 %type <instr_type> liste_instructions instruction condition condition_suite boucle_while boucle_for declaration
+%type <floatval> ajout_constante
 
 
 %left PLUS MOINS
@@ -274,6 +280,7 @@ instruction
 | affectation_bin {$$.next = NULL;}
 | PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE
 {
+
     struct symbol * sym_str = symbol_string($3);
     gencode(CODE, CALL_PRINTF, sym_str, NULL, NULL);
     $$.next = NULL;
@@ -408,38 +415,54 @@ declaration_mat
 | id_vector EGAL creation_vector fin_crea_mat
 {
     // Ici gérer si les valeurs entre {} respectent la taille de id_matrix
+    int tmp = $3.row;
+    $3.row = $3.col;
+    $3.col = tmp;
     if ($1.ptr->u.id.row < $3.row || $1.ptr->u.id.col < $3.col)
     {
         fprintf(stderr, "error: incompatible matrix size in the matrix declaration\n");
         exit(1);
     }
-    for (int j = 0; j < $1.ptr->u.id.col; ++j)
+    for (int j = 0; j < $1.ptr->u.id.row; ++j)
     {
         struct symbol * sym_idx = symbol_const_int(j);
         struct symbol * sym_val = symbol_const_float($3.u.vectval[j]);
         gencode(CODE, ARRAY_AFFECT, $1.ptr, sym_idx, sym_val);
     }
+
 }
-| MATRIX id_matrix EGAL expression_bin fin_crea_mat
+| id_matrix EGAL expression_bin fin_crea_mat
 {
     // id_matrix regarde si l'identificateur existe
-
-    if ($4.type != MATRIX_TYPE)
+    if ($3.type != MATRIX_TYPE)
     {
         fprintf(stderr, "error : incorrect type in declaration matrix\n");
         exit(1);
     }
+    if ($1.ptr->u.id.col != $3.ptr->u.id.col || $1.ptr->u.id.row != $3.ptr->u.id.row) {
+        fprintf(stderr, "error : incompatible matrix size in the matrix declaration\n");
+        exit(1);
+    }
+    gencode(CODE,COPY,$1.ptr,$3.ptr,NULL);
 }
 // Si on separe matrix et vector, on peut aussi faire expression_bin_mat et expression_bin_vec
-| MATRIX id_vector EGAL expression_bin fin_crea_mat
+| id_vector EGAL expression_bin fin_crea_mat
 {
     // id_vector regarde si l'identificateur existe
-    if ($4.type != MATRIX_TYPE)
+    int tmp = $3.ptr->u.id.row;
+    $3.ptr->u.id.row = $3.ptr->u.id.col;
+    $1.ptr->u.id.col = tmp;
+
+    if ($3.type != MATRIX_TYPE)
     {
         fprintf(stderr, "error : incorrect type in declaration matrix\n");
         exit(1);
     }
-
+    if ($1.ptr->u.id.col != $3.ptr->u.id.col || $1.ptr->u.id.row != $3.ptr->u.id.row) {
+        fprintf(stderr, "error : incompatible matrix size in the matrix declaration\n");
+        exit(1);
+    }
+    gencode(CODE,COPY,$1.ptr, $3.ptr,NULL);
 };
 
 
@@ -477,8 +500,8 @@ id_vector
     }
     id = id_init($1, MATRIX_TYPE);
 
-    id->col = $3;
-    id->row = 1;
+    id->col = 1;
+    id->row = $3;
     table_hachage_put(SYMTAB,id);
 
     struct symbol * sym_id = symbol_id(*id);
@@ -536,7 +559,7 @@ creation_matrix_prime
 
 creation_vector
 //: expression_vector
-: ACCOLADE_OUVRANTE creation_vector_prime CONSTANTE_FLOTTANTE ACCOLADE_FERMANTE
+: ACCOLADE_OUVRANTE creation_vector_prime ajout_constante ACCOLADE_FERMANTE
 {
     // test inutile
     /* if ($2.type != ENTIER && $2.type != REEL) */
@@ -550,7 +573,7 @@ creation_vector
     $$.row = 1;
 };
 creation_vector_prime
-: creation_vector_prime CONSTANTE_FLOTTANTE VIRGULE
+: creation_vector_prime ajout_constante VIRGULE
 {
     // test inutile
     /* if ($2.type != ENTIER && $2.type != REEL) */
@@ -566,6 +589,13 @@ creation_vector_prime
 }
 | %empty {$$.row = 0; $$.col = 0;};
 
+ajout_constante
+: CONSTANTE_ENTIERE {
+    $$=(float)$1;
+}
+| CONSTANTE_FLOTTANTE {
+    $$=$1;
+};
 
 
 // Affectation
