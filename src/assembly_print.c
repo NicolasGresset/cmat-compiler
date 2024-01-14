@@ -39,10 +39,37 @@ void manage_call_print(struct quad *quad, struct assembly_code *code) {
     }
 }
 
+/**
+ * @brief Apelle printf avec le label donné en paramètre
+ *
+ * @param code
+ * @param label
+ */
+void call_printf(struct assembly_code *code, char *label) {
+  fprintf(code->out, "  li $v0, %d\n", PRINT_STRING_SYSCALL_NUMBER);
+  fprintf(code->out, "  la %s, %s\n", registers[A0], label);
+  fprintf(code->out, "  syscall\n");
+}
+
 void manage_call_print_mat(struct quad *quad, struct assembly_code *code) {
-    // todo
-    (void)quad;
-    (void)code;
+  fprintf(code->out, "#print_mat %s\n", quad->sym1->u.id.name);
+
+  fprintf(code->out, "  la %s, %s\n", registers[A0],
+          quad->sym1->u.id.name); // on charge l'adresse de la matrice dans $a0
+  for (int i = 0; i < quad->sym1->u.id.row; i++) {
+    for (int j = 0; j < quad->sym1->u.id.col; j++) {
+      // print A[i][j]
+      fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F12],
+              4 * (i * quad->sym1->u.id.col + j),
+              registers[A0]); // on charge la valeur dans $f12
+      fprintf(code->out, "  li $v0, %d\n", PRINT_FLOAT_SYSCALL_NUMBER);
+      fprintf(code->out, "  syscall\n");
+      if (j != quad->sym1->u.id.col - 1) {
+        call_printf(code, code->string_tab);
+      }
+    }
+    call_printf(code, code->string_newline);
+  }
 }
 
 void manage_call_printf(struct quad *quad, struct assembly_code *code) {
