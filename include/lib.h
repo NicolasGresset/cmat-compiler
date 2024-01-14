@@ -104,7 +104,7 @@ struct quad {
         MATOP_DIVISE,
         UMATOP_PLUS,
         UMATOP_MOINS,
-        UMATOP_TRANSPOSE,
+        UMATOP_TRANSPOSE,  // sym1 : destination (une matrice temporaire) sym2
 
         // Operation entre 1 matrice et 1 float ou entier
         MAT_BIN_PLUS,
@@ -125,7 +125,7 @@ struct quad {
 
         Q_GOTO,
         Q_GOTO_UNKNOWN,
-        CALL_PRINT, // sym1 : id à afficher, NULL, NULL 
+        CALL_PRINT, // sym1 : id à afficher, NULL, NULL
         CALL_PRINT_MAT, // sym1 : id de la matrice à afficher, NULL, NULL
         CALL_PRINTF, // sym1 : id de la chaine de caractère à afficher, NULL, NULL
 

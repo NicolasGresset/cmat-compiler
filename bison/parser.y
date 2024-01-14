@@ -264,12 +264,14 @@ instruction
 | boucle_while {$$.next = $1.next;}
 | boucle_for {$$.next = $1.next;}
 | affectation_bin {$$.next = NULL;}
-| PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE
+| PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE {$$.next = NULL;}
+ //q_printf avec la string sym1
+
 | PRINT PARENTHESE_OUVRANTE operande PARENTHESE_FERMANTE POINT_VIRGULE {
     $$.next = NULL;
     gencode(CODE, CALL_PRINT, $3.ptr, NULL, NULL);
 }
-| PRINTMAT PARENTHESE_OUVRANTE IDENTIFICATEUR PARENTHESE_FERMANTE POINT_VIRGULE
+| PRINTMAT PARENTHESE_OUVRANTE IDENTIFICATEUR PARENTHESE_FERMANTE POINT_VIRGULE {$$.next = NULL;}
 
 
 
@@ -318,9 +320,9 @@ declaration_mat
 | id_matrix  EGAL creation_matrix fin_crea_mat
 {
     // Ici gérer si les valeurs entre {} respectent la taille de id_matrix
-    if ($1.ptr->u.id.row != $3.row || $1.ptr->u.id.col != $3.col)
+    if ($1.ptr->u.id.row < $3.row || $1.ptr->u.id.col < $3.col)
     {
-        //printf("row %d %d | col %d %d\n", $1.ptr->u.id.row, $3.row, $1.ptr->u.id.col, $3.col);
+
         fprintf(stderr, "error: incompatible matrix size in the matrix declaration\n");
         exit(1);
     }
@@ -339,9 +341,8 @@ declaration_mat
 | id_vector EGAL creation_vector fin_crea_mat
 {
     // Ici gérer si les valeurs entre {} respectent la taille de id_matrix
-    if ($1.ptr->u.id.row != $3.row || $1.ptr->u.id.col != $3.col)
+    if ($1.ptr->u.id.row < $3.row || $1.ptr->u.id.col < $3.col)
     {
-        //printf("row %d %d | col %d %d\n", $1.ptr->u.id.row, $3.row, $1.ptr->u.id.col, $3.col);
         fprintf(stderr, "error: incompatible matrix size in the matrix declaration\n");
         exit(1);
     }
@@ -432,15 +433,16 @@ creation_matrix
 : ACCOLADE_OUVRANTE creation_matrix_prime creation_vector ACCOLADE_FERMANTE
 {
     $$ = $2;
-    if ($3.col != 0 && $2.col != $3.col)
-    {
-        fprintf(stderr, "error : incompatible column size\n");
-        exit(1);
-    }
+    // Ce test est obsolète pour la déclaration de matrice incomplète
+    /* if ($3.col != 0 && $2.col != $3.col) */
+    /* { */
+    /*     fprintf(stderr, "error : incompatible column size\n"); */
+    /*     exit(1); */
+    /* } */
 
     for (int j = 0; j < $3.col; ++j)
         $$.u.matval[$2.row][j] = $3.u.vectval[j];
-    $$.col = $2.col;
+    $$.col = MAX($3.col, $2.col);
     $$.row = 1 + $2.row;
 };
 
@@ -448,11 +450,12 @@ creation_matrix_prime
 :  creation_matrix_prime creation_vector VIRGULE
 {
     $$ = $1;
-    if ($1.col != 0 && $1.col != $2.col)
-    {
-        fprintf(stderr, "error : incompatible column size\n");
-        exit(1);
-    }
+    // Ce test est obsolète pour la déclaration de matrice incomplète
+    /* if ($1.col != 0 && $1.col != $2.col) */
+    /* { */
+    /*     fprintf(stderr, "error : incompatible column size\n"); */
+    /*     exit(1); */
+    /* } */
 
    for (int j = 0; j < $2.col; ++j)
        $$.u.matval[$1.row][j] = $2.u.vectval[j];
