@@ -333,6 +333,20 @@ static void quad_dump(struct quad *q) {
         symbol_dump(q->sym3);
         break;
 
+    case DEREF:
+        symbol_dump(q->sym1);
+        printf(" := ");
+        symbol_dump(q->sym2);
+        printf("[");
+        symbol_dump(q->sym3);
+        printf("]");
+        break;
+
+    case UMATOP_TRANSPOSE:
+        symbol_dump(q->sym1);
+        printf(" := ~");
+        symbol_dump(q->sym2);
+        break;
     case CALL_PRINT:
         printf("print ");
         symbol_dump(q->sym1);

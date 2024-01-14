@@ -7,14 +7,14 @@
 
 void manage_call_print(struct quad *quad, struct assembly_code *code) {
     fprintf(code->out, "#print \n");
-    if (quad->sym1->kind == INT_CONSTANT) {
+    if (is_symbol_int(quad->sym1)) {
         move_int_symbol(quad->sym1, code, A0);
-        fprintf(code->out, "li $v0, %d\n", PRINT_INT_SYSCALL_NUMBER);
-        fprintf(code->out, "syscall\n");
-    } else if (quad->sym1->kind == FLOAT_CONSTANT) {
+        fprintf(code->out, "  li $v0, %d\n", PRINT_INT_SYSCALL_NUMBER);
+        fprintf(code->out, "  syscall\n");
+    } else if (is_symbol_float(quad->sym1)) {
         move_float_symbol(quad->sym1, code, F12);
-        fprintf(code->out, "li $v0, %d\n", PRINT_FLOAT_SYSCALL_NUMBER);
-        fprintf(code->out, "syscall\n");
+        fprintf(code->out, "  li $v0, %d\n", PRINT_FLOAT_SYSCALL_NUMBER);
+        fprintf(code->out, "  syscall\n");
     } else {
         fprintf(stderr, "Error: can not print type : %d\n",
                 quad->sym1->u.id.type);

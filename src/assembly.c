@@ -218,6 +218,9 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case ARRAY_AFFECT:
     manage_array_affect(quad, code);
     break;
+  case DEREF:
+    manage_deref(quad, code);
+    break;
   case Q_DECLARE_STRING:
     manage_declare_string(quad, code);
     break;

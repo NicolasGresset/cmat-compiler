@@ -25,3 +25,5 @@ void manage_transpose_mat(struct quad *quad, struct assembly_code *code);
 void manage_copy_mat(struct quad *quad, struct assembly_code *code);
 
 void manage_array_affect(struct quad *quad, struct assembly_code *code);
+
+void manage_deref(struct quad *quad, struct assembly_code *code);

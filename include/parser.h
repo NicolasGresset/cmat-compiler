@@ -108,7 +108,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 164 "bison/parser.y"
+#line 175 "bison/parser.y"
 
      struct exprval exprval_t;
 
@@ -142,11 +142,15 @@ union YYSTYPE
      } for_fin_t;
 
      struct {
+         union {
+             float matval[20][20];
+             float vectval[20];
+         } u;
          int row;
          int col;
      } crea_mat_t;
 
-#line 150 "./include/parser.h"
+#line 154 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
