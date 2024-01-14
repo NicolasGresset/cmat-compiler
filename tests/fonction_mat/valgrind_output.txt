@@ -1,191 +1,191 @@
-==71409== Invalid read of size 4
-==71409==    at 0x10A183: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a04c is 12 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A18A: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9b948 is 8 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A1AE: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9b94c is 12 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A1B5: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a048 is 8 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A2E3: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a048 is 8 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A2CF: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a04c is 12 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A2BB: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a04c is 12 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 8
-==71409==    at 0x10A23D: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a040 is 0 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 8
-==71409==    at 0x10A24C: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a090 is 0 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A500: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x1099D9: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A25B: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9a0e0 is 0 bytes inside a block of size 12 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A4E1: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 8
-==71409==    at 0x10A263: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9b940 is 0 bytes inside a block of size 16 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 8
-==71409==    at 0x10A272: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9b990 is 0 bytes inside a block of size 24 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A500: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x1099D9: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A281: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9b9f0 is 0 bytes inside a block of size 8 free'd
-==71409==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10A4E1: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Block was alloc'd at
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid write of size 4
-==71409==    at 0x10A203: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9c5d8 is 0 bytes after a block of size 8 alloc'd
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid read of size 4
-==71409==    at 0x10A235: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9c5d8 is 0 bytes after a block of size 8 alloc'd
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== Invalid write of size 4
-==71409==    at 0x10A2AF: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==  Address 0x4a9c5d8 is 0 bytes after a block of size 8 alloc'd
-==71409==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A183: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c04c is 12 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A18A: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9d948 is 8 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A1AE: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9d94c is 12 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A1B5: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c048 is 8 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A2E3: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c048 is 8 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A2CF: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c04c is 12 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A2BB: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c04c is 12 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 8
+==259418==    at 0x10A23D: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c040 is 0 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 8
+==259418==    at 0x10A24C: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c090 is 0 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A500: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x1099D9: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A25B: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9c0e0 is 0 bytes inside a block of size 12 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A4E1: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1097EB: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109283: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 8
+==259418==    at 0x10A263: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9d940 is 0 bytes inside a block of size 16 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A50C: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 8
+==259418==    at 0x10A272: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9d990 is 0 bytes inside a block of size 24 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A500: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x1099D9: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A281: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9d9f0 is 0 bytes inside a block of size 8 free'd
+==259418==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10A4E1: free_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10980F: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Block was alloc'd at
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A31B: transpose_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1094FC: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid write of size 4
+==259418==    at 0x10A203: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9e5d8 is 0 bytes after a block of size 8 alloc'd
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid read of size 4
+==259418==    at 0x10A235: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9e5d8 is 0 bytes after a block of size 8 alloc'd
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== Invalid write of size 4
+==259418==    at 0x10A2AF: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==  Address 0x4a9e5d8 is 0 bytes after a block of size 8 alloc'd
+==259418==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x109A38: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
 A
 0.00	1.00	2.00
 1.00	2.00	3.00
@@ -237,50 +237,50 @@ d = ~c
 e = d * a
 4.00	4.00
 8.00	8.00
-==71409== 32 (16 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 17 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10954D: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 32 (16 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109656: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 32 (16 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 19 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1096CA: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 48 (16 direct, 32 indirect) bytes in 1 blocks are definitely lost in loss record 20 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 21 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1093A3: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 22 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x1093DD: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 23 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109417: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
-==71409== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 24 of 24
-==71409==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==71409==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409==    by 0x109451: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
-==71409== 
+==259418== 32 (16 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 17 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10954D: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 32 (16 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109656: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 32 (16 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 19 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1096CA: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 48 (16 direct, 32 indirect) bytes in 1 blocks are definitely lost in loss record 20 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x10A1C0: div_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109876: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 21 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1093A3: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 22 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x1093DD: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 23 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109417: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
+==259418== 56 (16 direct, 40 indirect) bytes in 1 blocks are definitely lost in loss record 24 of 24
+==259418==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==259418==    by 0x10998F: init_mat_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109DEF: cst_op_matrix (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418==    by 0x109451: main (in /home/sarah/Documents/tps_2A/projet-compilation/tests/fonction_mat/exemple3)
+==259418== 
