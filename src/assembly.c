@@ -273,7 +273,7 @@ void initalize_assembly_code(struct assembly_code *assembly_code,
 
     append_to_data(assembly_code, ".data\n");
     assembly_code->float_zero = "__float_zero\n";
-    assembly_code->string_constant = "__string_constant\n";
+    assembly_code->string_constant = "__string_constant";
 
     // on réserve de la place pour les strings
     char save_string_constant[MAX_DATA_SIZE];
