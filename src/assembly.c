@@ -108,21 +108,21 @@ void manage_declare(struct quad *quad, struct assembly_code *code) {
   }
 }
 
-// todo tester
-void manage_declare_string(struct quad *quad, struct assembly_code *code) {
-  if (quad->sym1->kind != NAME) {
-    fprintf(stderr, "Error: first operand of DECLARE is not a NAME\n");
-    exit(1);
-  }
+// // todo tester
+// void manage_declare_string(struct quad *quad, struct assembly_code *code) {
+//   if (quad->sym1->kind != NAME) {
+//     fprintf(stderr, "Error: first operand of DECLARE is not a NAME\n");
+//     exit(1);
+//   }
 
-  fprintf(code->out, "# declare %s\n", quad->sym1->u.id.name);
+//   fprintf(code->out, "# declare string : %s\n", quad->sym1->u.id.name);
 
-  char declaration[MAX_DATA_SIZE];
+//   char declaration[MAX_DATA_SIZE];
 
-  snprintf(declaration, MAX_DATA_SIZE, "  %s: .asciiz %s\n",
-           quad->sym1->u.id.name, quad->sym2->u.string);
-  append_to_data(code, declaration);
-}
+//   snprintf(declaration, MAX_DATA_SIZE, "  %s: .asciiz %s\n",
+//            quad->sym1->u.id.name, quad->sym2->u.string);
+//   append_to_data(code, declaration);
+// }
 
 /**
  * @brief Gère un quadruplet
@@ -221,9 +221,6 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
   case DEREF:
     manage_deref(quad, code);
     break;
-  case Q_DECLARE_STRING:
-    manage_declare_string(quad, code);
-    break;
   default:
     manage_default_case(quad, code);
     break;
@@ -263,6 +260,14 @@ void initalize_assembly_code(struct assembly_code *assembly_code,
 
   append_to_data(assembly_code, ".data\n");
   assembly_code->float_zero = "__float_zero\n";
+  assembly_code->string_constant = "__string_constant\n";
+
+  // on réserve de la place pour les strings
+  char save_string_constant[MAX_DATA_SIZE];
+  snprintf(save_string_constant, MAX_DATA_SIZE, "  %s: .space %d\n",
+           assembly_code->string_constant, TAILLE_MAX_STRING);
+
+  append_to_data(assembly_code, save_string_constant);
   append_to_data(assembly_code, "  __float_zero: .float 0.0\n");
 }
 
