@@ -186,9 +186,11 @@ void manage_uop_moins_mat(struct quad *quad, struct assembly_code *code) {
   unsigned int nelem = quad->sym1->u.id.row * quad->sym1->u.id.col;
 
   for (unsigned int i = 0; i < nelem; i++) {
-    fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0], 4 * i, registers[T1]);
+    fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0], 4 * i,
+            registers[T1]);
     fprintf(code->out, "  neg.s %s, %s\n", registers[F2], registers[F0]);
-    fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F2], 4 * i, registers[T0]);
+    fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F2], 4 * i,
+            registers[T0]);
   }
 }
 
@@ -256,4 +258,19 @@ void manage_array_affect(struct quad *quad, struct assembly_code *code) {
 
   fprintf(code->out, "  s.s %s, %d(%s)\n", registers[F0],
           4 * quad->sym2->u.int_value, registers[T0]); // *id = F0
+}
+
+// todo tester
+void manage_deref(struct quad *quad, struct assembly_code *code) {
+  fprintf(code->out, "# deref %s = *(%s + %d)\n", quad->sym1->u.id.name,
+          quad->sym2->u.id.name, quad->sym3->u.int_value);
+
+  fprintf(code->out, "  la %s, %s\n", registers[T0],
+          quad->sym2->u.id.name); // T0 = &id2
+
+  fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0],
+          4 * quad->sym3->u.int_value, registers[T0]); // F0 = *(id2 + i)
+
+  fprintf(code->out, "  s.s %s, %s\n", registers[F0],
+          quad->sym1->u.id.name); // id1 = F0
 }

@@ -132,6 +132,10 @@ struct quad {
         ARRAY_AFFECT, // équivaut à id[i] = a : sym1 est l'id, sym2 l'indice, sym3
                       // la valeur
 
+
+        DEREF, // équivaut à a = *(b + i) : sym1 est l'id, sym2 l'adresse de base,
+               // sym3 l'indice
+
     } kind;
     struct symbol *sym1;
     struct symbol *sym2;
