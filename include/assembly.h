@@ -21,6 +21,7 @@ void generate_mips_code(struct code *code);
 
 struct assembly_code {
   int next_float_constant;
+  int next_string_constant;
   char *float_zero;      // variable réservée par le compilateur
   char *string_constant; // variable réservée par le compilateur
   char *string_newline;  // variable réservée par le compilateur

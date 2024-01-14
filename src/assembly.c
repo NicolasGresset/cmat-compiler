@@ -287,10 +287,6 @@ void initalize_assembly_code(struct assembly_code *assembly_code,
 
   // on réserve de la place pour les strings usuelles
   char save_string_constant[MAX_DATA_SIZE];
-  snprintf(save_string_constant, MAX_DATA_SIZE, "  %s: .space %d\n",
-           assembly_code->string_constant, TAILLE_MAX_STRING);
-  append_to_data(assembly_code, save_string_constant);
-
   snprintf(save_string_constant, MAX_DATA_SIZE, "  %s: .asciiz \"\\n\"\n",
            assembly_code->string_newline);
   append_to_data(assembly_code, save_string_constant);

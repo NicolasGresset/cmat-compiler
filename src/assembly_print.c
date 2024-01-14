@@ -1,4 +1,5 @@
 #include "assembly_print.h"
+#include "data_segment.h"
 #include <stdlib.h>
 
 #define PRINT_INT_SYSCALL_NUMBER 1
@@ -57,29 +58,17 @@ void manage_call_print_mat(struct quad *quad, struct assembly_code *code) {
 }
 
 void manage_call_printf(struct quad *quad, struct assembly_code *code) {
-    fprintf(code->out, "#printf %s\n", quad->sym1->u.id.name);
+    fprintf(code->out, "#printf %s\n", quad->sym1->u.string);
 
-    // on recoit une string dans sym1, on veut l'afficher
-    // on va la mettre dans le segment data en réécrivant par dessus
-    // code->string_constant puis on va appeller le syscall
-    // PRINT_STRING_SYSCALL_NUMBER avec $a0 = code->string_constant
+    char declaration[MAX_DATA_SIZE];
+    snprintf(declaration, MAX_DATA_SIZE, "  %s%d: .asciiz %s\n",
+             code->string_constant, code->next_string_constant, quad->sym1->u.string);
+    append_to_data(code, declaration);
 
-    fprintf(code->out, "  la %s %s\n", registers[A0],
-            code->string_constant); // on charge l'adresse de la string dans $a0
+    fprintf(code->out, "  la %s %s%d\n", registers[A0],
+            code->string_constant, code->next_string_constant); // on charge l'adresse de la string dans $a0
 
-    // on écrit la string dans le segment data
-    quad->sym1->u.id.name[TAILLE_MAX_STRING - 1] =
-        '\0'; // on s'assure que la string est bien terminée
-    for (int i = 0; quad->sym1->u.id.name[i] != '\0' && i < TAILLE_MAX_STRING;
-         i++) {
-        fprintf(code->out, "  li %s, %d\n", registers[T0],
-                (int)quad->sym1->u.id.name[i]);
-        fprintf(code->out, "  sb %s, 0(%s)\n", registers[T0],
-                registers[A0]); // store byte
-        fprintf(code->out, "  addi %s, %s, 1\n", registers[A0],
-                registers[A0]); // on incrémente l'index
-    }
-
+    code->next_string_constant++;
     // on appelle la primitive
     fprintf(code->out, "  li $v0, %d\n", PRINT_STRING_SYSCALL_NUMBER);
     fprintf(code->out, "  syscall\n");
