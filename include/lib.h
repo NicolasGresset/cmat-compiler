@@ -62,25 +62,6 @@ struct symbol *symbol_const_int(int intval);
 
 struct symbol *symbol_const_float(float floatval);
 
-struct symbol * symbol_declare(const struct id_t id);
-
-struct symbol * symbol_declare_tab(const struct id_t id);
-
-struct symtable *symtable_new();
-
-struct symbol *symtable_const_int(struct symtable *t, int e);
-
-struct symbol *symtable_const_float(struct symtable *t, float v);
-
-struct symbol *symtable_get(struct symtable *t, const char *s);
-
-struct symbol *symtable_put(struct symtable *t, const char *s, type_t type);
-
-void symtable_dump(struct symtable *t);
-void symtable_assemble(struct symtable *t);
-
-void symtable_free(struct symtable *t);
-
 /* QUADRUPLETS ET CODE */
 
 // représente un quadruplet : représentation 3 adresses
