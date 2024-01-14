@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET=tests
+CMAT=./../../bin/cmat
 
 #
 # Se placer dans le répertoire courant
@@ -34,14 +34,6 @@ make clean
 cd ..
 coloredEcho "OK" green
 
-#
-# Test analyseur syntaxique
-#
-
-annoncer "Test analyseur syntaxique"
-cd analyse_syntaxique
-cd ..
-
 
 #
 # Test fonctions vecteurs et matrices
@@ -64,5 +56,22 @@ make clean
 cd ..
 coloredEcho "OK" green
 
+#
+# Test programmes CMat
+#
+
+
+cd ..
+make clean
+make 
+cd tests/programmes_cmat
+
+annoncer "Test programmes CMat"
+# pour chaque fichier .c, on fait CMAT -o nom_fichier.asm < nom_fichier.c
+for fichier in *.c
+do
+    nom_fichier=$(basename "$fichier" .c)
+    $CMAT -o "$nom_fichier.asm" < "$fichier" 
+done
 
 exit 0
