@@ -213,14 +213,19 @@ void manage_bop_plus_mat_bin(struct quad *quad, struct assembly_code *code) {
     fprintf(code->out, "  la %s, %s\n", registers[T0], name1); // T0 = &id1
     fprintf(code->out, "  la %s, %s\n", registers[T1], name2); // T1 = &id2
 
-    if (!is_symbol_float(quad->sym3)) {
-        fprintf(
-            stderr,
-            "Error : Addition of matrix with something which is not a float\n");
-        exit(1);
+    if (is_symbol_float(quad->sym3)) {
+    	move_float_symbol(quad->sym3, code, F2);
     }
-
-    move_float_symbol(quad->sym3, code, F2);
+	else if (is_symbol_int(quad->sym3)) {
+		move_int_symbol(quad->sym3, code, T2);
+		fprintf(code->out, "  mtc1 %s, %s\n", registers[T2], registers[F2]);
+		fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
+	}
+	else {
+        fprintf(stderr, "Error : Addition of matrix with something which "
+                        "is not a number\n");
+        exit(1);
+	}
 
     for (unsigned int i = 0; i < nelem; i++) {
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0], 4 * i,
@@ -245,14 +250,19 @@ void manage_bop_moins_mat_bin(struct quad *quad, struct assembly_code *code) {
     fprintf(code->out, "  la %s, %s\n", registers[T0], name1); // T0 = &id1
     fprintf(code->out, "  la %s, %s\n", registers[T1], name2); // T1 = &id2
 
-    if (!is_symbol_float(quad->sym3)) {
-        fprintf(stderr, "Error : Subtraction of matrix with something which is "
-                        "not a float\n");
-        exit(1);
+    if (is_symbol_float(quad->sym3)) {
+    	move_float_symbol(quad->sym3, code, F2);
     }
-
-    move_float_symbol(quad->sym3, code, F2);
-
+	else if (is_symbol_int(quad->sym3)) {
+		move_int_symbol(quad->sym3, code, T2);
+		fprintf(code->out, "  mtc1 %s, %s\n", registers[T2], registers[F2]);
+		fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
+	}
+	else {
+        fprintf(stderr, "Error : Subtraction of matrix with something which "
+                        "is not a number\n");
+        exit(1);
+	}
     for (unsigned int i = 0; i < nelem; i++) {
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0], 4 * i,
                 registers[T1]);
@@ -276,13 +286,19 @@ void manage_bop_mult_mat_bin(struct quad *quad, struct assembly_code *code) {
     fprintf(code->out, "  la %s, %s\n", registers[T0], name1); // T0 = &id1
     fprintf(code->out, "  la %s, %s\n", registers[T1], name2); // T1 = &id2
 
-    if (!is_symbol_float(quad->sym3)) {
-        fprintf(stderr, "Error : Multiplication of matrix with something which "
-                        "is not a float\n");
-        exit(1);
+    if (is_symbol_float(quad->sym3)) {
+    	move_float_symbol(quad->sym3, code, F2);
     }
-
-    move_float_symbol(quad->sym3, code, F2);
+	else if (is_symbol_int(quad->sym3)) {
+		move_int_symbol(quad->sym3, code, T2);
+		fprintf(code->out, "  mtc1 %s, %s\n", registers[T2], registers[F2]);
+		fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
+	}
+	else {
+        fprintf(stderr, "Error : Multiplication of matrix with something which "
+                        "is not a number\n");
+        exit(1);
+	}
 
     for (unsigned int i = 0; i < nelem; i++) {
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0], 4 * i,
@@ -307,14 +323,19 @@ void manage_bop_divise_mat_bin(struct quad *quad, struct assembly_code *code) {
     fprintf(code->out, "  la %s, %s\n", registers[T0], name1); // T0 = &id1
     fprintf(code->out, "  la %s, %s\n", registers[T1], name2); // T1 = &id2
 
-    if (!is_symbol_float(quad->sym3)) {
-        fprintf(
-            stderr,
-            "Error : Division of matrix with something which is not a float\n");
-        exit(1);
+    if (is_symbol_float(quad->sym3)) {
+    	move_float_symbol(quad->sym3, code, F2);
     }
-
-    move_float_symbol(quad->sym3, code, F2);
+	else if (is_symbol_int(quad->sym3)) {
+		move_int_symbol(quad->sym3, code, T2);
+		fprintf(code->out, "  mtc1 %s, %s\n", registers[T2], registers[F2]);
+		fprintf(code->out, "  cvt.s.w %s, %s\n", registers[F2], registers[F2]);
+	}
+	else {
+        fprintf(stderr, "Error : Division of matrix with something which "
+                        "is not a number\n");
+        exit(1);
+	}
 
     for (unsigned int i = 0; i < nelem; i++) {
         fprintf(code->out, "  l.s %s, %d(%s)\n", registers[F0], 4 * i,
