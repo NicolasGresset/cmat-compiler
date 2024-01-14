@@ -206,17 +206,20 @@ void complete(struct ListLabel * l, unsigned int addr)
 
      struct {
          union {
-             float matval[20][20];
-             float vectval[20];
+             float  matval[20][20];
+             float  vectval[20];
          } u;
          int row;
          int col;
      } crea_mat_t;
+
+     char string[TAILLE_MAX_STRING];
 }
 
 %token <strval> IDENTIFICATEUR
 %token <intval> CONSTANTE_ENTIERE
 %token <floatval> CONSTANTE_FLOTTANTE
+%token <string> STRING
 
 %token INT FLOAT MATRIX ELSE IF WHILE FOR
     CONSTANTE_CARACTERE AND OR NOT
@@ -228,7 +231,7 @@ void complete(struct ListLabel * l, unsigned int addr)
     VIRGULE POINT_VIRGULE APOSTROPHE
     GUILLEMET MAIN RETURN POINT_EXCLAMATION
     INFERIEUR INFERIEUR_EGAL SUPERIEUR SUPERIEUR_EGAL EGAL_EGAL
-    POINT PRINT PRINTF PRINTMAT STRING
+    POINT PRINT PRINTF PRINTMAT
 
 %type <exprval_t> declaration_bin operande expression_bin id_matrix id_vector
 %type <typeval> type
@@ -249,9 +252,14 @@ void complete(struct ListLabel * l, unsigned int addr)
 %start S
 
 %%
-S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions RETURN CONSTANTE_ENTIERE POINT_VIRGULE ACCOLADE_FERMANTE
+S : INT MAIN PARENTHESE_OUVRANTE PARENTHESE_FERMANTE ACCOLADE_OUVRANTE liste_instructions M RETURN CONSTANTE_ENTIERE POINT_VIRGULE ACCOLADE_FERMANTE
 {
+    complete($6.next, $7);
+    // Pour sortir proprement
+    struct symbol * sym1 = symbol_const_int($9);
+    gencode(CODE, Q_RETURN, sym1, NULL, NULL);
     ListLabel_free($6.next);
+
 }
 
 liste_instructions
@@ -264,14 +272,34 @@ instruction
 | boucle_while {$$.next = $1.next;}
 | boucle_for {$$.next = $1.next;}
 | affectation_bin {$$.next = NULL;}
-| PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE {$$.next = NULL;}
- //q_printf avec la string sym1
-
+| PRINTF PARENTHESE_OUVRANTE STRING PARENTHESE_FERMANTE POINT_VIRGULE
+{
+    struct symbol * sym_str = symbol_string($3);
+    gencode(CODE, Q_DECLARE_STRING, sym_str, NULL, NULL);
+    $$.next = NULL;
+}
 | PRINT PARENTHESE_OUVRANTE operande PARENTHESE_FERMANTE POINT_VIRGULE {
     $$.next = NULL;
     gencode(CODE, CALL_PRINT, $3.ptr, NULL, NULL);
 }
-| PRINTMAT PARENTHESE_OUVRANTE IDENTIFICATEUR PARENTHESE_FERMANTE POINT_VIRGULE {$$.next = NULL;}
+| PRINTMAT PARENTHESE_OUVRANTE IDENTIFICATEUR PARENTHESE_FERMANTE POINT_VIRGULE
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$3);
+    if ( id == NULL )
+    {
+        fprintf(stderr, "error: ‘%s’ undeclared\n", $3);
+        exit(1);
+    }
+    if (id->type != MATRIX_TYPE)
+    {
+        fprintf(stderr, "error: incompatible types, should be a matrix\n");
+        exit(1);
+    }
+
+    struct symbol *  sym_id = symbol_id(*id);
+    gencode(CODE,CALL_PRINT_MAT,sym_id,NULL,NULL);
+    $$.next = NULL;
+}
 
 
 
@@ -397,7 +425,6 @@ id_matrix
     $$.ptr = sym_id;
     $$.num = 0;
     $$.type = MATRIX_TYPE;
-
 };
 
 id_vector
