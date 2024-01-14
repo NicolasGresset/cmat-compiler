@@ -17,6 +17,14 @@ struct symbol *symbol_id(const struct id_t id) {
     return sym;
 }
 
+struct symbol * symbol_string(char * s)
+{
+    struct symbol *sym = malloc(sizeof(struct symbol));
+    sym->kind = STRING_CONSTANT;
+    strncpy(sym->u.string, s, TAILLE_MAX_STRING);
+    return sym;
+}
+
 struct symbol *symbol_const_int(int intval) {
     struct symbol *sym = malloc(sizeof(struct symbol));
     sym->kind = INT_CONSTANT;
@@ -198,6 +206,9 @@ static void symbol_dump(struct symbol *s) {
         break;
     case LABEL:
         printf("%d ", s->u.addr);
+        break;
+    case STRING_CONSTANT:
+        printf("%s", s->u.string);
     default:
         break;
     }
@@ -426,6 +437,14 @@ static void quad_dump(struct quad *q) {
         break;
     case Q_GOTO_UNKNOWN:
         printf("goto ?");
+        break;
+    case Q_RETURN:
+        printf("return ");
+        symbol_dump(q->sym1);
+        printf("\n");
+        break;
+    case Q_DECLARE_STRING:
+        symbol_dump(q->sym1);
         break;
     default:
         printf("BUG\n");

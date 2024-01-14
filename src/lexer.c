@@ -912,173 +912,177 @@ YY_RULE_SETUP
         fprintf(stderr,"Identifier '%s' too long, truncated\n",yytext);
     strncpy(yylval.strval,yytext, TAILLE_MAX_TOKEN);
     yylval.strval[TAILLE_MAX_TOKEN] = '\0';
-    //return ecrireToken(IDENTIFICATEUR);
     return IDENTIFICATEUR;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 83 "flex/lexer.lex"
-{ return STRING; }
+#line 82 "flex/lexer.lex"
+{
+    if ( yyleng > TAILLE_MAX_STRING )
+        fprintf(stderr,"String '%s'too long, truncated\n",yytext);
+    strncpy(yylval.string, yytext, yyleng);
+    yylval.string[TAILLE_MAX_STRING] = '\0';
+    return STRING; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 85 "flex/lexer.lex"
+#line 89 "flex/lexer.lex"
 return PLUS;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 86 "flex/lexer.lex"
+#line 90 "flex/lexer.lex"
 return MOINS;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 87 "flex/lexer.lex"
+#line 91 "flex/lexer.lex"
 return FOIS;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 88 "flex/lexer.lex"
+#line 92 "flex/lexer.lex"
 return DIVISE;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 89 "flex/lexer.lex"
+#line 93 "flex/lexer.lex"
 return PLUS_PLUS;
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 90 "flex/lexer.lex"
+#line 94 "flex/lexer.lex"
 return MOINS_MOINS;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 91 "flex/lexer.lex"
+#line 95 "flex/lexer.lex"
 return EGAL;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 92 "flex/lexer.lex"
+#line 96 "flex/lexer.lex"
 return TRANSPOSITION;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 93 "flex/lexer.lex"
+#line 97 "flex/lexer.lex"
 return PARENTHESE_OUVRANTE;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 94 "flex/lexer.lex"
+#line 98 "flex/lexer.lex"
 return PARENTHESE_FERMANTE;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 95 "flex/lexer.lex"
+#line 99 "flex/lexer.lex"
 return CROCHET_OUVRANT;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 96 "flex/lexer.lex"
+#line 100 "flex/lexer.lex"
 return CROCHET_FERMANT;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 97 "flex/lexer.lex"
+#line 101 "flex/lexer.lex"
 return ACCOLADE_OUVRANTE;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 98 "flex/lexer.lex"
+#line 102 "flex/lexer.lex"
 return ACCOLADE_FERMANTE;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 99 "flex/lexer.lex"
+#line 103 "flex/lexer.lex"
 return VIRGULE;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 100 "flex/lexer.lex"
+#line 104 "flex/lexer.lex"
 return POINT_VIRGULE;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 101 "flex/lexer.lex"
+#line 105 "flex/lexer.lex"
 return APOSTROPHE;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 102 "flex/lexer.lex"
+#line 106 "flex/lexer.lex"
 return GUILLEMET;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 103 "flex/lexer.lex"
+#line 107 "flex/lexer.lex"
 return SUPERIEUR;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 104 "flex/lexer.lex"
+#line 108 "flex/lexer.lex"
 return INFERIEUR;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 105 "flex/lexer.lex"
+#line 109 "flex/lexer.lex"
 return INFERIEUR_EGAL;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 106 "flex/lexer.lex"
+#line 110 "flex/lexer.lex"
 return SUPERIEUR_EGAL;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 107 "flex/lexer.lex"
+#line 111 "flex/lexer.lex"
 return POINT_EXCLAMATION;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 108 "flex/lexer.lex"
+#line 112 "flex/lexer.lex"
 return EGAL_EGAL;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 109 "flex/lexer.lex"
+#line 113 "flex/lexer.lex"
 return OR;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 110 "flex/lexer.lex"
+#line 114 "flex/lexer.lex"
 return AND;
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 111 "flex/lexer.lex"
+#line 115 "flex/lexer.lex"
 return POINT;
 	YY_BREAK
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 113 "flex/lexer.lex"
+#line 117 "flex/lexer.lex"
 ;
 	YY_BREAK
 case 46:
 /* rule 46 can match eol */
 YY_RULE_SETUP
-#line 114 "flex/lexer.lex"
+#line 118 "flex/lexer.lex"
 ;
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 115 "flex/lexer.lex"
+#line 119 "flex/lexer.lex"
 { fprintf (stderr, "caractère illégal (%c) ignoré\n", yytext[0]); return LEX_ERROR;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 116 "flex/lexer.lex"
+#line 120 "flex/lexer.lex"
 ECHO;
 	YY_BREAK
-#line 1082 "src/lexer.c"
+#line 1086 "src/lexer.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2046,5 +2050,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 116 "flex/lexer.lex"
+#line 120 "flex/lexer.lex"
+
 

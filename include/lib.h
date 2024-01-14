@@ -35,7 +35,7 @@ struct symbol {
         int int_value;     // CONSTANTE ENTIERE
         float float_value; // CONSTANTE REELLE
         unsigned int addr; // ADRESSE
-        char *string;
+        char string[TAILLE_MAX_STRING];
     } u;
 };
 
@@ -55,6 +55,8 @@ struct exprval
 };
 
 struct symbol *symbol_id(const struct id_t id);
+
+struct symbol * symbol_string(char * s);
 
 struct symbol *symbol_const_int(int intval);
 
@@ -86,7 +88,7 @@ struct quad {
     enum quad_kind {
         Q_DECLARE,
         Q_DECLARE_MAT,
-        Q_DECLARE_STRING, // sym1 : id, sym2 : string, NULL
+        Q_DECLARE_STRING, // sym1 : string, reste des NULL
         // Q_SET, = COPY
         Q_SET_MAT,
 
@@ -123,6 +125,7 @@ struct quad {
         Q_IF_GE,
         Q_IF_GT,
 
+        Q_RETURN,
         Q_GOTO,
         Q_GOTO_UNKNOWN,
         CALL_PRINT, // sym1 : id à afficher, NULL, NULL

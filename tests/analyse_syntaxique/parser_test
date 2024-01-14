@@ -92,5 +92,6 @@ int main()
 /*     IA = det*IA; */
 /* /\* Calcul de X *\/ */
 /*     X = IA*B; */
+    printf("Bonjour à tous\n");
     return 0;
 }

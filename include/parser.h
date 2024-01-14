@@ -57,48 +57,48 @@ extern int yydebug;
     IDENTIFICATEUR = 258,          /* IDENTIFICATEUR  */
     CONSTANTE_ENTIERE = 259,       /* CONSTANTE_ENTIERE  */
     CONSTANTE_FLOTTANTE = 260,     /* CONSTANTE_FLOTTANTE  */
-    INT = 261,                     /* INT  */
-    FLOAT = 262,                   /* FLOAT  */
-    MATRIX = 263,                  /* MATRIX  */
-    ELSE = 264,                    /* ELSE  */
-    IF = 265,                      /* IF  */
-    WHILE = 266,                   /* WHILE  */
-    FOR = 267,                     /* FOR  */
-    CONSTANTE_CARACTERE = 268,     /* CONSTANTE_CARACTERE  */
-    AND = 269,                     /* AND  */
-    OR = 270,                      /* OR  */
-    NOT = 271,                     /* NOT  */
-    PLUS = 272,                    /* PLUS  */
-    MOINS = 273,                   /* MOINS  */
-    FOIS = 274,                    /* FOIS  */
-    DIVISE = 275,                  /* DIVISE  */
-    PLUS_PLUS = 276,               /* PLUS_PLUS  */
-    MOINS_MOINS = 277,             /* MOINS_MOINS  */
-    EGAL = 278,                    /* EGAL  */
-    TRANSPOSITION = 279,           /* TRANSPOSITION  */
-    PARENTHESE_OUVRANTE = 280,     /* PARENTHESE_OUVRANTE  */
-    PARENTHESE_FERMANTE = 281,     /* PARENTHESE_FERMANTE  */
-    CROCHET_OUVRANT = 282,         /* CROCHET_OUVRANT  */
-    CROCHET_FERMANT = 283,         /* CROCHET_FERMANT  */
-    ACCOLADE_OUVRANTE = 284,       /* ACCOLADE_OUVRANTE  */
-    ACCOLADE_FERMANTE = 285,       /* ACCOLADE_FERMANTE  */
-    VIRGULE = 286,                 /* VIRGULE  */
-    POINT_VIRGULE = 287,           /* POINT_VIRGULE  */
-    APOSTROPHE = 288,              /* APOSTROPHE  */
-    GUILLEMET = 289,               /* GUILLEMET  */
-    MAIN = 290,                    /* MAIN  */
-    RETURN = 291,                  /* RETURN  */
-    POINT_EXCLAMATION = 292,       /* POINT_EXCLAMATION  */
-    INFERIEUR = 293,               /* INFERIEUR  */
-    INFERIEUR_EGAL = 294,          /* INFERIEUR_EGAL  */
-    SUPERIEUR = 295,               /* SUPERIEUR  */
-    SUPERIEUR_EGAL = 296,          /* SUPERIEUR_EGAL  */
-    EGAL_EGAL = 297,               /* EGAL_EGAL  */
-    POINT = 298,                   /* POINT  */
-    PRINT = 299,                   /* PRINT  */
-    PRINTF = 300,                  /* PRINTF  */
-    PRINTMAT = 301,                /* PRINTMAT  */
-    STRING = 302,                  /* STRING  */
+    STRING = 261,                  /* STRING  */
+    INT = 262,                     /* INT  */
+    FLOAT = 263,                   /* FLOAT  */
+    MATRIX = 264,                  /* MATRIX  */
+    ELSE = 265,                    /* ELSE  */
+    IF = 266,                      /* IF  */
+    WHILE = 267,                   /* WHILE  */
+    FOR = 268,                     /* FOR  */
+    CONSTANTE_CARACTERE = 269,     /* CONSTANTE_CARACTERE  */
+    AND = 270,                     /* AND  */
+    OR = 271,                      /* OR  */
+    NOT = 272,                     /* NOT  */
+    PLUS = 273,                    /* PLUS  */
+    MOINS = 274,                   /* MOINS  */
+    FOIS = 275,                    /* FOIS  */
+    DIVISE = 276,                  /* DIVISE  */
+    PLUS_PLUS = 277,               /* PLUS_PLUS  */
+    MOINS_MOINS = 278,             /* MOINS_MOINS  */
+    EGAL = 279,                    /* EGAL  */
+    TRANSPOSITION = 280,           /* TRANSPOSITION  */
+    PARENTHESE_OUVRANTE = 281,     /* PARENTHESE_OUVRANTE  */
+    PARENTHESE_FERMANTE = 282,     /* PARENTHESE_FERMANTE  */
+    CROCHET_OUVRANT = 283,         /* CROCHET_OUVRANT  */
+    CROCHET_FERMANT = 284,         /* CROCHET_FERMANT  */
+    ACCOLADE_OUVRANTE = 285,       /* ACCOLADE_OUVRANTE  */
+    ACCOLADE_FERMANTE = 286,       /* ACCOLADE_FERMANTE  */
+    VIRGULE = 287,                 /* VIRGULE  */
+    POINT_VIRGULE = 288,           /* POINT_VIRGULE  */
+    APOSTROPHE = 289,              /* APOSTROPHE  */
+    GUILLEMET = 290,               /* GUILLEMET  */
+    MAIN = 291,                    /* MAIN  */
+    RETURN = 292,                  /* RETURN  */
+    POINT_EXCLAMATION = 293,       /* POINT_EXCLAMATION  */
+    INFERIEUR = 294,               /* INFERIEUR  */
+    INFERIEUR_EGAL = 295,          /* INFERIEUR_EGAL  */
+    SUPERIEUR = 296,               /* SUPERIEUR  */
+    SUPERIEUR_EGAL = 297,          /* SUPERIEUR_EGAL  */
+    EGAL_EGAL = 298,               /* EGAL_EGAL  */
+    POINT = 299,                   /* POINT  */
+    PRINT = 300,                   /* PRINT  */
+    PRINTF = 301,                  /* PRINTF  */
+    PRINTMAT = 302,                /* PRINTMAT  */
     UEXPR = 303                    /* UEXPR  */
   };
   typedef enum yytokentype yytoken_kind_t;
@@ -143,14 +143,16 @@ union YYSTYPE
 
      struct {
          union {
-             float matval[20][20];
-             float vectval[20];
+             float  matval[20][20];
+             float  vectval[20];
          } u;
          int row;
          int col;
      } crea_mat_t;
 
-#line 154 "./include/parser.h"
+     char string[TAILLE_MAX_STRING];
+
+#line 156 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

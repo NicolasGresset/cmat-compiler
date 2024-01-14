@@ -76,11 +76,15 @@ _STRING \"([^\\\n]|(\\.))*?\"
         fprintf(stderr,"Identifier '%s' too long, truncated\n",yytext);
     strncpy(yylval.strval,yytext, TAILLE_MAX_TOKEN);
     yylval.strval[TAILLE_MAX_TOKEN] = '\0';
-    //return ecrireToken(IDENTIFICATEUR);
     return IDENTIFICATEUR;
 }
 
-{_STRING} { return STRING; }
+{_STRING} {
+    if ( yyleng > TAILLE_MAX_STRING )
+        fprintf(stderr,"String '%s'too long, truncated\n",yytext);
+    strncpy(yylval.string, yytext, yyleng);
+    yylval.string[TAILLE_MAX_STRING] = '\0';
+    return STRING; }
 
 "+" return PLUS;
 "-" return MOINS;
