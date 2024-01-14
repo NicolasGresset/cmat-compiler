@@ -324,6 +324,14 @@ static void quad_dump(struct quad *q) {
         symbol_dump(q->sym3);
         break;
 
+    case ARRAY_AFFECT:
+        symbol_dump(q->sym1);
+        printf("[");
+        symbol_dump(q->sym2);
+        printf("]");
+        printf(" := ");
+        symbol_dump(q->sym3);
+        break;
 
     case CALL_PRINT:
         printf("print ");
