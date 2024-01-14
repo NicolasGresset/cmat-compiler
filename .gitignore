@@ -1,4 +1,5 @@
 bin/main
+bin/cmat
 .*.*
 *.o
 *.s
