@@ -205,6 +205,10 @@ void complete(struct ListLabel * l, unsigned int addr)
      } for_fin_t;
 
      struct {
+         union {
+             float matval[20][20];
+             float vectval[20];
+         } u;
          int row;
          int col;
      } crea_mat_t;
@@ -302,7 +306,6 @@ declaration_bin
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, Q_DECLARE, sym_id,NULL,NULL);
     gencode(CODE,COPY,sym_id,$4.ptr,NULL);
-
  }
 ;
 
@@ -314,9 +317,41 @@ declaration_mat
 | id_vector fin_crea_mat
 | id_matrix  EGAL creation_matrix fin_crea_mat
 {
-    ;// Ici gérer si les valeurs entre {} respectent la taille de id_matrix
+    // Ici gérer si les valeurs entre {} respectent la taille de id_matrix
+    if ($1.ptr->u.id.row != $3.row || $1.ptr->u.id.col != $3.col)
+    {
+        //printf("row %d %d | col %d %d\n", $1.ptr->u.id.row, $3.row, $1.ptr->u.id.col, $3.col);
+        fprintf(stderr, "error: incompatible matrix size in the matrix declaration\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < $1.ptr->u.id.row; ++i)
+    {
+        for (int j = 0; j < $1.ptr->u.id.col; ++j)
+        {
+            struct symbol * sym_idx = symbol_const_int((i)*$1.ptr->u.id.col + j);
+            struct symbol * sym_val = symbol_const_float($3.u.matval[i][j]);
+            gencode(CODE, ARRAY_AFFECT, $1.ptr, sym_idx, sym_val);
+        }
+    }
+
 }
 | id_vector EGAL creation_vector fin_crea_mat
+{
+    // Ici gérer si les valeurs entre {} respectent la taille de id_matrix
+    if ($1.ptr->u.id.row != $3.row || $1.ptr->u.id.col != $3.col)
+    {
+        //printf("row %d %d | col %d %d\n", $1.ptr->u.id.row, $3.row, $1.ptr->u.id.col, $3.col);
+        fprintf(stderr, "error: incompatible matrix size in the matrix declaration\n");
+        exit(1);
+    }
+    for (int j = 0; j < $1.ptr->u.id.col; ++j)
+    {
+        struct symbol * sym_idx = symbol_const_int(j);
+        struct symbol * sym_val = symbol_const_float($3.u.vectval[j]);
+        gencode(CODE, ARRAY_AFFECT, $1.ptr, sym_idx, sym_val);
+    }
+}
 | MATRIX id_matrix EGAL expression_bin fin_crea_mat
 {
     // id_matrix regarde si l'identificateur existe
@@ -374,12 +409,16 @@ id_vector
     }
     id = id_init($1, MATRIX_TYPE);
 
-    id->row = $3;
-    id->col = 1;
+    id->col = $3;
+    id->row = 1;
     table_hachage_put(SYMTAB,id);
 
     struct symbol * sym_id = symbol_id(*id);
     gencode(CODE, Q_DECLARE_MAT, sym_id,NULL,NULL);
+
+    $$.ptr = sym_id;
+    $$.num = 0;
+    $$.type = MATRIX_TYPE;
 };
 
 fin_crea_mat
@@ -391,50 +430,69 @@ creation_matrix
 //: expression_mat
 : ACCOLADE_OUVRANTE creation_matrix_prime creation_vector ACCOLADE_FERMANTE
 {
-    if ($2.row != -1 && $2.row != $3.row)
+    $$ = $2;
+    if ($3.col != 0 && $2.col != $3.col)
+    {
         fprintf(stderr, "error : incompatible column size\n");
+        exit(1);
+    }
 
-    $$.col = 1 + $2.col;
-    $$.row = $2.row;
-}
+    for (int j = 0; j < $3.col; ++j)
+        $$.u.matval[$2.row][j] = $3.u.vectval[j];
+    $$.col = $2.col;
+    $$.row = 1 + $2.row;
+};
+
 creation_matrix_prime
 :  creation_matrix_prime creation_vector VIRGULE
 {
-    if ($1.row != -1 && $1.row != $2.row)
+    $$ = $1;
+    if ($1.col != 0 && $1.col != $2.col)
+    {
         fprintf(stderr, "error : incompatible column size\n");
+        exit(1);
+    }
 
-    $$.col = 1 + $2.col;
-    $$.row = $1.row;
+   for (int j = 0; j < $2.col; ++j)
+       $$.u.matval[$1.row][j] = $2.u.vectval[j];
+   $$.col = $2.col;
+   $$.row = 1 + $1.row;
 }
 | %empty
 {
-    $$.row = -1;
+    $$.row = 0;
     $$.col = 0;
 };
 
-// tableau de float dans mon symbole -> array et u devient float * values.
-
 creation_vector
 //: expression_vector
-: ACCOLADE_OUVRANTE creation_vector_prime operande ACCOLADE_FERMANTE
+: ACCOLADE_OUVRANTE creation_vector_prime CONSTANTE_FLOTTANTE ACCOLADE_FERMANTE
 {
-    $$.row = 1 + $2.row;
-    $$.col = 1;
-    // newtemp
-    struct symbol * sym_temp = newtemp(SYMTAB, REEL);
-    gencode(CODE, Q_DECLARE, sym_temp,NULL,NULL);
-    gencode(CODE, COPY, sym_temp, $3.ptr, NULL);
-
+    // test inutile
+    /* if ($2.type != ENTIER && $2.type != REEL) */
+    /* { */
+    /*     fprintf(stderr, "error : operations sur des identificateurs non gérées %d\n", $2.type); */
+    /*     exit(1); */
+    /* } */
+    $$ = $2;
+    $$.u.vectval[$2.col] = $3;
+    $$.col = 1 + $2.col;
+    $$.row = 1;
 };
 creation_vector_prime
-: creation_vector_prime operande VIRGULE
+: creation_vector_prime CONSTANTE_FLOTTANTE VIRGULE
 {
-    $$.row = 1 + $1.row;
-    $$.col = 1;
-    // newtemp
-    struct symbol * sym_temp = newtemp(SYMTAB, REEL);
-    gencode(CODE, Q_DECLARE, sym_temp, NULL,NULL);
-    gencode(CODE, COPY, sym_temp, $2.ptr, NULL);
+    // test inutile
+    /* if ($2.type != ENTIER && $2.type != REEL) */
+    /* { */
+    /*     fprintf(stderr, "error : operations sur des identificateurs non gérées %d\n", $2.type); */
+    /*     exit(1); */
+    /* } */
+
+    $$ = $1;
+    $$.u.vectval[$1.col] = $2;
+    $$.col = 1 + $1.col;
+    $$.row = 1;
 }
 | %empty {$$.row = 0; $$.col = 0;};
 
@@ -543,7 +601,9 @@ expression_bin
     $$ = expression_gestion(CODE, SYMTAB, UOP_PLUS, $$, $2, expr_null);
 }
 //|  POINT_EXCLAMATION expression_bin %prec UEXPR {;} // A completer
-|  TRANSPOSITION expression_bin %prec UEXPR {;} // Faire un nouveau terminal avec expression_mat pour différencier les 2 dans les conditions ?
+|  TRANSPOSITION expression_bin %prec UEXPR
+{
+    ;}
 |  PARENTHESE_OUVRANTE expression_bin PARENTHESE_FERMANTE {$$.ptr = $2.ptr; $$.type = $2.type; $$.num = $2.num;}
 //| operateur2 IDENTIFICATEUR expression_bin %prec UEXPR {;}
 | PLUS_PLUS operande

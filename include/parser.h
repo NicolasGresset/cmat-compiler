@@ -142,11 +142,15 @@ union YYSTYPE
      } for_fin_t;
 
      struct {
+         union {
+             float matval[20][20];
+             float vectval[20];
+         } u;
          int row;
          int col;
      } crea_mat_t;
 
-#line 150 "./include/parser.h"
+#line 154 "./include/parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
