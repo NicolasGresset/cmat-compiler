@@ -8,9 +8,6 @@ extern int yylex();
 void complete(struct ListLabel * l, unsigned int addr)
 {
     struct ListLabel * current = l;
-    printf("complete : ");
-    ListLabel_print(l);
-    printf(" %d\n", addr);
     while(current != NULL)
     {
         if (CODE->quads[current->addr].kind == Q_IF_EQ ||
@@ -878,9 +875,9 @@ ACCOLADE_FERMANTE N condition_suite
         $$.next = concat($$.next, $3.false);
     }
 
-    printf("if.next : ");
-    ListLabel_print($$.next);
-    printf("\n");
+    /* printf("if.next : "); */
+    /* ListLabel_print($$.next); */
+    /* printf("\n"); */
 }
 
 condition_suite

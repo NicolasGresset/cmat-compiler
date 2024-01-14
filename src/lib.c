@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct symbol *symbol_id(const struct id_t id) {
+struct symbol * symbol_id(const struct id_t id) {
   struct symbol *sym = malloc(sizeof(struct symbol));
   sym->kind = NAME;
   // snprintf(sym->u.id.name, TAILLE_MAX_TOKEN, "%s", id.name);
