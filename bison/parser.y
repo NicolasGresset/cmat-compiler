@@ -850,37 +850,6 @@ CROCHET_OUVRANT CONSTANTE_ENTIERE CROCHET_FERMANT
     $$.type = REEL;
 };
 
-// Ici expression_mat
-
-/* expression_mat */
-/* : TRANSPOSITION expression_mat %prec UEXPR {;} */
-/* | expression_mat PLUS expression_mat */
-/* | expression_mat MOINS expression_mat */
-/* | expression_mat FOIS expression_mat */
-/* | expression_mat DIVISE expression_mat */
-/* | IDENTIFICATEUR   // Juste pour les IDs associés au type matrix du coup */
-/* | CONSTANTE_FLOTTANTE */
-  // Pose des problèmes de shift/reduce
-/* // Operation avec constante */
-/* | expression_mat PLUS CONSTANTE_FLOTTANTE */
-/* | expression_mat MOINS CONSTANTE_FLOTTANTE */
-/* | expression_mat FOIS CONSTANTE_FLOTTANTE */
-/* | expression_mat DIVISE CONSTANTE_FLOTTANTE */
-/* // Dans l'autre sens */
-/* | CONSTANTE_FLOTTANTE PLUS expression_mat */
-/* | CONSTANTE_FLOTTANTE MOINS expression_mat */
-/* | CONSTANTE_FLOTTANTE FOIS expression_mat */
-/* | CONSTANTE_FLOTTANTE DIVISE expression_mat */
-// Autre
-/* | MOINS expression_mat %prec UEXPR */
-/* | IDENTIFICATEUR PLUS_PLUS */
-/* | IDENTIFICATEUR MOINS_MOINS */
-/* | PLUS_PLUS IDENTIFICATEUR */
-/* | MOINS_MOINS IDENTIFICATEUR */
-// Extraction   --> Je pense partir comme ça, mais avant faut que tu me dises si
-//possible pour toi de regarder les conditions sur les dimensions pour l'extraction
-  //| IDENTIFICATEUR CROCHET_OUVRANT intervalle CROCHET_FERMANT CROCHET_OUVRANT intervalle CROCHET_FERMANT
-
 
 type
 : INT {$$ = ENTIER;}
@@ -1021,6 +990,34 @@ for_fin
     $$.id = sym_id;
     $$.ptr = $3.ptr;
     $$.num = $3.num;
+}
+| IDENTIFICATEUR PLUS_PLUS
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$1);
+    if ( id == NULL )
+    {
+        fprintf(stderr, "error: ‘%s’ undeclared\n", $1);
+        exit(1);
+    }
+
+    struct symbol * sym_id = symbol_id(*id);
+    $$.id = sym_id;
+    $$.ptr = sym_id;
+    $$.num = 1;
+}
+| PLUS_PLUS IDENTIFICATEUR
+{
+    struct id_t * id = table_hachage_get(SYMTAB,$2);
+    if ( id == NULL )
+    {
+        fprintf(stderr, "error: ‘%s’ undeclared\n", $2);
+        exit(1);
+    }
+
+    struct symbol * sym_id = symbol_id(*id);
+    $$.id = sym_id;
+    $$.ptr = sym_id;
+    $$.num = 1;
 }
 
 test
