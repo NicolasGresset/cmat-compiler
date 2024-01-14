@@ -35,7 +35,7 @@ struct symbol {
         int int_value;     // CONSTANTE ENTIERE
         float float_value; // CONSTANTE REELLE
         unsigned int addr; // ADRESSE
-        char string[TAILLE_MAX_STRING];
+        char *string;
     } u;
 };
 
