@@ -83,7 +83,7 @@ _STRING \"([^\\\n]|(\\.))*?\"
     if ( yyleng > TAILLE_MAX_STRING )
         fprintf(stderr,"String '%s'too long, truncated\n",yytext);
     strncpy(yylval.string, yytext, yyleng);
-    yylval.string[TAILLE_MAX_STRING] = '\0';
+    yylval.string[yyleng] = '\0';
     return STRING; }
 
 "+" return PLUS;
