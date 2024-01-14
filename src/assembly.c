@@ -225,15 +225,6 @@ void manage_quad(struct quad *quad, struct assembly_code *code) {
     case MAT_BIN_PLUS:
         manage_bop_plus_mat_bin(quad, code);
         break;
-    case MAT_BIN_MOINS:
-        manage_bop_moins_mat_bin(quad, code);
-        break;
-    case MAT_BIN_MULT:
-        manage_bop_mult_mat_bin(quad, code);
-        break;
-    case MAT_BIN_DIVISE:
-        manage_bop_divise_mat_bin(quad, code);
-        break;
     default:
         manage_default_case(quad, code);
         break;
