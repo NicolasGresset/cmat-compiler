@@ -310,4 +310,6 @@ void generate_mips_code(struct code *code) {
 
   manage_quads(code, &assembly_code);
   write_data_to_file(&assembly_code);
+
+  fclose(assembly_code.out);
 }

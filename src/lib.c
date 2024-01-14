@@ -461,10 +461,19 @@ void code_dump(struct code *c) {
     }
 }
 
+
+void safe_free(struct symbol *s) {
+    if (s != NULL && (s->kind == FLOAT_CONSTANT || s->kind == INT_CONSTANT)) {
+        free(s);
+    }
+}
+
 void code_free(struct code *c) {
-    free(c->quads->sym1);
-    free(c->quads->sym2);
-    free(c->quads->sym3);
+    for (unsigned int i = 0; i < c->nextquad; i++) {
+        safe_free(c->quads[i].sym1);
+        safe_free(c->quads[i].sym2);
+        safe_free(c->quads[i].sym3);
+    }
     free(c->quads);
     free(c);
 }
